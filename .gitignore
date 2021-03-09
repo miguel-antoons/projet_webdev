@@ -2,6 +2,7 @@
 
 # dependencies
 **/node_modules
+**/config
 /.pnp
 .pnp.js
 
@@ -26,3 +27,4 @@ venv
 __pycache__
 
 .idea/
+
