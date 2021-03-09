@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, jsonify, request, redirect, url_for, session
 from flask_mysqldb import MySQL
+import json
 
 app = Flask(__name__)
 # CORS(app)
@@ -21,13 +22,20 @@ def index():
 
     # cur.execute('''create table hello (id INTEGER,nom varchar(12), prenom varchar(12), PRIMARY KEY(id) );''')
 
-    cur.execute('''INSERT INTO user VALUES (3,'Danlee', 'Maxime');''')
+    #cur.execute('''INSERT INTO user VALUES (3,'Danlee', 'Maxime');''')
 
     cur.execute('''SELECT * from user''')
     results = cur.fetchall()
     print(results)
-    mysql.connection.commit()
-    return 'DONE!'
+
+    for user in results:
+        list_user = {
+            'ID': user[0],
+            'Nom': user[1],
+            'Prenom': user[2],
+        }
+
+    return json.dumps(list_user)
 
 
 @app.route('/hello')
