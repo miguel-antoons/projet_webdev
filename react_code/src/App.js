@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Component } from 'react';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Navbar from './components/Navbar/Navbar'
 
-
-class App extends Component {
-  render() {
-    return (
+function App() {
+  return(
       <div className="App">
-        <h1>Hello world</h1>
+       <Navbar />
       </div>
-    );
-  }
+  );
 }
 
 export default App;
