@@ -5,7 +5,7 @@ import logoNavbar from "./navbar_logo.png"
 function Navbar() {
     return (
         <BS.Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-            <BS.Navbar.Brand href="#home">
+            <BS.Navbar.Brand href="/">
                 <img
                     alt=""
                     src={logoNavbar}
@@ -18,14 +18,14 @@ function Navbar() {
             <BS.Navbar.Toggle aria-controls="responsive-BS.Navbar-BS.Nav"/>
             <BS.Navbar.Collapse id="responsive-BS.Navbar-BS.Nav">
                 <BS.Nav className="mr-auto">
-                    <BS.Nav.Link href="#features">Factures</BS.Nav.Link>
-                    <BS.Nav.Link href="#pricing">Devis</BS.Nav.Link>
-                    <BS.Nav.Link href="#pricing">Étiquetage</BS.Nav.Link>
-                    <BS.Nav.Link href="#pricing">Suivi de matériel</BS.Nav.Link>
+                    <BS.Nav.Link href="/facture">Factures</BS.Nav.Link>
+                    <BS.Nav.Link href="/devis">Devis</BS.Nav.Link>
+                    <BS.Nav.Link href="/etiquetage">Étiquetage</BS.Nav.Link>
+                    <BS.Nav.Link href="/suivi">Suivi de matériel</BS.Nav.Link>
                     <BS.NavDropdown title="Modifier/Ajouter" id="collasible-BS.Nav-dropdown">
-                        <BS.NavDropdown.Item href="#action/3.1">Client</BS.NavDropdown.Item>
-                        <BS.NavDropdown.Item href="#action/3.2">Articles</BS.NavDropdown.Item>
-                        <BS.NavDropdown.Item href="#action/3.3">Articles bis</BS.NavDropdown.Item>
+                        <BS.NavDropdown.Item href="/client">Client</BS.NavDropdown.Item>
+                        <BS.NavDropdown.Item href="/facture">Article</BS.NavDropdown.Item>
+                        <BS.NavDropdown.Item href="/ensemble">ensemble d'articles</BS.NavDropdown.Item>
                         <BS.NavDropdown.Divider/>
                     </BS.NavDropdown>
                 </BS.Nav>
