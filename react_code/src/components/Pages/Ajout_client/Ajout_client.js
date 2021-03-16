@@ -2,7 +2,7 @@ import React from 'react';
 
 function Client () {
     return (
-        <h1>Bienvenue dans Client</h1>
+        <h1>Bienvenue dans Client, yo test</h1>
     )
 }
 
