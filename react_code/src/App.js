@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
 // Add component
 import Navbar from './components/Navbar/Navbar'
+import Home from './components/Pages/Home/Home'
 import Facture from './components/Pages/Facture/Facture'
 import Devis from './components/Pages/Devis/Devis'
 import Etiquetage from './components/Pages/Etiquetage/Etiquetage'
@@ -33,14 +34,6 @@ function App() {
       
   );
 }
-
-
-const Home = () => (
-  <div>
-    <h1>Bienvue dans Home</h1>
-  </div>
-)
-
 
 
 export default App;
