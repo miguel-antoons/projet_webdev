@@ -1,35 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+
+// Add component
+import Navbar from './components/Navbar/Navbar'
+import Home from './components/Pages/Home/Home'
+import Facture from './components/Pages/Facture/Facture'
+import Devis from './components/Pages/Devis/Devis'
+import Etiquetage from './components/Pages/Etiquetage/Etiquetage'
+import Suivi from './components/Pages/Suivi/Suivi'
+import Client from './components/Pages/Ajout_client/Ajout_client'
+import Article from './components/Pages/Ajout_article/Ajout_article'
+import Ensemble from './components/Pages/Ajout_ensemble/Ajout_ensemble'
+
 
 function App() {
-  const [placeholder, setPlaceholder] = useState('Hi');
-
-  useEffect(() => {
-    fetch('/hello').then(res => res.json()).then(data => {
-      setPlaceholder(data.result);
-    });
-  }, []);
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <p>Flask says {placeholder}</p>
-      </header>
-    </div>
+  return(
+    <Router>
+      <div className="App">
+        <Navbar />
+        <switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/facture" component={Facture} />
+          <Route path="/devis" component={Devis} />
+          <Route path="/etiquetage" component={Etiquetage} />
+          <Route path="/suivi" component={Suivi} />
+          <Route path="/client" component={Client} />
+          <Route path="/article" component={Article} />
+          <Route path="/ensemble" component={Ensemble} />
+        </switch>
+      </div>
+    </Router>
+      
   );
 }
-
-export default App;
