@@ -2,7 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
-// Add component
+// Add components
 import Navbar from './components/Navbar/Navbar'
 import Home from './components/Pages/Home/Home'
 import Facture from './components/Pages/Facture/Facture'
@@ -19,7 +19,7 @@ function App() {
     <Router>
       <div className="App">
         <Navbar />
-        <switch>
+        <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/facture" component={Facture} />
           <Route path="/devis" component={Devis} />
@@ -28,9 +28,11 @@ function App() {
           <Route path="/client" component={Client} />
           <Route path="/article" component={Article} />
           <Route path="/ensemble" component={Ensemble} />
-        </switch>
+        </Switch>
       </div>
     </Router>
       
   );
 }
+
+export default App;
