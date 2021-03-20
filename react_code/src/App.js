@@ -1,16 +1,7 @@
-import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  const [placeholder, setPlaceholder] = useState('Hi');
-
-  useEffect(() => {
-    fetch('/hello').then(res => res.json()).then(data => {
-      setPlaceholder(data.result);
-    });
-  }, []);
-
   return (
     <div className="App">
       <header className="App-header">
@@ -26,7 +17,6 @@ function App() {
         >
           Learn React
         </a>
-        <p>Flask says {placeholder}</p>
       </header>
     </div>
   );
