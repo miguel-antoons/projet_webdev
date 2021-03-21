@@ -19,7 +19,7 @@ function App() {
     <Router>
       <div className="App">
         <Navbar />
-        <switch>
+        <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/facture" component={Facture} />
           <Route path="/devis" component={Devis} />
@@ -28,7 +28,7 @@ function App() {
           <Route path="/client" component={Client} />
           <Route path="/article" component={Article} />
           <Route path="/ensemble" component={Ensemble} />
-        </switch>
+        </Switch>
       </div>
     </Router>
       
