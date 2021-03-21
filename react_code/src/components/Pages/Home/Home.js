@@ -15,7 +15,7 @@ const Home = () => {
     event.preventDefault();
 
     try{
-      let result = await fetch('/api/test', {
+      let result = await fetch('/api/client/enregistrement', {
         method: 'post',
         //mode: 'no-cors', // --> pas besoin de cette ligne
         headers: {

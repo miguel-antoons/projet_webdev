@@ -47,3 +47,11 @@ def hello():
 @app.route('/api/time')
 def get_current_time():
     return {'time': time.time()}
+
+@app.route('/api/client/enregistrement', methods=['POST'])
+def post():
+    print('hello')
+    record = json.loads(request.data)
+    return record
+
+app.run(debug=True)
