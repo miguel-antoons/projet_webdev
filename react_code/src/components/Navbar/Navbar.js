@@ -1,6 +1,6 @@
 import React from 'react';
-import * as BS from "react-bootstrap"
-import logoNavbar from "./navbar_logo.png"
+import * as BS from "react-bootstrap";
+import logoNavbar from "./navbar_logo.png";
 
 function Navbar() {
     return (
