@@ -24,5 +24,23 @@
 }
 
 .height-100 {
-    height: 65vh;
+    height: 52vh;
 }
+
+ul {
+    padding-left: 15px !important;
+    font-size: 0.4vw;
+}
+
+.no-border {
+    border-left: none !important;
+}
+
+.center {
+    text-align: center;
+}
+
+.border-top {
+    border-top : black;
+}
+
