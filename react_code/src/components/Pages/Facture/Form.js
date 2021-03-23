@@ -49,7 +49,7 @@ class Form extends Component {
                         </BS.Form.Group>
                         <BS.Form.Group>
                             <BS.Form.Label>Montant à facturer htva</BS.Form.Label>
-                            <BS.Form.Control size="sm" type="number" rows={3} value={this.props.price} onChange={this.props.onChangeValue} id="price" name="price"/>
+                            <BS.Form.Control size="sm" type="number" rows={3} value={this.props.price} defaultValue={0} onChange={this.props.onChangeValue} id="price" name="price"/>
                         </BS.Form.Group>
                         <Preview state={this.props.returnState} />
                     <BS.Button className="no-print mb-2 ml-2" variant="info" onClick={window.print}>Imprimer</BS.Button> {' '} 
