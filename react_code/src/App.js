@@ -17,7 +17,7 @@ import Ensemble from './components/Pages/Ajout_ensemble/Ajout_ensemble'
 function App() {
   return(
     <Router>
-      <div className="App">
+      <div className="App" style={{margin: 0, padding: 0 }}>
         <Navbar />
         <Switch>
           <Route path="/" exact component={Home} />

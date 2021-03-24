@@ -112,6 +112,12 @@ def save_client():
 def get_current_time():
     return {'time': time.time()}
 
+@app.route('/api/client/enregistrement', methods=['POST'])
+def post():
+    print('hello')
+    record = json.loads(request.data)
+    return record
+    
 
 if __name__ == '__main__':
     app.run(debug=True) 
