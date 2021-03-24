@@ -8,7 +8,7 @@ const Icon = ({ color, icon }) => {
     };
 
     return (
-        <IconContext.Provider value={style}>
+        <IconContext.Provider value={ style }>
             {icon}
         </IconContext.Provider>
     );
