@@ -1,48 +1,54 @@
 import React from 'react';
-import { useState } from 'react'
+import Button from '../../Home/Button.js'
+import * as icon from 'react-icons/io5'
+import * as BS from "react-bootstrap"
+import div from './Home.css'
+import { Redirect } from 'react-router';
+import { IconContext } from 'react-icons/lib';
 
 
 // ici le component s'appelle home puisque je travaillais dessus, ça n'a pas d'importance et chez toi il s'apellera probablemnt autrement
 const Home = () => {
-  // Met le state des inputs
-  const [name, setName] = useState('');
-  const [firstName, setFirstName] = useState('');
 
-  // envoi les données des inputs onSubmit
-  const sendPost = async (event) => {
-    
-    // évite que la page se recharge onSubmit du formulaire
-    event.preventDefault();
-
-    try{
-      let result = await fetch('/api/client/enregistrement', {
-        method: 'post',
-        //mode: 'no-cors', // --> pas besoin de cette ligne
-        headers: {
-          //'Accept': 'application/json', // --> pas besoin de cette ligne non-plus
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify( {name, firstName} ) // l'objet à l'intérieur de la fonction contient l'état des 2 input
-      });
-
-      const data = await result.json();
-
-      console.log(data);
-    }
-    catch(e){
-      console.log(e);
-    }
-  };
-
-  return (
-    <form onSubmit={ (event) => { sendPost(event); }}>
-      <label>Nom</label>
-      <input type='text' value={ name } onChange={ (e) => setName(e.target.value) }></input>
-      <label>Prénom</label>
-      <input type='text' value={ firstName } onChange={ (e) => setFirstName(e.target.value) }></input>
-      <input type='submit' value='SAVE' />
-    </form>
-  );
+    return (
+        <BS.Container fluid className="div">
+            <BS.Jumbotron>
+                <h1>Bienvenue sur Factevis</h1>
+            </BS.Jumbotron>
+            <div className="d-flex justify-content-center div">
+                <BS.Col lg="2"></BS.Col>
+                <BS.Col md="auto" className="div">
+                    <Button icon={ <icon.IoDocumentText /> } text='Factures' bd_color='#940000' icon_color='#f2003c' destination='/facture' />
+                    <Button icon={ <icon.IoDocuments /> } text='Devis' bd_color='#947e00' icon_color='#ffcc33' destination='/devis' />
+                </BS.Col>
+                <BS.Col lg="2"></BS.Col>
+            </div>
+            <div className="d-flex justify-content-center">
+                <BS.Col lg="2"></BS.Col>
+                <BS.Col md="auto" className="div">
+                    <Button icon={ <icon.IoPeople /> } text='Clients' bd_color='#004d00' icon_color='#2e8b57' destination='/client' />
+                    <Button icon={ <icon.IoCube /> } text='Articles' bd_color='#002147' icon_color='#006db0' destination='/ensemble' />
+                </BS.Col>
+                <BS.Col lg="2"></BS.Col>
+            </div>
+            <div className="d-flex justify-content-center">
+                <BS.Col lg="2"></BS.Col>
+                <BS.Col md="auto" className="div">
+                    <Button icon={ <icon.IoGrid /> } text='Étiquettes' bd_color='#b37400' icon_color='#ff8c00' destination='/etiquetage' />
+                    <Button icon={ <icon.IoCreate /> } text='Régie' bd_color='#66023c' icon_color='purple' destination='/article' />
+                </BS.Col>
+                <BS.Col lg="2"></BS.Col>
+            </div>
+            <div className="d-flex justify-content-center">
+                <BS.Col lg="2"></BS.Col>
+                <BS.Col md="auto" className="div">
+                    <Button icon={ <icon.IoCompass /> } text='Suivi de Matériel' bd_color='#005b5b' icon_color='#009698' destination='/suivi' />
+                    <Button icon={ <icon.IoSettings /> } text='Paramètres' bd_color='#000014' icon_color='#23297a' destination='/parametrage' />
+                </BS.Col>
+                <BS.Col lg="2"></BS.Col>
+            </div>
+        </BS.Container>
+    );
 };
 
 
