@@ -24,7 +24,7 @@ function Navbar() {
                     <BS.Nav.Link href="/suivi">Suivi de matériel</BS.Nav.Link>
                     <BS.NavDropdown title="Modifier/Ajouter" id="collasible-BS.Nav-dropdown">
                         <BS.NavDropdown.Item href="/client">Client</BS.NavDropdown.Item>
-                        <BS.NavDropdown.Item href="/facture">Article</BS.NavDropdown.Item>
+                        <BS.NavDropdown.Item href="/article">Article</BS.NavDropdown.Item>
                         <BS.NavDropdown.Item href="/ensemble">ensemble d'articles</BS.NavDropdown.Item>
                         <BS.NavDropdown.Divider/>
                     </BS.NavDropdown>

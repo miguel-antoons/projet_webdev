@@ -33,7 +33,7 @@ class Form extends Component {
                         </BS.Form.Group>
                         <BS.Form.Group>
                             <BS.Form.Label>Echéance</BS.Form.Label>
-                            <BS.Form.Control size="sm" type="text" placeholder="Entrer échéance" value={this.props.deadline} onChange={this.props.onChangeValue} id="deadline" name="deadline"/>
+                            <BS.Form.Control size="sm" type="date" value={this.props.deadline} onChange={this.props.onChangeValue} id="deadline" name="deadline"/>
                         </BS.Form.Group>
                         <BS.Form.Group>
                             <BS.Form.Label>TVA</BS.Form.Label>

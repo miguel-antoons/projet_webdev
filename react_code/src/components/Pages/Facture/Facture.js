@@ -15,6 +15,7 @@ class Facture extends Component {
             title: 'M.',
             factureDate: '',
             workDate: '',
+            deadline :'',
             tva : '6',
             comment: '',
             price: '0'
@@ -118,7 +119,7 @@ class Facture extends Component {
                 </BS.Col>
                     </BS.Row>
 
-                    <BS.Row className="border height-100">
+                    <BS.Row className="border height-100 no-border-bot">
                         <BS.Col className="mr-5 mt-2">
                             P0 : 4500082808 <br />
                             <br />
@@ -128,7 +129,17 @@ class Facture extends Component {
                             
                             <b>TOTAL :</b>   &nbsp;&nbsp; <span id='prix'>&nbsp;&nbsp;&nbsp; {this.state.price} € </span>
                         </BS.Col>
-
+                    </BS.Row>
+                
+                    <BS.Row className="border no-border-top">
+                        <BS.Col>
+                            Vervaldatum :  &nbsp;&nbsp; {this.state.deadline} <br />
+                            Echéance : 
+                        </BS.Col>
+                        <BS.Col>
+                            Gefaktureerde werken beeindigd op :  &nbsp;&nbsp; {this.state.workDate} <br />
+                            Travaux facturé terminé le : 
+                        </BS.Col>
                     </BS.Row>
 
                     <BS.Row>

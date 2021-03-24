@@ -104,6 +104,17 @@ function Preview(props) {
 
                         </BS.Row>
 
+                        <BS.Row className="border no-border-top">
+                            <BS.Col>
+                                Vervaldatum :  &nbsp;&nbsp; {props.state.deadline} <br />
+                                Echéance : 
+                            </BS.Col>
+                            <BS.Col>
+                                Gefaktureerde werken beeindigd op :  &nbsp;&nbsp; {props.state.workDate} <br />
+                                Travaux facturé terminé le : 
+                            </BS.Col>
+                        </BS.Row>
+
                         <BS.Row>
                             <BS.Col xs lg="8  small">
                                 {/* NL*/}

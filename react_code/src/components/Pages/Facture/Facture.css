@@ -24,7 +24,7 @@
 }
 
 .height-100 {
-    height: 52vh;
+    height: 48vh;
 }
 
 ul {
@@ -44,3 +44,10 @@ ul {
     border-top : black;
 }
 
+.no-border-top {
+    border-top: none !important;
+}
+
+.no-border-bot {
+    border-bottom: none !important;
+}
