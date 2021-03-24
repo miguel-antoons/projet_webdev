@@ -1,0 +1,46 @@
+
+.overflow-auto {
+    max-height: 800px;
+}
+
+.border {
+    border-color: black !important;
+}
+
+.color{
+    color: orange !important;
+}
+
+.width-50 {
+    width : 50% !important;
+}
+
+.text-pdf {
+    font-size: 0.8vw;
+}
+
+.margin-left {
+    margin-left: 10vw;
+}
+
+.height-100 {
+    height: 52vh;
+}
+
+ul {
+    padding-left: 15px !important;
+    font-size: 0.4vw;
+}
+
+.no-border {
+    border-left: none !important;
+}
+
+.center {
+    text-align: center;
+}
+
+.border-top {
+    border-top : black;
+}
+

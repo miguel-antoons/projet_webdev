@@ -1,6 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 // Add components
 import Navbar from './components/Navbar/Navbar'
@@ -17,7 +17,7 @@ import Ensemble from './components/Pages/Ajout_ensemble/Ajout_ensemble'
 function App() {
   return(
     <Router>
-      <div className="App">
+      <div className="App" style={{margin: 0, padding: 0 }}>
         <Navbar />
         <Switch>
           <Route path="/" exact component={Home} />
