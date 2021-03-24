@@ -24,7 +24,7 @@ function Navbar() {
                     <LinkContainer to='/facture'>
                         <BS.Nav.Link>Factures</BS.Nav.Link>
                     </LinkContainer>
-                    <LinkContainer to='/devis'>
+                    <LinkContainer to='/projets_devis'>
                         <BS.Nav.Link>Devis</BS.Nav.Link>
                     </LinkContainer>
                     <LinkContainer to='/etiquetage'>

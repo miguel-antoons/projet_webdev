@@ -12,6 +12,7 @@ import Suivi from './components/Pages/Suivi/Suivi'
 import Client from './components/Pages/Ajout_client/Ajout_client'
 import Article from './components/Pages/Ajout_article/Ajout_article'
 import Ensemble from './components/Pages/Ajout_ensemble/Ajout_ensemble'
+import ProjetsDevis from './components/Pages/Devis/ProjetsDevis'
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/client" component={Client} />
           <Route path="/article" component={Article} />
           <Route path="/ensemble" component={Ensemble} />
+          <Route path="/projets_devis" component={ProjetsDevis} />
         </Switch>
       </div>
     </Router>
