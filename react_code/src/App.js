@@ -1,8 +1,8 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
-// Add component
+// Add components
 import Navbar from './components/Navbar/Navbar'
 import Home from './components/Pages/Home/Home'
 import Facture from './components/Pages/Facture/Facture'
@@ -34,6 +34,5 @@ function App() {
       
   );
 }
-
 
 export default App;

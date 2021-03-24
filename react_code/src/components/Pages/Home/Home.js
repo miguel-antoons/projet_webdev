@@ -3,11 +3,8 @@ import Button from '../../Home/Button.js'
 import * as icon from 'react-icons/io5'
 import * as BS from "react-bootstrap"
 import div from './Home.css'
-import { Redirect } from 'react-router';
-import { IconContext } from 'react-icons/lib';
 
 
-// ici le component s'appelle home puisque je travaillais dessus, ça n'a pas d'importance et chez toi il s'apellera probablemnt autrement
 const Home = () => {
 
     return (

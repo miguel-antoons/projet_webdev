@@ -8,11 +8,10 @@ app = Flask(__name__)
 
 app.secret_key = 'your secret key'
 
-app.config['MYSQL_HOST'] = 'sql11.freemysqlhosting.net'
-app.config['MYSQL_USER'] = 'sql11397267'
-app.config['MYSQL_PASSWORD'] = '7tPK1krCUh'
-app.config['MYSQL_DB'] = 'sql11397267'
-
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'Deb-Web1234'
+app.config['MYSQL_DB'] = 'projet-dev'
 mysql = MySQL(app)
 
 
@@ -43,6 +42,21 @@ def index():
 def hello():
     return {'result': "HELLO"}
 
+@app.route('/api/test', methods=['POST'])
+def post():
+    print('hello')
+    record = json.loads(request.data)
+    prenom = record['firstName']
+    nom = record['name']
+
+    mysql = MySQL(app)
+    cursor = mysql.connection.cursor()
+    cursor.execute(''' INSERT INTO info_table VALUES(%s,%s)''',(nom,prenom,'fr'))
+    mysql.connection.commit()
+    cursor.close()
+ 
+    return record
+
 
 @app.route('/api/time')
 def get_current_time():
@@ -53,5 +67,7 @@ def post():
     print('hello')
     record = json.loads(request.data)
     return record
+    
 
-app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True) 
