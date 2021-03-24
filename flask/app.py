@@ -104,6 +104,7 @@ def save_client():
     #Closing the cursor
     cursor.close()
 
+
     return record
 
 
