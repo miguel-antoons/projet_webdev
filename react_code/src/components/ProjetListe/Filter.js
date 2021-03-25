@@ -2,7 +2,7 @@ import React from 'react';
 import * as BS from "react-bootstrap";
 
 
-const FilterProject = () => {
+const Filter = () => {
 
     return (
         <BS.Form.Check type='radio'>

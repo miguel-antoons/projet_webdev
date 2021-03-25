@@ -1,7 +1,7 @@
 import React from 'react';
 import * as icon from 'react-icons/io5';
 import * as BS from "react-bootstrap";
-import { Filter } from '../../ProjetListe/Filter.js'
+import Filter from '../../ProjetListe/Filter.js'
 import { recherche, filtre } from './ProjetsDevis.css';
 
 
