@@ -48,11 +48,6 @@ def post():
     prenom = record['firstName']
     nom = record['name']
 
-    mysql = MySQL(app)
-    cursor = mysql.connection.cursor()
-    cursor.execute(''' INSERT INTO info_table VALUES(%s,%s)''',(nom,prenom,'fr'))
-    mysql.connection.commit()
-    cursor.close()
  
     return record
 
@@ -61,6 +56,12 @@ def post():
 def get_current_time():
     return {'time': time.time()}
 
+@app.route('/api/client/enregistrement', methods=['POST'])
+def post():
+    print('hello')
+    record = json.loads(request.data)
+    return record
+    
 
 if __name__ == '__main__':
     app.run(debug=True) 
