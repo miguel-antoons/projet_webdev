@@ -8,22 +8,21 @@ app = Flask(__name__)
 
 app.secret_key = 'your secret key'
 
-app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_HOST'] = '127.0.0.1'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Deb-Web1234'
-app.config['MYSQL_DB'] = 'projet-dev'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'test'
 mysql = MySQL(app)
 
 
 @app.route('/')
 def index():
     cur = mysql.connection.cursor()
-    # cur.execute('''create table user (id MEDIUMINT NOT NULL AUTO_INCREMENT,nom 	varchar(12) NULL, prenom varchar(12) NULL, PRIMARY KEY(id) );''')
+        """
+     cur.execute('''create table user (id MEDIUMINT NOT NULL AUTO_INCREMENT,nom 	varchar(12) NULL, prenom varchar(12) NULL, PRIMARY KEY(id) );''')
 
-    # cur.execute('''create table hello (id INTEGER,nom varchar(12), prenom varchar(12), PRIMARY KEY(id) );''')
-
-    #cur.execute('''INSERT INTO user VALUES (3,'Danlee', 'Maxime');''')
-
+     cur.execute('''create table hello (id INTEGER,nom varchar(12), prenom varchar(12), PRIMARY KEY(id) );''')
+    cur.execute('''INSERT INTO client VALUES (3,'Danlee', 'Maxime');''')
     cur.execute('''SELECT * from user''')
     results = cur.fetchall()
     print(results)
@@ -34,7 +33,7 @@ def index():
             'Nom': user[1],
             'Prenom': user[2],
         }
-
+    """
     return json.dumps(list_user)
 
 
