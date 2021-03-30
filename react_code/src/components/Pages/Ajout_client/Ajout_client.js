@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 // ici le component s'appelle home puisque je travaillais dessus, ça n'a pas d'importance et chez toi il s'apellera probablemnt autrement
-const Client = () => {
+const Ajout_Client = () => {
     // Met le state des inputs
     const [name, setName] = useState('');
     const [firstName, setFirstName] = useState('');
@@ -31,7 +31,7 @@ const Client = () => {
       event.preventDefault();
 
       try{
-        let result = await fetch('/api/enregistrement_client', {
+        let result = await fetch('/api/Clients/ajout', {
           method: 'post',
           //mode: 'no-cors', // --> pas besoin de cette ligne
           headers: {
@@ -125,4 +125,4 @@ const Client = () => {
     );
   };
 
-  export default Client ;
+  export default Ajout_Client ;

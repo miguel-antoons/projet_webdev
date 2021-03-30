@@ -9,7 +9,8 @@ import Facture from './components/Pages/Facture/Facture'
 import Devis from './components/Pages/Devis/Devis'
 import Etiquetage from './components/Pages/Etiquetage/Etiquetage'
 import Suivi from './components/Pages/Suivi/Suivi'
-import Client from './components/Pages/Ajout_client/Ajout_client'
+import Client from './components/Pages/Client/Client'
+import ajout_Client from './components/Pages/Ajout_client/Ajout_client'
 import Article from './components/Pages/Ajout_article/Ajout_article'
 import Ensemble from './components/Pages/Ajout_ensemble/Ajout_ensemble'
 
@@ -25,7 +26,8 @@ function App() {
           <Route path="/devis" component={Devis} />
           <Route path="/etiquetage" component={Etiquetage} />
           <Route path="/suivi" component={Suivi} />
-          <Route path="/client" component={Client} />
+          <Route path="/Client" component={Client} />
+          <Route path="/Ajout_client" component={ajout_Client} />
           <Route path="/article" component={Article} />
           <Route path="/ensemble" component={Ensemble} />
         </Switch>

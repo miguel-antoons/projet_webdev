@@ -48,7 +48,29 @@ def index():
 def hello():
     return {'result': "HELLO"}
 
-@app.route('/api/enregistrement_client', methods=['POST','GET'])
+
+@app.route("/api/Clients", methods=['GET'])
+def clients():
+    cursor = mysql.connection.cursor()
+
+    cursor.execute("SELECT * FROM client_table")
+    table = cursor.fetchall()
+    for infos_clients in table:
+        print(infos_clients)
+    
+
+    return "YO LE TERRE"
+
+
+
+   
+
+        
+
+    
+
+
+@app.route('/api/Clients/ajout', methods=['POST'])
 def save_client():
 
     
