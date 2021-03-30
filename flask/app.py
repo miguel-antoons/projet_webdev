@@ -54,21 +54,27 @@ def clients():
     cursor = mysql.connection.cursor()
 
     cursor.execute("SELECT * FROM client_table")
-    table = cursor.fetchall()
-    for infos_clients in table:
-        print(infos_clients)
-    
+    data = cursor.fetchall()
+    print(data)
+    """
+    tableau_client = {}
+    for i in data:
+        tableau_client[i[0]] = [i[1:]]
+    print(tableau_client)
 
-    return "YO LE TERRE"
+    return jsonify(tableau_client)
+    """
+    return render_template("client.html",data=data)
 
 
+@app.route("/api/Clients/<int:id>", methods=['GET'])
+def clients_id():
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM client_table WHERE client_ID = %s ",(id,))
+    client = cursor.fetchone()
+    return render_template("client.html",client=client)
 
-   
-
-        
-
-    
-
+    #return render_template('client.html', data=data)
 
 @app.route('/api/Clients/ajout', methods=['POST'])
 def save_client():
@@ -87,13 +93,6 @@ def save_client():
     number = record['number']
     email = record['email']
     
-    print(nom)
-    print(prenom)
-    print(titre)
-    print(societe)
-    print(langue)
-
-
     #Creating a connection cursor
     cursor = mysql.connection.cursor()
 
@@ -127,7 +126,7 @@ def save_client():
     cursor.close()
 
 
-    return record
+    return jsonify(msg='Le client à étét ajouté avec succès')
 
 
 @app.route('/api/time')

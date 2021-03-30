@@ -29,6 +29,7 @@ const Ajout_Client = () => {
       
       // évite que la page se recharge onSubmit du formulaire
       event.preventDefault();
+      
 
       try{
         let result = await fetch('/api/Clients/ajout', {

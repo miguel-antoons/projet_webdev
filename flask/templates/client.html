@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title></title>
+</head>
+<body>
+<style>
+ 
+ td {
+        width: 150px;
+        text-align: center;
+        border: 1px solid black;
+        padding: 5px;
+      }
+</style>
+<table>
+  <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>titre</th>
+        <th>  societe </th>
+        <th>langue</th>
+        <th>adress</th>
+        <th>tva</th>
+        <th>number</th>
+        <th>email</th>
+    </tr>
+    </thead>    
+    <tbody>
+     {% for row in data %}    
+            <tr>
+                <td>{{row[0]}}</td>
+                <td>{{row[1]}}</td>
+                <td>{{row[2]}}</td>
+                <td>{{row[3]}}</td>
+                <td>{{row[4]}}</td>
+                <td>{{row[5]}}</td>
+                <td>{{row[6]}}</td>
+                <td>{{row[7]}}</td>
+                <td>{{row[8]}}</td>
+                <td>{{row[9]}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table></body>
+</html>
