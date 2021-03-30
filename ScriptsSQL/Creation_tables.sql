@@ -54,8 +54,31 @@ create table etiquettes                                                  -- 1 fo
 )
 
 
+create table devis_texte (
+    ID_DEVIS_TEXTE INT NOT NULL AUTO_INCREMENT,
+    CATEGORIE CHAR(20),
+    TEXTE_NL VARCHAR NOT NULL,
+    TEXTE_FR VARCHAR NOT NULL,
+    CONSTRAINT pk__devis_texte PRIMARY KEY (ID_DEVIS_TEXTE)
+)
 
+create table articles (
+    ID_ARTICLE INT NOT NULL AUTO_INCREMENT,
+    LIBELLE_FR VARCHAR NOT NULL,
+    LIBELLE_NL VARCHAR NOT NULL,
+    CATEGORIE CHAR(20),
+    PRIX_1 INT NOT NULL,
+    PRIX_2 INT,
+    PRIX_3 INT,
+    CONSTRAINT pk__articles PRIMARY KEY (ID_ARTICLE)
+)
+
+
+create table articles_devis ()
 create table devis ()
+create table listes_articles_rgie ()
+create table articles_rgie ()
+create table liste_articles()
 
 create table factures                                                    -- 3 foreign keys textefacture/devis/client
 (
