@@ -12,6 +12,8 @@ class Facture extends Component {
         this.state = {
             factureNumber : '',
             clientNumber: '',
+            clientName: '',
+            clientFirstname: '',
             title: 'M.',
             factureDate: '',
             workDate: '',
@@ -99,13 +101,13 @@ class Facture extends Component {
                             <br />
                             Nummer factuur:&nbsp;&nbsp;&nbsp; {this.state.factureNumber} <br />
                             Numéro facture: 
-                </BS.Col>
+                        </BS.Col>
                         <BS.Col className="margin-left">
                             Matexi Projects N.V. <br />
                             <br />
                             Franklin Rooseveltlaan. 180
                             8790 Waregem
-                </BS.Col>
+                        </BS.Col>
                     </BS.Row>
 
                     <BS.Row className="border mt-4">

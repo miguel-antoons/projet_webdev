@@ -17,6 +17,14 @@ class Form extends Component {
                             <BS.Form.Control size="sm" type="text" placeholder="Entrer numéro de client" value={this.props.clientNumber} onChange={this.props.onChangeValue} id="clientNumber" name="clientNumber"/>
                         </BS.Form.Group>
                         <BS.Form.Group>
+                            <BS.Form.Label>Nom du client</BS.Form.Label>
+                            <BS.Form.Control size="sm" type="text" placeholder="Entrer le nom du client" value={this.props.clientName} onChange={this.props.onChangeValue} id="clientName" name="clientName"/>
+                        </BS.Form.Group>
+                        <BS.Form.Group>
+                            <BS.Form.Label>Prénom du client</BS.Form.Label>
+                            <BS.Form.Control size="sm" type="text" placeholder="Entrer le prénom du client" value={this.props.clientFirstname} onChange={this.props.onChangeValue} id="clientFirstname" name="clientFirstname"/>
+                        </BS.Form.Group>
+                        <BS.Form.Group>
                             <BS.Form.Label>Titre</BS.Form.Label>
                             <BS.Form.Control size="sm" as="select" onChange={this.props.onChangeValue} value={this.props.title} id="title" name="title">
                                 <option value="M.">M.</option>
