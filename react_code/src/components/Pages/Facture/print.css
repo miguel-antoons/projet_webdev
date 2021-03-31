@@ -1,0 +1,23 @@
+@media print {
+    .no-print {
+        display : none;
+    }
+
+    .overflow-auto {
+        max-height: unset !important;
+        overflow: hidden !important;
+    }
+
+    .text-pdf {
+        font-size: 15px;
+    }
+    
+    .margin-left {
+        margin-left: 320px;
+    }
+
+    ul {
+        padding-left: 15px !important;
+        font-size: 0.75vw;
+    }
+}
