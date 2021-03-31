@@ -13,7 +13,7 @@ const Button = ({bd_color, text, icon, destination, icon_color}) => {
 
     return (
         <LinkContainer to={{ pathname: destination }} className="home_btn" style={ style } >
-            <BS.Button className='btn' variant='light' size="lg">
+            <BS.Button className='home_btn' variant='light' size="lg">
                 <p>
                     <Icon icon={ icon } color={ icon_color } /> <br />
                     {text}
