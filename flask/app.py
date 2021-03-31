@@ -3,6 +3,7 @@ from flask_mysqldb import MySQL
 import json
 import time
 
+
 app = Flask(__name__)
 # CORS(app)
 
@@ -42,6 +43,7 @@ def index():
 def hello():
     return {'result': "HELLO"}
 
+
 @app.route('/api/test', methods=['POST'])
 def post():
     print('hello')
@@ -61,6 +63,7 @@ def post():
 @app.route('/api/time')
 def get_current_time():
     return {'time': time.time()}
+
 
 @app.route('/api/client/enregistrement', methods=['POST'])
 def post():

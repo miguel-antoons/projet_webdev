@@ -3,21 +3,20 @@ import * as BS from "react-bootstrap";
 
 
 const Filter = () => {
+    let current_year = new Date().getFullYear();
+    let years_since_2000 = [];
+
+    for (let i = current_year - 1 ; i >= 2000 ; i-- ) {
+        years_since_2000.push(<option>{i}</option>)
+    }
 
     return (
         <BS.ButtonGroup>
-            <div className='form-check'>
-                <input className="form-check-input" type="radio" name="sortTable" id="3_mois" value="mois" defaultChecked />
-                <label className="form-check-label" for="exampleRadios1">test</label>
-            </div>
-            <div className='form-check'>
-                <input className="form-check-input" type="radio" name="sortTable" id="1_an" value="an"/>
-                <label className="form-check-label" for="exampleRadios1">test</label>
-            </div>
-            <div className='form-check'>
-                <input className="form-check-input" type="radio" name="sortTable" id="tout" value="tout"/>
-                <label className="form-check-label" for="exampleRadios1">test</label>
-            </div>
+            <select className="form-control form-control-lg shadow-none bg-transparent filtre">
+                <option>Il y a 3 mois</option>
+                <option>Cette année</option>
+                {years_since_2000}
+            </select>
         </BS.ButtonGroup>
     );
 };
