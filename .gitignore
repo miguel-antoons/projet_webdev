@@ -24,7 +24,3 @@ yarn-error.log*
 
 venv
 __pycache__
-
-.idea/
-.vscode/
-.vscode/settings.json

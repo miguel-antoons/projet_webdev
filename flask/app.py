@@ -49,11 +49,6 @@ def post():
     prenom = record['firstName']
     nom = record['name']
 
-    mysql = MySQL(app)
-    cursor = mysql.connection.cursor()
-    cursor.execute(''' INSERT INTO info_table VALUES(%s,%s)''',(nom,prenom,'fr'))
-    mysql.connection.commit()
-    cursor.close()
  
     return record
 
