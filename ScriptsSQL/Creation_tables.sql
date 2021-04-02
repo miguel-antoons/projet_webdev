@@ -62,6 +62,21 @@ create table devis_texte (
     CONSTRAINT pk__devis_texte PRIMARY KEY (ID_DEVIS_TEXTE)
 )
 
+
+create table devis (
+    ID_DEVIS INT NOT NULL AUTO_INCREMENT,
+    ID_CLIENT INT NOT NULL AUTO_INCREMENT,
+    DATE_DEVIS DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier
+    CHANTIER,
+    CHOIX_PRIX,
+    MODIFICATION_PRIX_%,
+    MODIFICATION_PRIX_FIXE,
+    ID_TEXTE_PRIX,
+    ID_TEXTE_PAIEMENT,
+    ID_TEXTE_INTRODUCTION,
+)
+
+
 create table articles (
     ID_ARTICLE INT NOT NULL AUTO_INCREMENT,
     LIBELLE_FR VARCHAR NOT NULL,
@@ -74,18 +89,47 @@ create table articles (
 )
 
 
-create table articles_devis ()
-create table devis ()
-create table listes_articles_rgie ()
-create table articles_rgie ()
-create table liste_articles()
+create table articles_rgie (
+    ID_ARTICLE_RGIE INT NOT NULL AUTO_INCREMENT,
+    LIBELLE_FR VARCHAR NOT NULL,
+    LIBELLE_NL VARCHAR NOT NULL,
+    PRIX_1 INT NOT NULL?
+    PRIX_2 INT,
+    CONSTRAINT pk__articles_rgie PRIMARY KEY (ID_ARTICLE_RGIE)
+)
+
+
+create table articles_devis (
+    ID_DEVIS INT NOT NULL AUTO_INCREMENT,
+    ID_ARTICLE_DEVIS INT NOT NULL AUTO_INCREMENT,
+   
+)
+
+
+create table listes_articles_rgie (
+    ID_LISTE_ARTICLE_RGIE
+)
+
+
+create table liste_articles(
+    ID_LISTE_ARTICLE,
+    ID_ARTICLE_RGIE,
+    LIBELLE,
+    PRIX_1,
+    PRIX_2,
+    QUANTITE,
+    CONSTRAINT pk__liste_articles PRIMARY KEY (ID_LISTE_ARTICLE),
+    CONSTRAINT fk__liste_articles__articles_rgie FOREIGN KEY (ID_ARTICLE_RGIE) REFERENCES articles_rgie (ID_ARTICLE_RGIE),
+    CONSTRAINT fk__liste_articles__listes_articles_rgie FOREIGN KEY (ID_LISTE_ARTICLE_RGIE) REFERENCES listes_articles_rgie (ID_LISTE_ARTICLE_RGIE)
+)
+
 
 create table factures                                                    -- 3 foreign keys textefacture/devis/client
 (
     ID_FACTURE INT NOT NULL AUTO_INCREMENT,
     ID_CLIENT INT NOT NULL AUTO_INCREMENT,
-    ID_DEVIS INT NOT NULL,
-    DATE_DEVIS DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier
+    ID_DEVIS INT NOT NULL AUTO_INCREMENT,
+    DATE_FACTURE DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier
     DATE_ECHEANCE DATE,
     DATE_FIN_TRAVAUX DATE,
     TAUX_TVA DOUBLE(3,2),	 -- 0.21 ou autre
@@ -97,5 +141,6 @@ create table factures                                                    -- 3 fo
     ID_TEXTE_FACTURE INT NOT NULL AUTO_INCREMENT,
     CONSTRAINT pk__factures PRIMARY KEY (ID_FACTURE),
     CONSTRAINT fk__factures__texte_factures FOREIGN KEY (ID_TEXTE_FACTURE) REFERENCES texte_factures (ID_TEXTE_FACTURE),
-    CONSTRAINT fk__factures__clients FOREIGN KEY (ID_CLIENT) REFERENCES clients (ID_CLIENT)
+    CONSTRAINT fk__factures__clients FOREIGN KEY (ID_CLIENT) REFERENCES clients (ID_CLIENT),
+    CONSTRAINT fk__factures__devis FOREIGN KEY (ID_DEVIS) REFERENCES devis (ID_DEVIS)
 )
