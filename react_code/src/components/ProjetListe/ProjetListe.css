@@ -3,15 +3,14 @@ tr:hover {
     cursor: pointer;
 }
 
-td {
-    
-}
-
 .quick_actions {
     border: none;
     background-color: #b4b6b8;
     color: black;
     border-radius: 100px;
-    margin-right: 5px;
-    margin-top: 1px;
+    margin-right: 10px;
+}
+
+.quick_actions:hover {
+    background-color:  #d8d9da;
 }
