@@ -18,9 +18,21 @@ const TableauProjets = () => {
                 <tr>
                     <td>1</td>
                     <td>Matexi NV</td>
-                    <td>Lot 456</td>
+                    <td>Leuvensebaan 201 a, 3040</td>
                     <td>13 Janvier 2021</td>
-                    <td><BoutonRapide icon={icon.IoPencil} /><BoutonRapide /><BoutonRapide /></td>
+                    <td className='last_column'>
+                        <BS.Row>
+                            <BS.Col className='button_container' >
+                                <BoutonRapide icon={<icon.IoTrash />} text="  Suprimmer" css_variant={true} />
+                            </BS.Col>
+                            <BS.Col className='button_container'>
+                                <BoutonRapide icon={<icon.IoPrint />} text="  Imprimer" />
+                            </BS.Col>
+                            <BS.Col className='button_container'>
+                                <BoutonRapide icon={<icon.IoOpen />} text="  Ouvrir" />
+                            </BS.Col>
+                        </BS.Row>
+                    </td>
                 </tr>
             </tbody>
         </BS.Table>

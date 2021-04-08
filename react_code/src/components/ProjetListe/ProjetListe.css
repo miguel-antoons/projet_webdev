@@ -4,13 +4,35 @@ tr:hover {
 }
 
 .quick_actions {
+    width: 95%;
     border: none;
-    background-color: #b4b6b8;
+    background-color: #dadbdd;
     color: black;
     border-radius: 100px;
-    margin-right: 10px;
 }
 
 .quick_actions:hover {
-    background-color:  #d8d9da;
+    background-color:  #082542;
+    color: white;
+}
+
+.last_column {
+    width: 23%;
+}
+
+.button_container {
+    padding: 0;
+}
+
+.delete {
+    width: 95%;
+    border: none;
+    background-color: #dadbdd;
+    color: red;
+    border-radius: 100px;
+}
+
+.delete:hover {
+    background-color: red;
+    color: white;
 }
