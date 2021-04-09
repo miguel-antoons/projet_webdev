@@ -14,32 +14,73 @@ class Facture extends Component {
             clientNumber: '',
             clientName: '',
             clientFirstname: '',
+            clientCompany :  '',
+            clientAdress: '',
             title: 'M.',
             factureDate: '',
             workDate: '',
             deadline :'',
             tva : '6',
             comment: '',
-            price: '0'
+            price: '0',
+            clients : []
         }
-       this.handleChange = this.handleChange.bind(this)
+        this.api_client()
+        this.handleChange = this.handleChange.bind(this)
+    }
+
+    async api_client() {
+        return await fetch('/api/clients').then((response) => {
+            return response.json().then((result) => {
+
+                let tableau_clients = [];
+
+                //Création du dictionnaire
+                for (let client in result){
+                    let tableau_client = {};
+                    tableau_client["id"] = client;
+                    tableau_client["name"] = result[client]["0"]["0"];
+                    tableau_client["firstname"] = result[client]["0"]["1"];
+                    tableau_client["title"] = result[client]["0"]["2"];
+                    tableau_client["company"] = result[client]["0"]["3"];
+                    tableau_client["adress"] = result[client]["0"]["4"];
+                    tableau_client["tva"] = result[client]["0"]["5"];
+                    tableau_client["language"] = result[client]["0"]["6"];
+                    tableau_client["artichitecteName"] = result[client]["0"]["7"];
+                    tableau_client["number"] = result[client]["0"]["8"];
+                    tableau_client["mail"] = result[client]["0"]["9"];
+                    tableau_clients.push(tableau_client);
+                }
+                this.setState({clients : tableau_clients})
+                
+
+            }).catch((err) => {
+                console.log(err);
+            }) 
+        })
     }
 
     handleChange(event) {
         const name = event.target.name
         const value = event.target.value
-        /*
-        const type = event.target.type
-        const id = event.target.id
-        const as = event.target.as
-        */
-        
 
         this.setState({
             [name] : value
-            
         })
-        
+
+
+        for(let client of this.state.clients) {
+            if (client.id === value) {
+                this.setState({
+                    clientNumber : client.number,
+                    clientName : client.name,
+                    clientFirstname : client.firstname,
+                    clientCompany :  client.company,
+                    clientAdress : client.adress
+                })
+                    
+            }
+        }
     }
 
     tva (price_str, tva_str) {
@@ -70,7 +111,6 @@ class Facture extends Component {
                     <Form   onChange={this.handleChange} onChangeValue={this.handleChange} returnState={this.state}
                     />
                 </BS.Col>
-
 
                 {/* Right */}
                 <BS.Col className="mt-5  overflow-auto text-pdf" id='print'>
@@ -103,10 +143,10 @@ class Facture extends Component {
                             Numéro facture: 
                         </BS.Col>
                         <BS.Col className="margin-left">
-                            Matexi Projects N.V. <br />
+                        {this.state.clientCompany}  <br />
                             <br />
-                            Franklin Rooseveltlaan. 180
-                            8790 Waregem
+                            {this.state.clientName}   {this.state.clientFirstname} <br />
+                            {this.state.clientAdress}
                         </BS.Col>
                     </BS.Row>
 
