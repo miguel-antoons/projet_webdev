@@ -10,7 +10,11 @@ function ProjetsDevis () {
     return (
         <BS.Container fluid style={{ margin: 0, padding: 0 }}>
             <BS.Jumbotron>
-                <h1>Bienvenue dans Devis</h1>
+                <h1 className='d-inline-block'>Bienvenue dans Devis</h1>
+                <BS.Button className='float-right d-inline-block add_project' size='lg' variant='light'>
+                        <icon.IoAddCircle style={{margin: 'auto'}} size={30}/>
+                        <span style={{margin: 'auto'}}>   Nouveau</span>
+                    </BS.Button>
                 <div className="d-flex justify-content-center">
                     <BS.Col lg="2" xs></BS.Col>
                     <BS.Col md="auto">

@@ -7,7 +7,7 @@ tr:hover {
     width: 95%;
     border: none;
     background-color: #dadbdd;
-    color: black;
+    color: #082542;
     border-radius: 100px;
 }
 
@@ -34,5 +34,20 @@ tr:hover {
 
 .delete:hover {
     background-color: red;
+    color: white;
+}
+
+.add_project {
+    border: none;
+    background-color: #dadbdd;
+    color: #082542;
+    border-radius: 17px;
+    height: 56px;
+    width: 148px;
+    margin: 0;
+}
+
+.add_project:hover {
+    background-color:  #082542;
     color: white;
 }
