@@ -45,6 +45,7 @@ tr:hover {
     height: 56px;
     width: 148px;
     margin: 0;
+    padding-top: 11px;
 }
 
 .add_project:hover {
