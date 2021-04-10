@@ -5,12 +5,12 @@ import * as icon from 'react-icons/io5'
 import BoutonRapide from './BoutonRapide.js';
 import { LinkContainer } from 'react-router-bootstrap';
 
-const TableauProjets = () => {
+const TableauProjets = ({ filter, sort}) => {
     const [projects, setProjects] = useState([]);
 
     useEffect(() => {
         const fetchProjects = async () => {
-            const response = await fetch('/api/devis');
+            const response = await fetch('/api/devis?filter='+ filter +'&sort=' + sort);
             const data = await response.json();
             setProjects(data);
         }
@@ -22,8 +22,7 @@ const TableauProjets = () => {
         <>
             {projects.map((project) => (
                 <LinkContainer  key={project.id} to={{
-                    pathname: "/devis/" + String(project.id),
-                    state: { id: project.id }
+                    pathname: "/devis/" + String(project.id)
                 }}>
                     <tr>
                         <td>{project.id}</td>
@@ -39,9 +38,13 @@ const TableauProjets = () => {
                                     <BS.Col className='button_container'>
                                         <BoutonRapide icon={<icon.IoPrint />} text="  Imprimer" />
                                     </BS.Col>
-                                    <BS.Col className='button_container'>
-                                        <BoutonRapide icon={<icon.IoOpen />} text="  Ouvrir" />
-                                    </BS.Col>
+                                    <LinkContainer to={{ 
+                                        pathname: "/devis/" + String(project.id)
+                                    }}>
+                                        <BS.Col className='button_container'>
+                                            <BoutonRapide icon={<icon.IoOpen />} text="  Ouvrir" />
+                                        </BS.Col>
+                                    </LinkContainer>
                                 </BS.Row>
                             </ClickKiller>
                         </td>

@@ -2,7 +2,7 @@ import React from 'react';
 import * as BS from "react-bootstrap";
 
 
-const Filter = () => {
+const Filter = ({ onChange }) => {
     let current_year = new Date().getFullYear();
     let years_since_2000 = [];
 
@@ -12,7 +12,7 @@ const Filter = () => {
 
     return (
         <BS.ButtonGroup>
-            <select className="form-control form-control-lg shadow-none bg-transparent filtre">
+            <select onChange={(event) => onChange(event.target.value)} className="form-control form-control-lg shadow-none bg-transparent filtre">
                 <option key="3M">Il y a 3 mois</option>
                 <option key={current_year}>Cette année</option>
                 {years_since_2000}
