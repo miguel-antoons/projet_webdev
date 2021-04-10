@@ -23,19 +23,32 @@ function ProjetsDevis () {
                     <BS.Col md="auto">
                         <input type="text" className="form-control form-control-lg recherche" placeholder="Rechercher . . ." />
                         <select className="form-control form-control-lg shadow-none bg-transparent filtre">
-                            <option>A-Z Client</option>
-                            <option>A-Z Chantier</option>
-                            <option>Z-A Client</option>
-                            <option>Z-A Chantier</option>
-                            <option>Récent à Ancien</option>
-                            <option>Ancien à Récent</option>
+                            <option key="AZClient">A-Z Client</option>
+                            <option key="AZChantier">A-Z Chantier</option>
+                            <option key="ZAClient">Z-A Client</option>
+                            <option key="ZAChantier">Z-A Chantier</option>
+                            <option key="newold">Récent à Ancien</option>
+                            <option key="oldnew">Ancien à Récent</option>
                         </select>
                         <Filter />
                     </BS.Col>
                     <BS.Col lg="2" xs></BS.Col>
                 </div>
-            </BS.Jumbotron>  
-            <TableauProjets />
+            </BS.Jumbotron> 
+            <BS.Table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Client</th>
+                        <th>Chantier</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <TableauProjets />
+                </tbody>
+            </BS.Table> 
         </BS.Container>
     )
 };

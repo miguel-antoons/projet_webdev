@@ -1,25 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as BS from "react-bootstrap";
 import './ProjetListe.css';
 import * as icon from 'react-icons/io5'
 import BoutonRapide from './BoutonRapide.js';
 
 const TableauProjets = () => {
+    const [projects, setProjects] = useState([]);
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+            const response = await fetch('/api/devis');
+            const data = await response.json();
+            setProjects(data);
+        }
+
+        fetchProjects();
+    }, []);
+    
+    console.log(projects);
+
     return (
-        <BS.Table>
-            <thead>
-                <th>#</th>
-                <th>Client</th>
-                <th>Chantier</th>
-                <th>Date</th>
-                <th>Actions</th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Matexi NV</td>
-                    <td>Leuvensebaan 201 a, 3040</td>
-                    <td>13 Janvier 2021</td>
+        <>
+            {projects.map((project) => (
+                <tr key={project.id}>
+                    <td>{project.id}</td>
+                    <td>{project.name}</td>
+                    <td>{project.chantier}</td>
+                    <td>{project.date}</td>
                     <td className='last_column'>
                         <BS.Row>
                             <BS.Col className='button_container' >
@@ -34,8 +41,8 @@ const TableauProjets = () => {
                         </BS.Row>
                     </td>
                 </tr>
-            </tbody>
-        </BS.Table>
+            ))}
+        </>
     );
 };
 
