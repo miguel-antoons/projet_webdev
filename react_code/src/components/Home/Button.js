@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from './Icon.js';
 import { LinkContainer } from 'react-router-bootstrap';
-import home_btn from './Button.css';
+import './Button.css';
 import * as BS from "react-bootstrap";
 
 const Button = ({bd_color, text, icon, destination, icon_color}) => {

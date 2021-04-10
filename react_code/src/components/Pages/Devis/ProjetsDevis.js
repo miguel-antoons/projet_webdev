@@ -3,7 +3,7 @@ import * as icon from 'react-icons/io5';
 import * as BS from "react-bootstrap";
 import Filter from '../../ProjetListe/Filter.js';
 import TableauProjets from '../../ProjetListe/TableauProjets';
-import { recherche, filtre } from './ProjetsDevis.css';
+import './ProjetsDevis.css';
 import { LinkContainer } from 'react-router-bootstrap';
 
 
