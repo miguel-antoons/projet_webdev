@@ -13,7 +13,7 @@ function ProjetsDevis () {
     const [filter, setFilter] = useState(three_months_ago);
     const [projects, setProjects] = useState([]);
 
-    
+
     useEffect(() => {
         const fetchProjects = async () => {
             const response = await fetch('/api/devis?filter='+ filter);
@@ -61,10 +61,10 @@ function ProjetsDevis () {
                 }
 
                 // compares the 2 values and returns the result
-                if (lower_a > lower_b) {
+                if (prime_a > prime_b) {
                     return -1;
                 }
-                else if (lower_b > lower_a) {
+                else if (prime_b > prime_a) {
                     return 1;
                 }
                 else{
