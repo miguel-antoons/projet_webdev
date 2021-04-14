@@ -68,9 +68,12 @@ class Facture extends Component {
             [name]: value
         })
 
-
+        console.log(event)
+        let event_id = document.getElementById(event.target.id).innerHTML
+        event_id = event_id.split(' : ')[0]
+    
         for (let client of this.state.clients) {
-            if (client.id === value) {
+            if (client.id === event_id) {
                 this.setState({
                     clientNumber: client.number,
                     clientName: client.name,

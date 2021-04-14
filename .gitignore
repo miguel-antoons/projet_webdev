@@ -31,3 +31,8 @@ flask/requirements copy.txt
 flask/requirements.txt
 flask/requirements.txt
 flask/requirements.txt
+.idea/modules.xml
+.idea/projet_webdev.iml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/inspectionProfiles/profiles_settings.xml

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import * as BS from "react-bootstrap"
 import Preview from './preview'
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import './Form.css'
 
 
 class Form extends Component {
@@ -36,6 +39,7 @@ class Form extends Component {
                     tableau_client["mail"] = result[client]["0"]["9"];
                     tableau_clients.push(tableau_client);
                 }
+                this.setState({clients : tableau_clients})
                 this.options_client(tableau_clients)
 
             }).catch((err) => {
@@ -46,12 +50,12 @@ class Form extends Component {
 
     // Créer option des clients
     options_client(clients) {
-        console.log(clients)
         const clients_table = []
         for (let client of clients) {
-            clients_table.push(<option key={client.id} value={client.id}>{client.id} : {client.name} {client.firstname}</option>)
+            clients_table.push({"client" :  client.id + ' : ' + client.firstname + ' ' + client.name})
         }
         this.setState({ clients_options: clients_table })
+        console.log(this.state.clients_options)
     }
 
     render() {
@@ -64,9 +68,15 @@ class Form extends Component {
                 </BS.Form.Group>
                 <BS.Form.Group>
                     <BS.Form.Label>Client</BS.Form.Label>
-                    <BS.Form.Control size="sm" as="select" value={this.props.clientNumber} onChange={this.props.onChangeValue} id="clientNumber" name="clientNumber">
-                        {this.state.clients_options}
-                    </BS.Form.Control>
+                    <Autocomplete
+                    id="clientNumber" 
+                    name="clientNumber"
+                    size="small"
+                    options={this.state.clients_options} 
+                    onChange={this.props.onChangeValue}
+                    getOptionLabel={(option) => option.client}
+                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                    />
                 </BS.Form.Group>
                 <BS.Form.Group>
                     <BS.Form.Label>Date facture</BS.Form.Label >
