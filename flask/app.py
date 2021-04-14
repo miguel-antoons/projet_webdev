@@ -81,18 +81,18 @@ def devis():
             """SELECT D.ID, C.nom, C.prenom, C.societe, D.chantier,
                 date_format(D.date, '%D %M %Y')
             FROM DEVIS as D
-            join CLIENTS as C on D.id_client = C.ID"""
+            join CLIENTS as C on D.id_client = C.ID
+            order by D.date desc"""
         )
         results = cur.fetchall()
-        print(results)
 
-    for row in results:
-        response.append({
-            'id': row[0],
-            'name': f"{row[1]} {row[2]}, {row[3]}",
-            'chantier': row[4],
-            'date': row[5]
-        })
+        for row in results:
+            response.append({
+                'id': row[0],
+                'name': f"{row[1]} {row[2]}, {row[3]}",
+                'chantier': row[4],
+                'date': row[5]
+            })
 
     return json.dumps(response)
 

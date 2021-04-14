@@ -1,22 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import * as BS from "react-bootstrap";
 import './ProjetListe.css';
 import * as icon from 'react-icons/io5'
 import BoutonRapide from './BoutonRapide.js';
 import { LinkContainer } from 'react-router-bootstrap';
 
-const TableauProjets = ({ filter, sort}) => {
-    const [projects, setProjects] = useState([]);
-
-    useEffect(() => {
-        const fetchProjects = async () => {
-            const response = await fetch('/api/devis?filter='+ filter +'&sort=' + sort);
-            const data = await response.json();
-            setProjects(data);
-        }
-
-        fetchProjects();
-    }, []);
+const TableauProjets = ({ projects }) => {
 
     return (
         <>
