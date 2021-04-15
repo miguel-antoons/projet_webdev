@@ -138,7 +138,7 @@ def devis():
         response = cur.fetchall()
 
     cur.close()
-    
+
     return json.dumps(response)
 
 
