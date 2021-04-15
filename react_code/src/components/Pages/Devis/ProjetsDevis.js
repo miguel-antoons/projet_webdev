@@ -37,6 +37,17 @@ function ProjetsDevis () {
 
         fetchProjects();
     }, [filter]);
+
+    const deleteProject = async (id) => {
+        await fetch(`/api/devis?id=${id}`, { 
+            method: 'DELETE'
+        });
+
+        let filteredProjects = projects.slice();
+        filteredProjects = filteredProjects.filter(project => project.id !== id);
+        setProjects(filteredProjects);
+        sortProjects(filteredProjects);
+    };
     
 
     /**
@@ -154,8 +165,7 @@ function ProjetsDevis () {
                 (project["date"].toLowerCase().indexOf(search) > -1)
             );
         })
-    };    
-
+    };  
 
     return (
         <BS.Container fluid style={{ margin: 0, padding: 0 }}>
@@ -195,7 +205,7 @@ function ProjetsDevis () {
                     </tr>
                 </thead>
                 <tbody>
-                    <TableauProjets projects={ shownProjects } />
+                    <TableauProjets projects={ shownProjects } onDelete={deleteProject} />
                 </tbody>
             </BS.Table> 
         </BS.Container>

@@ -5,8 +5,7 @@ import * as icon from 'react-icons/io5'
 import BoutonRapide from './BoutonRapide.js';
 import { LinkContainer } from 'react-router-bootstrap';
 
-const TableauProjets = ({ projects }) => {
-
+const TableauProjets = ({ projects, onDelete }) => {
     return (
         <>
             {projects.map((project) => (
@@ -22,7 +21,7 @@ const TableauProjets = ({ projects }) => {
                             <ClickKiller>
                                 <BS.Row>
                                     <BS.Col className='button_container' >
-                                        <BoutonRapide icon={<icon.IoTrash />} text="  Suprimmer" css_variant={true} />
+                                        <BoutonRapide id={project.id} onDelete={onDelete} icon={<icon.IoTrash />} text="  Suprimmer" css_variant={true} />
                                     </BS.Col>
                                     <BS.Col className='button_container'>
                                         <BoutonRapide icon={<icon.IoPrint />} text="  Imprimer" />
