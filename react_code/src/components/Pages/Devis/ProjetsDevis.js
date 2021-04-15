@@ -120,8 +120,10 @@ function ProjetsDevis () {
 
 
     /**
-     * Function fires when the sort option changes.
+     * Function fires when the sort option changes or when the user is searching an project.
      * The function will sort the projects according to the value chosen by the user
+     * and will afterwards filter the projects according to the value entered in the search bar 
+     * (value is stored in 'search' variable)
      */
     useEffect( () => {
         try {
@@ -132,7 +134,7 @@ function ProjetsDevis () {
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sort]);
+    }, [sort, search]);
 
 
     /**
@@ -153,18 +155,6 @@ function ProjetsDevis () {
             );
         })
     };    
-
-
-    // Fires when the user is trying to search a project
-    useEffect(() => {
-        try {
-            sortProjects(projects);
-        }
-        catch (e) {
-            console.log(e);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [search])
 
 
     return (

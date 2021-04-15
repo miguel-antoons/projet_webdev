@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request, redirect, url_for,\
-    session
+    session, request
 from flask_mysqldb import MySQL
 import json
 import time
@@ -77,13 +77,28 @@ def devis():
 
     # API qui sert pour récupérer tous les projets de devis
     if request.method == 'GET':
-        cur.execute(
-            """SELECT D.ID, C.nom, C.prenom, C.societe, D.chantier,
-                date_format(D.date, '%D %M %Y')
+        filter = request.args.get('filter')
+        arguments = ()
+
+        sql_procedure = """
+            SELECT D.ID, C.nom, C.prenom, C.societe, D.chantier,
+                date_format(D.date, '%%D %%M %%Y')
             FROM DEVIS as D
-            join CLIENTS as C on D.id_client = C.ID
-            order by D.date desc"""
-        )
+                join CLIENTS as C on D.id_client = C.ID
+            WHERE D.date >= str_to_date(%s, %s)
+                and extract(year from D.date) >= %s
+                and extract(year from D.date) <= %s
+            ORDER BY D.date desc"""
+
+        if len(filter) > 4:
+            arguments = (filter, "%a %b %e %Y %H:%i:%s", 1, 999999999, )
+        elif len(filter) == 4:
+            arguments = ("1999-01-01", "%Y-%m-%d", filter, filter, )
+        else:
+            arguments = ("1999-01-01", "%Y-%m-%d", 1, 999999999, )
+
+        cur.execute(sql_procedure, arguments)
+
         results = cur.fetchall()
 
         for row in results:
