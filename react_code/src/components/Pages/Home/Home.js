@@ -1,8 +1,8 @@
 import React from 'react';
-import Button from '../../Home/Button.js'
-import * as icon from 'react-icons/io5'
-import * as BS from "react-bootstrap"
-import div from './Home.css'
+import Button from '../../Home/Button.js';
+import * as icon from 'react-icons/io5';
+import * as BS from "react-bootstrap";
+import './Home.css';
 
 
 const Home = () => {
@@ -24,7 +24,7 @@ const Home = () => {
                 <BS.Col lg="2"></BS.Col>
                 <BS.Col md="auto" className="div">
                     <Button icon={ <icon.IoPeople /> } text='Clients' bd_color='#004d00' icon_color='#2e8b57' destination='/client' />
-                    <Button icon={ <icon.IoCube /> } text='Articles' bd_color='#002147' icon_color='#006db0' destination='/ensemble' />
+                    <Button icon={ <icon.IoCube /> } text='Articles' bd_color='#002147' icon_color='#006db0' destination='/rassemblement_articles' />
                 </BS.Col>
                 <BS.Col lg="2"></BS.Col>
             </div>

@@ -3,7 +3,7 @@ import * as icon from 'react-icons/io5';
 import * as BS from "react-bootstrap";
 import Filter from '../../ProjetListe/Filter.js';
 import TableauProjets from '../../ProjetListe/TableauProjets';
-import './ProjetsDevis.css';
+import '../../ProjetListe/ProjetsDevis.css';
 import { LinkContainer } from 'react-router-bootstrap';
 
 
@@ -15,6 +15,15 @@ function ProjetsDevis () {
     three_months_ago.setMonth(three_months_ago.getMonth() - 3);
     const [filter, setFilter] = useState(three_months_ago);
     const [projects, setProjects] = useState([]);
+
+    const sortOptions = [
+        { value: '{"key": "date", "sign": 0}', label: "Récent à Ancien", key: 1},
+        { value: '{"key": "date", "sign": 1}', label: "Ancien à Récent", key: 2},
+        { value: '{"key": "name", "sign": 0}', label: "A-Z Client", key: 3},
+        { value: '{"key": "name", "sign": 1}', label: "Z-A Client", key: 4},
+        { value: '{"key": "chantier", "sign": 0}', label: "A-Z Chantier", key: 5},
+        { value: '{"key": "chantier", "sign": 1}', label: "Z-A Chantier", key: 6} 
+    ];
 
     // GET information about all projects, fires on page load and on filter change
     useEffect(() => {
@@ -169,10 +178,10 @@ function ProjetsDevis () {
 
     return (
         <BS.Container fluid style={{ margin: 0, padding: 0 }}>
-            <BS.Jumbotron>
+            <BS.Jumbotron className="devis">
                 <h1 className='d-inline-block'>Bienvenue dans Devis</h1>
                 <LinkContainer to='/devis/0'>
-                    <BS.Button className='float-right d-inline-block add_project' size='lg' variant='light'>
+                    <BS.Button className='float-right d-inline-block add_project newDevis' size='lg' variant='light'>
                             <icon.IoAddCircle style={{margin: 'auto'}} size={30}/>
                             <span style={{margin: 'auto'}}>   Nouveau</span>
                     </BS.Button>
@@ -182,14 +191,11 @@ function ProjetsDevis () {
                     <BS.Col md="auto">
                         <input onChange={ (e) => setSearch(e.target.value) } value={ search } type="text" className="form-control form-control-lg recherche" placeholder="Rechercher . . ." />
                         <select onChange={(event) => setSort(event.target.value)} className="form-control form-control-lg shadow-none bg-transparent filtre">
-                            <option value='{"key": "date", "sign": 0}' key="newOld">Récent à Ancien</option>
-                            <option value='{"key": "date", "sign": 1}' key="oldNew">Ancien à Récent</option>
-                            <option value='{"key": "name", "sign": 0}' key="AZClient">A-Z Client</option>
-                            <option value='{"key": "chantier", "sign": 0}' key="AZChantier">A-Z Chantier</option>
-                            <option value='{"key": "name", "sign": 1}' key="ZAClient">Z-A Client</option>
-                            <option value='{"key": "chantier", "sign": 1}' key="ZAChantier">Z-A Chantier</option>
+                            {sortOptions.map((option) => (
+                                    <option value={option.value} key={option.key}>{option.label}</option>
+                                ))}
                         </select>
-                        <Filter onChange={(selected_item) => setFilter(selected_item)} recent_date={ three_months_ago} />
+                        <Filter value={three_months_ago} onChange={(selected_item) => setFilter(selected_item)} recent_date={ three_months_ago } />
                     </BS.Col>
                     <BS.Col lg="2" xs></BS.Col>
                 </div>

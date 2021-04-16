@@ -38,9 +38,9 @@ function Navbar() {
                             <BS.NavDropdown.Item>Client</BS.NavDropdown.Item>
                         </LinkContainer>
                         <LinkContainer to='/article'>
-                            <BS.NavDropdown.Item href="/article">Régie</BS.NavDropdown.Item>
+                            <BS.NavDropdown.Item>Rgie</BS.NavDropdown.Item>
                         </LinkContainer>
-                        <LinkContainer to='/ensemble'>
+                        <LinkContainer to='/rassemblement_articles'>
                             <BS.NavDropdown.Item>Articles</BS.NavDropdown.Item>
                         </LinkContainer>
                         <BS.NavDropdown.Divider/>

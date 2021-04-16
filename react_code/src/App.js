@@ -11,8 +11,9 @@ import Etiquetage from './components/Pages/Etiquetage/Etiquetage'
 import Suivi from './components/Pages/Suivi/Suivi'
 import Client from './components/Pages/Ajout_client/Ajout_client'
 import Article from './components/Pages/Ajout_article/Ajout_article'
-import Ensemble from './components/Pages/Ajout_ensemble/Ajout_ensemble'
+import Rgie from './components/Pages/Rgie/Rgie'
 import ProjetsDevis from './components/Pages/Devis/ProjetsDevis'
+import RassemblementArticles from './components/Pages/Ajout_article/RassemblementArticles'
 
 
 function App() {
@@ -28,8 +29,9 @@ function App() {
           <Route path="/suivi" component={Suivi} />
           <Route path="/client" component={Client} />
           <Route path="/article" component={Article} />
-          <Route path="/ensemble" component={Ensemble} />
+          <Route path="/rgie" component={Rgie} />
           <Route path="/projets_devis" component={ProjetsDevis} />
+          <Route path="/rassemblement_articles" component={RassemblementArticles} />
         </Switch>
       </div>
     </Router>
