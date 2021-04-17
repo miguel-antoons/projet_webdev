@@ -52,16 +52,6 @@ def index():
     return json.dumps(list_user)
 
 
-@app.route('/hello')
-def hello():
-    return {'result': "HELLO"}
-
-
-@app.route('/api/time')
-def get_current_time():
-    return {'time': time.time()}
-
-
 @app.route('/api/client/enregistrement', methods=['POST'])
 def post():
     print('hello')
@@ -112,8 +102,8 @@ def devis():
         for row in results:
             response.append({
                 'id': row[0],
-                'name': f"{row[1]} {row[2]}, {row[3]}",
-                'chantier': row[4],
+                'attribute1': f"{row[1]} {row[2]}, {row[3]}",
+                'attribute2': row[4],
                 'date': row[5]
             })
 
@@ -138,6 +128,57 @@ def devis():
         response = cur.fetchall()
 
     cur.close()
+
+    return json.dumps(response)
+
+
+@app.route('/api/articles', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def articles():
+    connector = mysql.connection
+    cur = connector.cursor()
+    response = []
+
+    # API will return all the elements
+    if request.method == 'GET':
+        # get the filter to apply to the elements
+        filter = request.args.get('filter')
+        arguments = ()
+
+        # prepare the sql statement (which contains arguments in order to
+        # avoid sql injection)
+        sql_procedure = """
+            SELECT ID, nameFR, nameNL, date_format(date, '%%D %%M %%Y')
+            FROM ARTICLES
+            WHERE date >= str_to_date(%s, %s)
+                and extract(year from date) >= %s
+                and extract(year from date) <= %s
+            ORDER BY nameFR asc"""
+
+        # complete arguments according to the filter
+        if len(filter) > 4:
+            arguments = (filter, "%a %b %e %Y %H:%i:%s", 1, 999999999, )
+        elif len(filter) == 4:
+            arguments = ("1999-01-01", "%Y-%m-%d", filter, filter, )
+        else:
+            arguments = ("1999-01-01", "%Y-%m-%d", 1, 999999999, )
+
+        # execute the statement
+        cur.execute(sql_procedure, arguments)
+
+        # fetch the result
+        results = cur.fetchall()
+
+        # turn the result into a list of dictionnaries
+        for row in results:
+            response.append({
+                'id': row[0],
+                'attribute1': row[1],
+                'attribute2': row[2],
+                'date': row[3]
+            })
+
+    cur.close()
+    print(response)
 
     return json.dumps(response)
 

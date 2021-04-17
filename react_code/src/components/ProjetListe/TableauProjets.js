@@ -5,29 +5,29 @@ import * as icon from 'react-icons/io5'
 import BoutonRapide from './BoutonRapide.js';
 import { LinkContainer } from 'react-router-bootstrap';
 
-const TableauProjets = ({ projects, onDelete }) => {
+const TableauProjets = ({ content, onDelete }) => {
     return (
         <>
-            {projects.map((project) => (
-                <LinkContainer  key={project.id} to={{
-                    pathname: "/devis/" + String(project.id)
+            {content.map((element) => (
+                <LinkContainer  key={element.id} to={{
+                    pathname: "/devis/" + String(element.id)
                 }}>
                     <tr>
-                        <td>{project.id}</td>
-                        <td>{project.name}</td>
-                        <td>{project.chantier}</td>
-                        <td>{project.date}</td>
+                        <td>{element.id}</td>
+                        <td>{element.attribute1}</td>
+                        <td>{element.attribute2}</td>
+                        <td>{element.date}</td>
                         <td className='last_column'>
                             <ClickKiller>
                                 <BS.Row>
                                     <BS.Col className='button_container' >
-                                        <BoutonRapide id={project.id} onDelete={onDelete} icon={<icon.IoTrash />} text="  Suprimmer" css_variant={true} />
+                                        <BoutonRapide id={element.id} onDelete={onDelete} icon={<icon.IoTrash />} text="  Suprimmer" css_variant={true} />
                                     </BS.Col>
                                     <BS.Col className='button_container'>
                                         <BoutonRapide icon={<icon.IoPrint />} text="  Imprimer" />
                                     </BS.Col>
                                     <LinkContainer to={{ 
-                                        pathname: "/devis/" + String(project.id)
+                                        pathname: "/devis/" + String(element.id)
                                     }}>
                                         <BS.Col className='button_container'>
                                             <BoutonRapide icon={<icon.IoOpen />} text="  Ouvrir" />

@@ -28,7 +28,7 @@ function App() {
           <Route path="/etiquetage" component={Etiquetage} />
           <Route path="/suivi" component={Suivi} />
           <Route path="/client" component={Client} />
-          <Route path="/article" component={Article} />
+          <Route path="/article/:id" component={Article} />
           <Route path="/rgie" component={Rgie} />
           <Route path="/projets_devis" component={ProjetsDevis} />
           <Route path="/rassemblement_articles" component={RassemblementArticles} />
