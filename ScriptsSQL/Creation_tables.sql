@@ -1,4 +1,4 @@
-CREATE DOMAIN DOMAINE_LANGUAGE char(2) NOT NULL DEFAULT 'FR' check(@col in( 'FR','NL' ) );
+-- CREATE DOMAIN DOMAINE_LANGUAGE char(2) NOT NULL DEFAULT 'FR' check(@col in( 'FR','NL' ) );
 
 create table suivi_materiel                               -- aucun lien avec le reste, client ou employé ?
 (
@@ -10,18 +10,17 @@ create table suivi_materiel                               -- aucun lien avec le 
     DATE_EMPRUNT DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier
     DATE_RETOUR DATE,
     CONSTRAINT pk__suivi_materiel PRIMARY KEY (ID_SUIVI_MATERIEL)
-)
+);
 
 
 create table texte_factures                                -- 1 lien avec facture
 (
     ID_TEXTE_FACTURE INT NOT NULL AUTO_INCREMENT,
     CATEGORIE CHAR(50) NOT NULL,
-    TEXTE_FR VARCHAR NOT NULL,
-    TEXTE_NL VARCHAR NOT NULL,
+    TEXTE_FR CHAR(255) NOT NULL,
+    TEXTE_NL CHAR(255) NOT NULL,
     CONSTRAINT pk__texte_facture PRIMARY KEY (ID_TEXTE_FACTURE)
-)
-
+);
 
 create table clients                                      -- 1 lien avec facture (censé avoir 3 liens facture/etiquette/devis)
 (
@@ -38,7 +37,7 @@ create table clients                                      -- 1 lien avec facture
     TELEPHONE_CLIENT INT,
     EMAIL_CLIENT CHAR(50),
     CONSTRAINT pk__clients PRIMARY KEY (ID_CLIENT)
-)
+);
 
 
 create table etiquettes                                                  -- 1 foreign key vers client (id)
@@ -51,7 +50,7 @@ create table etiquettes                                                  -- 1 fo
     DATE_ETIQUETTE DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier,
     CONSTRAINT pk__etiquettes PRIMARY KEY (ID_ETIQUETTE),
     CONSTRAINT fk__etiquettes__clients FOREIGN KEY (ID_CLIENT) REFERENCES clients (ID_CLIENT)
-)
+);
 
 
 create table devis_texte (
@@ -60,7 +59,7 @@ create table devis_texte (
     TEXTE_NL VARCHAR NOT NULL,
     TEXTE_FR VARCHAR NOT NULL,
     CONSTRAINT pk__devis_texte PRIMARY KEY (ID_DEVIS_TEXTE)
-)
+);
 
 
 create table devis (
@@ -78,7 +77,7 @@ create table devis (
     CONSTRAINT pk__devis PRIMARY KEY (ID_DEVIS),
     CONSTRAINT fk__devis__clients FOREIGN KEY (ID_CLIENT) REFERENCES clients (ID_CLIENT),
     CONSTRAINT fk__devis__devis_texte FOREIGN KEY (ID_DEVIS_TEXTE) REFERENCES devis_texte (ID_DEVIS_TEXTE)
-)
+);
 
 
 create table articles (
@@ -90,7 +89,7 @@ create table articles (
     PRIX_2 INT,
     PRIX_3 INT,
     CONSTRAINT pk__articles PRIMARY KEY (ID_ARTICLE)
-)
+);
 
 
 create table articles_rgie (
@@ -100,7 +99,7 @@ create table articles_rgie (
     PRIX_1 INT NOT NULL?
     PRIX_2 INT,
     CONSTRAINT pk__articles_rgie PRIMARY KEY (ID_ARTICLE_RGIE)
-)
+);
 
 
 create table articles_devis (
@@ -119,7 +118,7 @@ create table articles_devis (
     CONSTRAINT pk__articles_devis PRIMARY KEY (ID_ARTICLE_DEVIS),
     CONSTRAINT fk__articles_devis__articles FOREIGN KEY (ID_ARTICLE) REFERENCES articles (ID_ARTICLE),
     CONSTRAINT fk__articles_devis__devis FOREIGN KEY (ID_DEVIS) REFERENCES devis (ID_DEVIS)
-)
+);
 
 
 create table listes_articles_rgie (
@@ -131,7 +130,7 @@ create table listes_articles_rgie (
     PRIX_TOTAL INT, --auto ?
     CONSTRAINT pk__listes_articles_rgie PRIMARY KEY (ID_LISTE_ARTICLE_RGIE),
     CONSTRAINT fk__listes_articles_rgie__articles_devis FOREIGN KEY (ID_ARTICLE_RGIE) REFERENCES articles_devis (ID_ARTICLE_RGIE)
-)
+);
 
 
 create table liste_articles(
@@ -144,7 +143,7 @@ create table liste_articles(
     CONSTRAINT pk__liste_articles PRIMARY KEY (ID_LISTE_ARTICLE),
     CONSTRAINT fk__liste_articles__articles_rgie FOREIGN KEY (ID_ARTICLE_RGIE) REFERENCES articles_rgie (ID_ARTICLE_RGIE),
     CONSTRAINT fk__liste_articles__listes_articles_rgie FOREIGN KEY (ID_LISTE_ARTICLE_RGIE) REFERENCES listes_articles_rgie (ID_LISTE_ARTICLE_RGIE)
-)
+);
 
 
 create table factures                                                    -- 3 foreign keys textefacture/devis/client
@@ -166,4 +165,4 @@ create table factures                                                    -- 3 fo
     CONSTRAINT fk__factures__texte_factures FOREIGN KEY (ID_TEXTE_FACTURE) REFERENCES texte_factures (ID_TEXTE_FACTURE),
     CONSTRAINT fk__factures__clients FOREIGN KEY (ID_CLIENT) REFERENCES clients (ID_CLIENT),
     CONSTRAINT fk__factures__devis FOREIGN KEY (ID_DEVIS) REFERENCES devis (ID_DEVIS)
-)
+);
