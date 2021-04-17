@@ -15,7 +15,7 @@ const Home = () => {
             <div className="d-flex justify-content-center div">
                 <BS.Col lg="2"></BS.Col>
                 <BS.Col md="auto" className="div">
-                    <Button icon={ <icon.IoDocumentText /> } text='Factures' bd_color='#940000' icon_color='#f2003c' destination='/facture' />
+                    <Button icon={ <icon.IoDocumentText /> } text='Factures' bd_color='#940000' icon_color='#f2003c' destination='/projets_factures' />
                     <Button icon={ <icon.IoDocuments /> } text='Devis' bd_color='#947e00' icon_color='#ffcc33' destination='/projets_devis' />
                 </BS.Col>
                 <BS.Col lg="2"></BS.Col>

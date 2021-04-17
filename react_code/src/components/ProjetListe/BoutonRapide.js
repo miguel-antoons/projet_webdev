@@ -1,6 +1,6 @@
 import React from 'react';
 import * as BS from "react-bootstrap";
-import './ProjetListe.css';
+import './RassemblementProjets.css';
 
 const BoutonRapide = ({icon, text, css_variant, id, onDelete }) => {
     let style = "";

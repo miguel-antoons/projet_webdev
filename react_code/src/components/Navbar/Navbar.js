@@ -21,7 +21,7 @@ function Navbar() {
             <BS.Navbar.Toggle aria-controls="responsive-BS.Navbar-BS.Nav"/>
             <BS.Navbar.Collapse id="responsive-BS.Navbar-BS.Nav">
                 <BS.Nav className="mr-auto">
-                    <LinkContainer to='/facture'>
+                    <LinkContainer to='/projets_factures'>
                         <BS.Nav.Link>Factures</BS.Nav.Link>
                     </LinkContainer>
                     <LinkContainer to='/projets_devis'>

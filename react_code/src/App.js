@@ -14,6 +14,7 @@ import Article from './components/Pages/Ajout_article/Ajout_article'
 import Rgie from './components/Pages/Rgie/Rgie'
 import ProjetsDevis from './components/Pages/Devis/ProjetsDevis'
 import RassemblementArticles from './components/Pages/Ajout_article/RassemblementArticles'
+import ProjetsFactures from './components/Pages/Facture/ProjetsFactures'
 
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
         <Navbar />
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/facture" component={Facture} />
+          <Route path="/facture/:id" component={Facture} />
           <Route path="/devis/:id" component={Devis} />
           <Route path="/etiquetage" component={Etiquetage} />
           <Route path="/suivi" component={Suivi} />
@@ -32,6 +33,7 @@ function App() {
           <Route path="/rgie" component={Rgie} />
           <Route path="/projets_devis" component={ProjetsDevis} />
           <Route path="/rassemblement_articles" component={RassemblementArticles} />
+          <Route path="/projets_factures" component={ProjetsFactures} />
         </Switch>
       </div>
     </Router>
