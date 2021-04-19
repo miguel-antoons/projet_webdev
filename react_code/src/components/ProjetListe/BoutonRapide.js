@@ -19,4 +19,8 @@ const BoutonRapide = ({icon, text, css_variant, id, onDelete }) => {
     );
 };
 
+BoutonRapide.defaultProps = {
+    onDelete: (id) => {console.log("");}
+}
+
 export default BoutonRapide;

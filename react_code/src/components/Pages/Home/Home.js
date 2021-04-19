@@ -23,7 +23,7 @@ const Home = () => {
             <div className="d-flex justify-content-center">
                 <BS.Col lg="2"></BS.Col>
                 <BS.Col md="auto" className="div">
-                    <Button icon={ <icon.IoPeople /> } text='Clients' bd_color='#004d00' icon_color='#2e8b57' destination='/client' />
+                    <Button icon={ <icon.IoPeople /> } text='Clients' bd_color='#004d00' icon_color='#2e8b57' destination='/rassemblement_clients' />
                     <Button icon={ <icon.IoCube /> } text='Articles' bd_color='#002147' icon_color='#006db0' destination='/rassemblement_articles' />
                 </BS.Col>
                 <BS.Col lg="2"></BS.Col>
@@ -31,8 +31,8 @@ const Home = () => {
             <div className="d-flex justify-content-center">
                 <BS.Col lg="2"></BS.Col>
                 <BS.Col md="auto" className="div">
-                    <Button icon={ <icon.IoGrid /> } text='Étiquettes' bd_color='#b37400' icon_color='#ff8c00' destination='/etiquetage' />
-                    <Button icon={ <icon.IoCreate /> } text='Régie' bd_color='#66023c' icon_color='purple' destination='/article' />
+                    <Button icon={ <icon.IoGrid /> } text='Étiquettes' bd_color='#b37400' icon_color='#ff8c00' destination='/projets_etiquettes' />
+                    <Button icon={ <icon.IoCreate /> } text='Rgie' bd_color='#66023c' icon_color='purple' destination='/projets_rgie' />
                 </BS.Col>
                 <BS.Col lg="2"></BS.Col>
             </div>

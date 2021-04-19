@@ -2,7 +2,7 @@ import React from 'react';
 import * as BS from "react-bootstrap";
 
 
-const Filter = ({ onChange, recent_date, value }) => {
+const Filter = ({ onChange, recent_date, value, displayNone }) => {
     let current_year = new Date().getFullYear();
     let years_since_2000 = [];
 

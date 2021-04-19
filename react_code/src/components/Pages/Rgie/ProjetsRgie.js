@@ -7,7 +7,7 @@ import '../../ProjetListe/RassemblementProjets.css';
 import { LinkContainer } from 'react-router-bootstrap';
 
 
-function ProjetsDevis () {
+function ProjetsRgie () {
     const [sort, setSort] = useState('{"key": "date", "sign": 0}');
     const [search, setSearch] = useState('');
     const [shownContent, setShownContent] = useState([]);
@@ -15,15 +15,15 @@ function ProjetsDevis () {
     three_months_ago.setMonth(three_months_ago.getMonth() - 3);
     const [filter, setFilter] = useState(three_months_ago);
     const [content, setContent] = useState([]);
-    const pathname = "/devis/";
+    const pathname = "/rgie/";
 
     const sortOptions = [
         { value: '{"key": "date", "sign": 0}', label: "Récent à Ancien", key: 1},
         { value: '{"key": "date", "sign": 1}', label: "Ancien à Récent", key: 2},
         { value: '{"key": "attribute1", "sign": 0}', label: "A-Z Client", key: 3},
         { value: '{"key": "attribute1", "sign": 1}', label: "Z-A Client", key: 4},
-        { value: '{"key": "attribute2", "sign": 0}', label: "A-Z Chantier", key: 5},
-        { value: '{"key": "attribute2", "sign": 1}', label: "Z-A Chantier", key: 6} 
+        { value: '{"key": "attribute2", "sign": 0}', label: "A-Z Échéance", key: 5},
+        { value: '{"key": "attribute2", "sign": 1}', label: "Z-A Échéance", key: 6} 
     ];
 
     // GET information about all content, fires on page load and on filter change
@@ -35,7 +35,7 @@ function ProjetsDevis () {
          */
         const fetchContent = async () => {
             try {
-                const response = await fetch('/api/devis?filter=' + filter);
+                const response = await fetch('/api/rgie?filter=' + filter);
                 const data = await response.json();
                 setContent(data);
                 setShownContent(data);
@@ -49,7 +49,7 @@ function ProjetsDevis () {
     }, [filter]);
 
     const deleteElement = async (id) => {
-        await fetch(`/api/devis?id=${id}`, { 
+        await fetch(`/api/rgie?id=${id}`, { 
             method: 'DELETE'
         });
 
@@ -179,10 +179,10 @@ function ProjetsDevis () {
 
     return (
         <BS.Container fluid style={{ margin: 0, padding: 0 }}>
-            <BS.Jumbotron className="devis">
-                <h1 className='d-inline-block'>Bienvenue dans Devis</h1>
-                <LinkContainer to='/devis/0'>
-                    <BS.Button className='float-right d-inline-block add_project newDevis' size='lg' variant='light'>
+            <BS.Jumbotron className="rgie">
+                <h1 className='d-inline-block'>Bienvenue dans Rgie</h1>
+                <LinkContainer to='/rgie/0'>
+                    <BS.Button className='float-right d-inline-block add_project newRgie' size='lg' variant='light'>
                             <icon.IoAddCircle style={{margin: 'auto'}} size={30}/>
                             <span style={{margin: 'auto'}}>   Nouveau</span>
                     </BS.Button>
@@ -212,7 +212,7 @@ function ProjetsDevis () {
                     </tr>
                 </thead>
                 <tbody>
-                    <TableauProjets content={ shownContent } onDelete={deleteElement} pathname={ pathname }/>
+                    <TableauProjets content={ shownContent } onDelete={deleteElement} pathname={ pathname } />
                 </tbody>
             </BS.Table> 
         </BS.Container>
@@ -222,4 +222,4 @@ function ProjetsDevis () {
 
 
 
-export default ProjetsDevis;
+export default ProjetsRgie;

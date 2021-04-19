@@ -27,17 +27,17 @@ function Navbar() {
                     <LinkContainer to='/projets_devis'>
                         <BS.Nav.Link>Devis</BS.Nav.Link>
                     </LinkContainer>
-                    <LinkContainer to='/etiquetage'>
+                    <LinkContainer to='/projets_etiquettes'>
                         <BS.Nav.Link>Étiquetage</BS.Nav.Link>
                     </LinkContainer>
                     <LinkContainer to='/suivi'>
                         <BS.Nav.Link>Suivi de matériel</BS.Nav.Link>
                     </LinkContainer>
                     <BS.NavDropdown title="Modifier/Ajouter" id="collasible-BS.Nav-dropdown">
-                        <LinkContainer to='/client'>
+                        <LinkContainer to='/rassemblement_clients'>
                             <BS.NavDropdown.Item>Client</BS.NavDropdown.Item>
                         </LinkContainer>
-                        <LinkContainer to='/article'>
+                        <LinkContainer to='/projets_rgie'>
                             <BS.NavDropdown.Item>Rgie</BS.NavDropdown.Item>
                         </LinkContainer>
                         <LinkContainer to='/rassemblement_articles'>

@@ -5,12 +5,12 @@ import * as icon from 'react-icons/io5'
 import BoutonRapide from './BoutonRapide.js';
 import { LinkContainer } from 'react-router-bootstrap';
 
-const TableauProjets = ({ content, onDelete }) => {
+const TableauProjets = ({ content, onDelete, pathname }) => {
     return (
         <>
             {content.map((element) => (
                 <LinkContainer  key={element.id} to={{
-                    pathname: "/devis/" + String(element.id)
+                    pathname: pathname + String(element.id)
                 }}>
                     <tr>
                         <td>{element.id}</td>
@@ -27,7 +27,7 @@ const TableauProjets = ({ content, onDelete }) => {
                                         <BoutonRapide icon={<icon.IoPrint />} text="  Imprimer" />
                                     </BS.Col>
                                     <LinkContainer to={{ 
-                                        pathname: "/devis/" + String(element.id)
+                                        pathname: pathname + String(element.id)
                                     }}>
                                         <BS.Col className='button_container'>
                                             <BoutonRapide icon={<icon.IoOpen />} text="  Ouvrir" />
