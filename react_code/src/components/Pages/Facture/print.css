@@ -18,6 +18,10 @@
 
     ul {
         padding-left: 15px !important;
-        font-size: 0.75vw;
+        font-size: 8px;
+    }
+
+    .text-pdf {
+        font-size: 15px;
     }
 }
