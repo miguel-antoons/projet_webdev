@@ -11,7 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const Ajout_Client = () => {
     // Met le state des inputs
     const [name, setName] = useState('');
-    const [firstName, setFirstName] = useState('');
+    const [firstname, setFirstname] = useState('');
     const [titre,setTitre] = useState('Mr');
     const [societe,setSociete] = useState('');
     const [langue,setLangue] = useState('FR');
@@ -32,14 +32,16 @@ const Ajout_Client = () => {
       
 
       try{
-        let result = await fetch('/api/Clients/ajout', {
+        let result = await fetch('/api/client', {
           method: 'post',
           //mode: 'no-cors', // --> pas besoin de cette ligne
           headers: {
             //'Accept': 'application/json', // --> pas besoin de cette ligne non-plus
             'Content-type': 'application/json',
+        
           },
-          body: JSON.stringify( {name, firstName, societe, titre, langue,adress,tva,number,email} ) // l'objet à l'intérieur de la fonction contient l'état des 5 input
+          
+          body: JSON.stringify({name, firstname, societe, titre, langue,adress,tva,number,email}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
         });
   
         const data = await result.json();
@@ -68,7 +70,7 @@ const Ajout_Client = () => {
 
           <BS.Form.Label column="lg" lg={2} >Prénom</BS.Form.Label>
           <BS.Form.Control size="sm" type="text" placeholder="Entrer le Prénom du client"  id="firstName " name="firstName " 
-          value={ firstName } onChange={ (e) => setFirstName(e.target.value)   } required />
+          value={ firstname } onChange={ (e) => setFirstname(e.target.value)   } required />
         </BS.Form.Group>
 
         <BS.Form.Group>
