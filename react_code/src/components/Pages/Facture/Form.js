@@ -52,7 +52,7 @@ class Form extends Component {
     options_client(clients) {
         const clients_table = []
         for (let client of clients) {
-            clients_table.push({"client" :  client.id + ' : ' + client.firstname + ' ' + client.name})
+            clients_table.push({"client" :  client.id + '. ' + client.firstname + ' ' + client.name})
         }
         this.setState({ clients_options: clients_table })
         console.log(this.state.clients_options)

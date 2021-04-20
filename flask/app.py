@@ -18,7 +18,7 @@ mysql = MySQL(app)
 @app.route('/')
 def index():
     return "Connecté à la base de données"
-    
+
 
 @app.route('/create_client_table')
 def create_client_table():

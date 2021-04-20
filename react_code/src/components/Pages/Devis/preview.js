@@ -1,124 +1,51 @@
-import React, { Component } from 'react';
+import React from 'react';
 import * as BS from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './Facture.css';
-import './print.css';
-import Form from './Form'
-
-class Facture extends Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            factureNumber: '',
-            clientNumber: '',
-            clientName: '',
-            clientFirstname: '',
-            clientCompany: '',
-            clientAdress: '',
-            title: 'M.',
-            factureDate: '',
-            workDate: '',
-            deadline: '',
-            tva: '6',
-            comment: '',
-            price: '0',
-            clients: []
-        }
-        this.api_client()
-        this.handleChange = this.handleChange.bind(this)
-    }
-
-    async api_client() {
-        return await fetch('/api/clients').then((response) => {
-            return response.json().then((result) => {
-
-                let tableau_clients = [];
-
-                //Création du dictionnaire
-                for (let client in result) {
-                    let tableau_client = {};
-                    tableau_client["id"] = client;
-                    tableau_client["name"] = result[client]["0"]["0"];
-                    tableau_client["firstname"] = result[client]["0"]["1"];
-                    tableau_client["title"] = result[client]["0"]["2"];
-                    tableau_client["company"] = result[client]["0"]["3"];
-                    tableau_client["adress"] = result[client]["0"]["4"];
-                    tableau_client["tva"] = result[client]["0"]["5"];
-                    tableau_client["language"] = result[client]["0"]["6"];
-                    tableau_client["artichitecteName"] = result[client]["0"]["7"];
-                    tableau_client["number"] = result[client]["0"]["8"];
-                    tableau_client["mail"] = result[client]["0"]["9"];
-                    tableau_clients.push(tableau_client);
-                }
-                this.setState({ clients: tableau_clients })
+import { useState } from "react";
 
 
-            }).catch((err) => {
-                console.log(err);
-            })
-        })
-    }
 
-    handleChange(event) {
-        const name = event.target.name
-        const value = event.target.value
+function Preview(props) {
+    const [lgShow, setLgShow] = useState(false);
 
-        this.setState({
-            [name]: value
-        })
-
-        console.log(event)
-        let event_id = document.getElementById(event.target.id).innerHTML
-        event_id = event_id.split('. ')[0]
-    
-        for (let client of this.state.clients) {
-            if (client.id === event_id) {
-                this.setState({
-                    clientNumber: client.number,
-                    clientName: client.name,
-                    clientFirstname: client.firstname,
-                    clientCompany: client.company,
-                    clientAdress: client.adress
-                })
-
-            }
-        }
-    }
-
-    tva(price_str, tva_str) {
+    function tva (price_str, tva_str) {
         let price = Number(price_str)
         let tva = Number(tva_str)
         let total_tva = (price / 100) * tva
-        return Math.round(total_tva * 100) / 100
+        return Math.round(total_tva*100)/100
     }
 
-    total_tva(price_str, tva_str) {
+    function total_tva (price_str, tva_str){
         let price = Number(price_str)
         let tva = Number(tva_str)
-        let total_tva = price + (price / 100) * tva
-        return Math.round(total_tva * 100) / 100
+        let total_tva =  price + (price / 100) * tva
+        return Math.round(total_tva*100)/100
     }
 
-    currentDate() {
-        let date = new Date()
-        return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
+    function currentDate() {
+        let date=new Date()
+        return date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()
     }
 
-    render() {
-        return (
-            <BS.Container>
-                <BS.Row>
-                    {/* Left */}
-                    <BS.Col xs lg="4" className="border mt-5 mr-3 no-print h-50 rounded">
-                        <Form onChange={this.handleChange} onChangeValue={this.handleChange} returnState={this.state}
-                        />
-                    </BS.Col>
 
+    return (
+        <>
+            <BS.Button variant='dark' onClick={() => setLgShow(true)} className="mb-2">Prévisualiser</BS.Button>
+            <BS.Modal
+                size="xl"
+                show={lgShow}
+                onHide={() => setLgShow(false)}
+                aria-labelledby="example-BS.Modal-sizes-title-lg"
+            >
+                <BS.Modal.Header closeButton>
+                    <BS.Modal.Title id="example-BS.Modal-sizes-title-lg">
+                    </BS.Modal.Title>
+                </BS.Modal.Header>
+                <BS.Modal.Body>
                     {/* Right */}
                     <BS.Col className="mt-5  overflow-auto text-pdf" id='print'>
                         <BS.Row className="mt-2">
-                            <BS.Col className="mr-5" xs lg="6">
+                            <BS.Col className="mr-5">
                                 Leuvensebaan 201 A <br />
                             3040 ST-Agatha-Rode (Huldenberg)<br />
                             Tel. 016/47 16 85 - Gsm 0475-23 38 56<br />
@@ -135,26 +62,26 @@ class Facture extends Component {
 
 
                         <BS.Row className="border mt-2">
-                            <BS.Col className="mr-5" xs lg="6">
-                                Datum factuur: &nbsp;&nbsp;&nbsp; {this.state.factureDate} <br />
+                            <BS.Col className="mr-5">
+                                Datum factuur: &nbsp;&nbsp;&nbsp; {props.state.factureDate} <br />
                             Date facture:                           <br />
                                 <br />
                             BTW nr klant:      <br />
-                            N° de TVA client: &nbsp;&nbsp;&nbsp;          {this.state.clientNumber}            <br />
+                            N° de TVA client: &nbsp;&nbsp;&nbsp;         {props.state.clientNumber}          <br />
                                 <br />
-                            Nummer factuur:&nbsp;&nbsp;&nbsp; {this.state.factureNumber} <br />
+                            Nummer factuur:&nbsp;&nbsp;&nbsp; {props.state.factureNumber} <br />
                             Numéro facture:
-                        </BS.Col>
+                </BS.Col>
                             <BS.Col className="margin-left">
-                                {this.state.clientCompany}  <br />
+                                Matexi Projects N.V. <br />
                                 <br />
-                                {this.state.clientName}   {this.state.clientFirstname} <br />
-                                {this.state.clientAdress}
-                            </BS.Col>
+                            Franklin Rooseveltlaan. 180
+                            8790 Waregem
+                </BS.Col>
                         </BS.Row>
 
                         <BS.Row className="border mt-4">
-                            <BS.Col className="mr-5" xs lg="6">
+                            <BS.Col className="mr-5">
                                 Omschrijving <br />
                             Description <br />
                             </BS.Col>
@@ -164,27 +91,28 @@ class Facture extends Component {
                 </BS.Col>
                         </BS.Row>
 
-                        <BS.Row className="border height-100 no-border-bot">
+                        <BS.Row className="border height-100">
                             <BS.Col className="mr-5 mt-2">
                                 P0 : 4500082808 <br />
                                 <br />
-                                <span id='description'>{this.state.comment} </span> <br /><br /><br /><br />
+                                <span id='description'>{props.state.comment} </span> <br /><br /><br /><br />
 
                             Livraison et placement de matériel d'éclairage &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                            <b>TOTAL :</b>   &nbsp;&nbsp; <span id='prix'>&nbsp;&nbsp;&nbsp; {this.state.price} € </span>
+                            <b>TOTAL :</b>   &nbsp;&nbsp; <span id='prix'>&nbsp;&nbsp;&nbsp; {props.state.price} € </span>
                             </BS.Col>
+
                         </BS.Row>
 
                         <BS.Row className="border no-border-top">
                             <BS.Col>
-                                Vervaldatum :  &nbsp;&nbsp; {this.state.deadline} <br />
-                            Echéance :
-                        </BS.Col>
+                                Vervaldatum :  &nbsp;&nbsp; {props.state.deadline} <br />
+                                Echéance : 
+                            </BS.Col>
                             <BS.Col>
-                                Gefaktureerde werken beeindigd op :  &nbsp;&nbsp; {this.state.workDate} <br />
-                            Travaux facturé terminé le :
-                        </BS.Col>
+                                Gefaktureerde werken beeindigd op :  &nbsp;&nbsp; {props.state.workDate} <br />
+                                Travaux facturé terminé le : 
+                            </BS.Col>
                         </BS.Row>
 
                         <BS.Row>
@@ -212,30 +140,30 @@ class Facture extends Component {
                                         <tr className="border-top">
                                             <td>
                                                 Totaal :<br />
-                                        Total:
+                                            Total:
 
-                                    </td>
+                                            </td>
                                             <td className="no-border">
-                                                {this.state.price} EUR
-                                    </td>
+                                                {props.state.price} EUR
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                Btw :     {this.state.tva}% <br />
-                                        Tva :
-                                    </td>
+                                                Btw :     {props.state.tva}% <br />
+                                                Tva :
+                                            </td>
                                             <td>
-                                                {this.tva(this.state.price, this.state.tva)} EUR
-                                    </td>
+                                                {tva(props.state.price, props.state.tva)} EUR
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 TE BETALEN : <br />
-                                        A PAYER :
-                                    </td>
+                                                A PAYER :
+                                            </td>
                                             <td>
-                                                {this.total_tva(this.state.price, this.state.tva)} EUR
-                                    </td>
+                                                {total_tva(props.state.price, props.state.tva)} EUR
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </BS.Table>
@@ -248,7 +176,7 @@ class Facture extends Component {
                         </BS.Col>
                             <BS.Col>
                                 REG. - ENREG. <br />
-                                {this.currentDate()}
+                                {currentDate()}
                             </BS.Col>
                             <BS.Col>
                                 KBC - CBC <br />
@@ -258,11 +186,11 @@ class Facture extends Component {
 
 
                     </BS.Col>
-                </BS.Row>
-            </BS.Container>
-        )
-    }
+
+                </BS.Modal.Body>
+            </BS.Modal>
+        </>
+    );
 }
 
-
-export default Facture;
+export default Preview;
