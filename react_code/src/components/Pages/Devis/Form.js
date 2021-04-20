@@ -97,6 +97,7 @@ class Form extends Component {
 
         let level_verify = document.getElementById(level)
         let room_verify = document.getElementsByName(room) 
+        let material_verify = document.getElementsByName(material.id) 
 
         // vérifier si la pièce a déjà été utilisée à ce niveau
         if (room_verify.length > 0)
