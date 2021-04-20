@@ -1,4 +1,11 @@
-@app.route('/api/articles', methods=['GET', 'POST', 'PUT', 'DELETE'])
+from flask import Blueprint, request, json
+from .database import mysql
+
+
+app_article = Blueprint('app_article', __name__)
+
+
+@app_article.route('/api/articles', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def articles():
     connector = mysql.connection
     cur = connector.cursor()

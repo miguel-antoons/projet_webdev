@@ -1,4 +1,11 @@
-@app.route('/api/client', methods=['GET', 'POST', 'PUT', 'DELETE'])
+from flask import Blueprint, request, json
+from .database import mysql
+
+
+app_client = Blueprint('app_client', __name__)
+
+
+@app_client.route('/api/client', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def client():
     connector = mysql.connection
     cur = connector.cursor()
@@ -105,8 +112,8 @@ def client():
 
         # Executing SQL Statements
 
-        cursor.execute('''
-            INSERT INTO client (client_NAME,client_SURNAME,client_TITLE,
+        cursor.execute(
+            '''INSERT INTO client (client_NAME,client_SURNAME,client_TITLE,
                 client_COMPANY,client_LANGUAGE,client_ADRESS,client_TVA,
                 client_NUMBER,client_MAIL)
             VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s) ''',

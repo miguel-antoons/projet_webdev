@@ -1,4 +1,11 @@
-@app.route('/api/facture', methods=['GET', 'POST', 'PUT', 'DELETE'])
+from flask import Blueprint, request, json, jsonify
+from .database import mysql
+
+
+app_facture = Blueprint('app_facture', __name__)
+
+
+@app_facture.route('/api/facture', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def facture():
     connector = mysql.connection
     cur = connector.cursor()
@@ -69,3 +76,17 @@ def facture():
     cur.close()
 
     return json.dumps(response)
+
+
+@app_facture.route("/api/facture/get_clients", methods=['GET'])
+def clients():
+    cursor = mysql.connection.cursor()
+
+    cursor.execute("SELECT * FROM clients")
+    data = cursor.fetchall()
+
+    tableau_client = {}
+    for i in data:
+        tableau_client[i[0]] = [i[1:]]
+    print(tableau_client)
+    return jsonify(tableau_client)
