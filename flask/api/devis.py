@@ -1,5 +1,12 @@
+from flask import Blueprint, request, json
+from .database import mysql
+
+
+app_devis = Blueprint('app_devis', __name__)
+
+
 # API serves for all devis
-@app.route('/api/devis', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@app_devis.route('/api/devis', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def devis():
     connector = mysql.connection
     cur = connector.cursor()

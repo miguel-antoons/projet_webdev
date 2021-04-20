@@ -1,4 +1,14 @@
-@app.route('/api/etiquettes', methods=['GET', 'POST', 'PUT', 'DELETE'])
+from flask import Blueprint, request, json
+from .database import mysql
+
+
+app_etiquette = Blueprint('app_etiquette', __name__)
+
+
+@app_etiquette.route(
+    '/api/etiquettes',
+    methods=['GET', 'POST', 'PUT', 'DELETE']
+)
 def etiquettes():
     connector = mysql.connection
     cur = connector.cursor()

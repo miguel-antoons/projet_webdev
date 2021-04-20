@@ -1,4 +1,11 @@
-@app.route('/api/rgie', methods=['GET', 'POST', 'PUT', 'DELETE'])
+from flask import Blueprint, request, json
+from .database import mysql
+
+
+app_rgie = Blueprint('app_rgie', __name__)
+
+
+@app_rgie.route('/api/rgie', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def rgie():
     connector = mysql.connection
     cur = connector.cursor()
