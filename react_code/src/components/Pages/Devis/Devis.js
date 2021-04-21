@@ -8,6 +8,4 @@ function Devis (props) {
 }
 
 
-
-
 export default Devis;
