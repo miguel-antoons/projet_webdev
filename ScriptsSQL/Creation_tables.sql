@@ -30,11 +30,11 @@ create table clients                                      -- 1 lien avec facture
     SOCIETE_CLIENT VARCHAR(50),
     ADRESSE_CLIENT VARCHAR(100) NOT NULL,
     ADRESSE_CLIENT_SECONDAIRE VARCHAR(100),
-    NUMERO_TVA_CLIENT INT,
-    LANGUE_CLIENT CHAR(2), -- le domaine casse les couilles
+    NUMERO_TVA_CLIENT VARCHAR(20),
+    LANGUE_CLIENT CHAR(3), -- le domaine casse les couilles
     NOM_ARCHITECT VARCHAR(50),
     TITRE_CLIENT VARCHAR(50) NOT NULL,
-    TELEPHONE_CLIENT INT,
+    TELEPHONE_CLIENT VARCHAR(15),
     EMAIL_CLIENT VARCHAR(50),
     CONSTRAINT pk__clients PRIMARY KEY (ID_CLIENT)
 );
