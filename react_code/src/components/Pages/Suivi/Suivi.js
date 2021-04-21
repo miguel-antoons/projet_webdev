@@ -1,11 +1,20 @@
 import React from 'react';
+import {Component} from 'react';
+import * as BS from "react-bootstrap";
 
-function Suivi() {
-    return (
+class Suivi extends Component {
+    constructor(props) {
+        super(props)
+    }
 
-        <h1>bienvenue dans Suivi</h1>
-
-    )
+    render() {
+        return (
+            <BS.Container>
+                Suivi matériel
+                
+            </BS.Container>
+        )
+    }
 
 }
 
