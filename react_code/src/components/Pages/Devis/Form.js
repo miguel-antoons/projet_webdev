@@ -23,7 +23,7 @@ class Form extends Component {
 
     // Récupérer tous les clients de la base de données
     async api_client() {
-        return await fetch('/api/clients').then((response) => {
+        return await fetch('/api/facture/get_clients').then((response) => {
             return response.json().then((result) => {
 
                 let tableau_clients = [];
@@ -69,7 +69,7 @@ class Form extends Component {
         let tableau_materiel = {};
         tableau_materiel["id"] = "1";
         tableau_materiel["name"] = "marteau";
-        tableau_materiel["price"] = "10 €";
+        tableau_materiel["price"] = "10";
         tableau_materiels.push(tableau_materiel)
         this.setState({materials : tableau_materiels})
         this.options_material(tableau_materiels)
@@ -79,7 +79,7 @@ class Form extends Component {
     options_material(materials){
         let materials_table = [];
         for (let material of materials) {
-            materials_table.push({"material": material.id + '. ' + material.name + ' (' + material.price + ')'})
+            materials_table.push({"material": material.id + '. ' + material.name + ' (' + material.price + ' €)'})
         }
         this.setState({material_options: materials_table})
     }
@@ -97,13 +97,11 @@ class Form extends Component {
 
         let level_verify = document.getElementById(level)
         let room_verify = document.getElementsByName(room) 
-        let material_verify = document.getElementsByName(material.id) 
+        let material_verify = document.getElementsByName(level + room + material.id)
 
         // vérifier si la pièce a déjà été utilisée à ce niveau
         if (room_verify.length > 0)
             for (let element of room_verify) {
-                console.log(element.parentNode)
-                console.log(level_verify)
                 if(element.parentNode === level_verify) {
                     room_verify = element        
                 }
@@ -119,17 +117,25 @@ class Form extends Component {
         if (level_verify !== null) {   
             // vérification de la pièce du niveau
             if(room_verify !== 0) {
+                //si matériel existe déjà ou pas
+                let tbody = document.getElementsByName(level + room)[0]
                 
-                room_verify.innerHTML += '<tr name="' + material.id + '"><td class="padding-right">' +  material.name + '</td><td>' + material.price +' </td></tr>'
+                if (material_verify.length > 0) {
+                    let compteur = Number(material_verify[0].innerText.split(" x ")[0]) + 1
+                    console.log(tbody)
+                    tbody.innerHTML = '<tr name="' + level + room + material.id + '"><td class="width-600">' + compteur + ' x ' +  material.name + '</td><td>' + Number(material.price) * compteur +' €</td></tr>'
+                }
+                else {
+                    tbody.innerHTML += '<tr name="' + level + room + material.id + '"><td class="width-600">1 x ' +  material.name + '</td><td>' + material.price +' €</td></tr>'
+                }
             }
             else {
-                
-                level_verify.innerHTML += '<table name="' + room + '"><thead><tr><th><b> ' + room  + '</b> </th></tr></thead> <tr name="' + material.id + '"><td class="padding-right">' +  material.name + '</td><td>' + material.price +' </td></tr></table>'
+                level_verify.innerHTML += '<br /><table name="' + room + '"><thead><tr><th><b> ' + room  + '</b> </th></tr></thead><tbody name="' +  level + room + '"> <tr name="' + level + room + material.id + '"><td class="width-600">1 x ' +  material.name + '</td><td>' + material.price +' €</td></tr></tbody></table>'
             }
         }
         else {
             
-            document.getElementById("materials").innerHTML += '<br /><div id="' + level + '"> <b><u>Niveau : ' +  level + '</u></b><table name="' + room + '"><thead><tr><th><b> ' + room  + '</b> </th></tr></thead> <tr name="' + material.id + '"><td class="padding-right">' +  material.name + '</td><td>' + material.price +' </td></tr></table>'
+            document.getElementById("materials").innerHTML += '<br /><div id="' + level + '"> <b><u>Niveau : ' +  level + '</u></b><table name="' + room + '"><thead><tr><th><b> ' + room  + '</b> </th></tr></thead><tbody name="' +  level + room + '"> <tr name="' + level + room + material.id + '"><td class="width-600">1 x ' +  material.name + '</td><td>' + material.price +' €</td></tr></tbody></table>'
         }
         
         return false;

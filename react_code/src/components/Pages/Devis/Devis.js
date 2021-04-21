@@ -35,7 +35,7 @@ class Devis extends Component {
     }
 
     async api_client() {
-        return await fetch('/api/clients').then((response) => {
+        return await fetch('/api/facture/get_clients').then((response) => {
             return response.json().then((result) => {
 
                 let tableau_clients = [];
@@ -76,9 +76,9 @@ class Devis extends Component {
         // changement client
         let event_id = document.getElementById(event.target.id).innerHTML
         event_id = event_id.split('. ')[0]
-
+        console.log(event_id)
         for (let client of this.state.clients) {
-            if (client.id === event_id) {
+            if (client.id === event_id && event.target.name == "clientNumber") {
                 this.setState({
                     clientNumber: client.number,
                     clientName: client.name,
@@ -89,6 +89,7 @@ class Devis extends Component {
                 })
 
                 // changement de sexe
+                console.log(this.state.title)
                 if (this.state.title === "M.") {
                     document.getElementById("sexe").innerText = "Monsieur, "
                 }
