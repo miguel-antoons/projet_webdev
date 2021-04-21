@@ -5,7 +5,6 @@ import './Devis.css';
 import './print.css';
 import Form from './Form'
 
-<<<<<<< HEAD
 class Devis extends Component {
     constructor(props) {
         super(props)
@@ -113,14 +112,6 @@ class Devis extends Component {
         let total_tva = price + (price / 100) * tva
         return Math.round(total_tva * 100) / 100
     }
-=======
-function Devis (props) {
-    console.log(props.match.params.id);
-    return (
-        <h1>Bienvenue dans Devis</h1>
-    )
-}
->>>>>>> test
 
     currentDate() {
         let date = new Date()
