@@ -21,17 +21,7 @@ function Navbar() {
             <BS.Navbar.Toggle aria-controls="responsive-BS.Navbar-BS.Nav"/>
             <BS.Navbar.Collapse id="responsive-BS.Navbar-BS.Nav">
                 <BS.Nav className="mr-auto">
-<<<<<<< HEAD
-                    <BS.Nav.Link href="/facture">Factures</BS.Nav.Link>
-                    <BS.Nav.Link href="/devis">Devis</BS.Nav.Link>
-                    <BS.Nav.Link href="/etiquetage">Étiquetage</BS.Nav.Link>
-                    <BS.Nav.Link href="/Client">Client</BS.Nav.Link>
-                    <BS.Nav.Link href="/suivi">Suivi de matériel</BS.Nav.Link>
-                    <BS.NavDropdown title="Modifier/Ajouter" id="collasible-BS.Nav-dropdown">
-                        <BS.NavDropdown.Item href="/Ajout_Client">Client</BS.NavDropdown.Item>
-                        <BS.NavDropdown.Item href="/facture">Article</BS.NavDropdown.Item>
-                        <BS.NavDropdown.Item href="/ensemble">ensemble d'articles</BS.NavDropdown.Item>
-=======
+                    
                     <LinkContainer to='/projets_factures'>
                         <BS.Nav.Link>Factures</BS.Nav.Link>
                     </LinkContainer>
@@ -44,19 +34,18 @@ function Navbar() {
                     <LinkContainer to='/suivi'>
                         <BS.Nav.Link>Suivi de matériel</BS.Nav.Link>
                     </LinkContainer>
-                    <BS.NavDropdown title="Modifier/Ajouter" id="collasible-BS.Nav-dropdown">
-                        <LinkContainer to='/rassemblement_clients'>
-                            <BS.NavDropdown.Item>Client</BS.NavDropdown.Item>
-                        </LinkContainer>
-                        <LinkContainer to='/projets_rgie'>
-                            <BS.NavDropdown.Item>Rgie</BS.NavDropdown.Item>
-                        </LinkContainer>
-                        <LinkContainer to='/rassemblement_articles'>
-                            <BS.NavDropdown.Item>Articles</BS.NavDropdown.Item>
-                        </LinkContainer>
->>>>>>> test
-                        <BS.NavDropdown.Divider/>
-                    </BS.NavDropdown>
+                    
+                    <LinkContainer to='/rassemblement_clients'>
+                        <BS.Nav.Link>Client</BS.Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to='/projets_rgie'>
+                        <BS.Nav.Link>Rgie</BS.Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to='/rassemblement_articles'>
+                        <BS.Nav.Link>Articles</BS.Nav.Link>
+                    </LinkContainer>
+                    <BS.NavDropdown.Divider/>
+                    
                 </BS.Nav>
                 {/*
                     <BS.Nav>

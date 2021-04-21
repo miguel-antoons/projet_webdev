@@ -17,9 +17,14 @@ app.secret_key = 'your secret key'
 # app.config['MYSQL_PASSWORD'] = 'Dev_User123'
 # app.config['MYSQL_DB'] = 'projet_webdev'
 
+#app.config['MYSQL_HOST'] = '127.0.0.1'
+#app.config['MYSQL_USER'] = 'root'
+#app.config['MYSQL_PASSWORD'] = ''
+#app.config['MYSQL_DB'] = 'projet-dev'
+
 app.config['MYSQL_HOST'] = '127.0.0.1'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_PASSWORD'] = 'Dev-Web1234'
 app.config['MYSQL_DB'] = 'projet-dev'
 
 app.register_blueprint(article.app_article)

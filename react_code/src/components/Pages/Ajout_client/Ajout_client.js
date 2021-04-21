@@ -83,7 +83,7 @@ const Ajout_Client = () => {
           value={ adress } onChange={ (e) => setAdress(e.target.value)   }  />
 
         <BS.Form.Label column="lg" lg={2} >N°TVA</BS.Form.Label>
-          <BS.Form.Control size="sm" type="text" placeholder="Entrer le N° TVA"  id="tva" name="tva" 
+          <BS.Form.Control size="sm" type="text" placeholder="Entrer le N° TVA"  id="tva" name="tva" maxLength='20' 
           value={ tva } onChange={ (e) => setTva(e.target.value)   }  />
 
         <BS.Form.Label column="lg" lg={2} >Numéro</BS.Form.Label>
