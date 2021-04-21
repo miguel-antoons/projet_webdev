@@ -8,10 +8,7 @@ import './Home.css';
 const Home = () => {
 
     return (
-        <BS.Container fluid className="div">
-            <BS.Jumbotron>
-                <h1>Bienvenue sur Factevis</h1>
-            </BS.Jumbotron>
+        <BS.Container fluid className="div pt-3">
             <div className="d-flex justify-content-center div">
                 <BS.Col lg="2"></BS.Col>
                 <BS.Col md="auto" className="div">

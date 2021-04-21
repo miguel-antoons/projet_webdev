@@ -1,0 +1,10 @@
+.tableauxEtiquettes {
+    width: 32.5cm;
+    border: 1px solid grey;
+    border-collapse: collapse;
+    table-layout: fixed;
+    padding: 0;
+    margin-top: 25pt;
+    margin-right: 95pt;
+    margin-left: 10pt;
+}

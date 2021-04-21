@@ -1,0 +1,38 @@
+.cleanButton{
+    margin: 15pt;
+    width: 3.4cm;
+    height: 1.8cm;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20pt;
+    font-style: italic;
+    border-radius: 16px;
+    background-color: #ff4500;
+    color: whitesmoke;
+    font-family: Verdana, sans-serif;
+}
+
+.cleanButton:hover{
+    color: #ff4500;
+    background-color: #e5e4e2;
+}
+
+.cleanButton:focus {
+    background-color: #d33800;
+    color: whitesmoke;
+}
+
+.changementCouleur {
+    margin: 19pt;
+    padding: 10pt;
+}
+
+.titreCouleurs {
+    margin-bottom: 20pt;
+}
+
+.projectStatus {
+    margin: 19pt;
+    padding: 10pt;
+}
