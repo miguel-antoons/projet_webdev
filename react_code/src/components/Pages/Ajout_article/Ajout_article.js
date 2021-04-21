@@ -1,13 +1,13 @@
 import React from 'react';
 
-function Devis () {
+function Article () {
     return (
-        <h1>Bienvenue dans Devis</h1>
+        <h1>Bienvenue dans Articles</h1>
     )
 }
 
 
 
 
-export default Devis;
+export default Article;
 

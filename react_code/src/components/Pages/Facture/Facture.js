@@ -30,9 +30,9 @@ class Facture extends Component {
     }
 
     async api_client() {
-        return await fetch('/api/clients').then((response) => {
+        return await fetch('/api/facture/get_clients').then((response) => {
             return response.json().then((result) => {
-
+                console.log(result)
                 let tableau_clients = [];
 
                 //Création du dictionnaire

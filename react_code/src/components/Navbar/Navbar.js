@@ -1,32 +1,49 @@
 import React from 'react';
 import * as BS from "react-bootstrap";
+import { LinkContainer } from 'react-router-bootstrap'
 import logoNavbar from "./navbar_logo.png";
 
 function Navbar() {
     return (
         <BS.Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-            <BS.Navbar.Brand href="/">
-                <img
-                    alt=""
-                    src={logoNavbar}
-                    width="30"
-                    height="30"
-                    className="d-inline-block align-top"
-                />{' '}
-                Factevis
-            </BS.Navbar.Brand>
+            <LinkContainer to='/'>
+                <BS.Navbar.Brand>
+                    <img
+                        alt=""
+                        src={logoNavbar}
+                        width="30"
+                        height="30"
+                        className="d-inline-block align-top"
+                    />{' '}
+                    Factevis
+                </BS.Navbar.Brand>
+            </LinkContainer>
             <BS.Navbar.Toggle aria-controls="responsive-BS.Navbar-BS.Nav"/>
             <BS.Navbar.Collapse id="responsive-BS.Navbar-BS.Nav">
                 <BS.Nav className="mr-auto">
-                    <BS.Nav.Link href="/facture">Factures</BS.Nav.Link>
-                    <BS.Nav.Link href="/devis">Devis</BS.Nav.Link>
-                    <BS.Nav.Link href="/etiquetage">Étiquetage</BS.Nav.Link>
-                    <BS.Nav.Link href="/suivi">Suivi de matériel</BS.Nav.Link>
+                    <LinkContainer to='/projets_factures'>
+                        <BS.Nav.Link>Factures</BS.Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to='/projets_devis'>
+                        <BS.Nav.Link>Devis</BS.Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to='/projets_etiquettes'>
+                        <BS.Nav.Link>Étiquetage</BS.Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to='/suivi'>
+                        <BS.Nav.Link>Suivi de matériel</BS.Nav.Link>
+                    </LinkContainer>
                     <BS.NavDropdown title="Modifier/Ajouter" id="collasible-BS.Nav-dropdown">
-                    <BS.NavDropdown.Item href="/client">Client</BS.NavDropdown.Item>
-                    <BS.NavDropdown.Item href="/article">Article</BS.NavDropdown.Item>
-                    <BS.NavDropdown.Item href="/ensemble">ensemble d'articles</BS.NavDropdown.Item>
-                    <BS.NavDropdown.Divider/>
+                        <LinkContainer to='/rassemblement_clients'>
+                            <BS.NavDropdown.Item>Client</BS.NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to='/projets_rgie'>
+                            <BS.NavDropdown.Item>Rgie</BS.NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to='/rassemblement_articles'>
+                            <BS.NavDropdown.Item>Articles</BS.NavDropdown.Item>
+                        </LinkContainer>
+                        <BS.NavDropdown.Divider/>
                     </BS.NavDropdown>
                 </BS.Nav>
                 {/*

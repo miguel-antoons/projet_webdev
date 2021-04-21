@@ -23,6 +23,7 @@ yarn-debug.log*
 yarn-error.log*
 
 flask/venv
+flask/.env
 __pycache__
 flask/requirements.txt
 flask/requirements.txt
@@ -36,3 +37,4 @@ flask/requirements.txt
 .idea/vcs.xml
 .idea/workspace.xml
 .idea/inspectionProfiles/profiles_settings.xml
+flask/__pycache__
