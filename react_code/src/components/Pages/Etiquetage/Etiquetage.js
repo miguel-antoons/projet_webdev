@@ -1,10 +1,37 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import Row from './Row'
 import './etiquetage.css';
 import './impression.css';
 import './commandesEtiquettes.css';
 import * as BS from "react-bootstrap";
 
-const Etiquetage = () => {
+const Etiquetage = (props) => {
+    const  [etiquettes, setEtiquettes] = useState([]);
+
+    useEffect(() => {
+        let initiateTable;
+        if (Number(props.match.params.id)) {
+            initiateTable = () => {
+                console.log(props.match.params.id);
+            };
+        }
+        else {
+            initiateTable = () => {
+                let tableContent = [[]];
+                for (let i = 0 ; i < 18 ; i++) {
+                    tableContent[0].push({
+                        color: 'black',
+                        bold: false,
+                        value: ''
+                    });
+                }
+                setEtiquettes(tableContent);
+            };
+        }
+
+        initiateTable();
+    }, [props.match.params.id]);
+
     return (
         <BS.Row>
             <BS.Col lg="3">
@@ -46,7 +73,9 @@ const Etiquetage = () => {
             <BS.Col lg="9">
                 <table className="tableauxEtiquettes">
                         <tbody className="etiquettes">
-                            <tr><td>hello</td></tr>
+                            {etiquettes.map((row, index) => (
+                                <Row key={index} rowContent={row} />
+                            ))}
                         </tbody>
                 </table>
             </BS.Col>

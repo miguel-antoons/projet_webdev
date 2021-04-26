@@ -48,6 +48,7 @@ function ProjetsEtiquettes () {
         fetchContent();
     }, [filter]);
 
+    
     const deleteElement = async (id) => {
         await fetch(`/api/etiquettes?id=${id}`, { 
             method: 'DELETE'
