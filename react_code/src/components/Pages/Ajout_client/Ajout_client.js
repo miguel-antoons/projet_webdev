@@ -34,9 +34,9 @@ const Ajout_Client = () => {
       try{
         let result = await fetch('/api/client', {
           method: 'post',
-          //mode: 'no-cors', // --> pas besoin de cette ligne
+          //mode: 'no-cors', // 
           headers: {
-            //'Accept': 'application/json', // --> pas besoin de cette ligne non-plus
+            //'Accept': 'application/json'
             'Content-type': 'application/json',
         
           },
