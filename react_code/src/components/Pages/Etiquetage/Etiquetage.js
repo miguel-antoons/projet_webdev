@@ -22,6 +22,7 @@ const Etiquetage = (props) => {
                     tableContent[0].push({
                         color: 'black',
                         bold: false,
+                        colspan: 1,
                         value: ''
                     });
                 }
@@ -31,6 +32,12 @@ const Etiquetage = (props) => {
 
         initiateTable();
     }, [props.match.params.id]);
+
+
+    const fuseMergePreview = (htmlElement, rowIndex, columnIndex) => {
+        console.log(htmlElement.target.colspan, rowIndex, columnIndex);
+    };
+
 
     return (
         <BS.Row>
@@ -70,14 +77,16 @@ const Etiquetage = (props) => {
                     <p id="events"></p>
                 </div>
             </BS.Col>
-            <BS.Col lg="9">
-                <table className="tableauxEtiquettes">
-                        <tbody className="etiquettes">
-                            {etiquettes.map((row, index) => (
-                                <Row key={index} rowContent={row} />
-                            ))}
-                        </tbody>
-                </table>
+            <BS.Col className="no_margin" lg="9">
+                <div className="etiquettesContainer">
+                    <table className="tableauxEtiquettes">
+                            <tbody className="etiquettes">
+                                {etiquettes.map((row, index) => (
+                                    <Row key={index} rowIndex={index} rowContent={row} fuseMergePreview={fuseMergePreview} />
+                                ))}
+                            </tbody>
+                    </table>
+                </div>
             </BS.Col>
         </BS.Row>
     );

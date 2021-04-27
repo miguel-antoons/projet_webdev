@@ -1,3 +1,8 @@
+.no_margin {
+    margin: 0;
+    padding: 0;
+}
+
 .tableauxEtiquettes {
     width: 32.5cm;
     border: 1px solid grey;
@@ -62,9 +67,6 @@
     text-align: center;
     vertical-align: middle;
     color: black;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
     font-family: Calibri light, sans-serif;
     font-size: 9.8pt;
 }
@@ -81,10 +83,15 @@
     text-align: right;
     vertical-align: middle;
     color: black;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
     font-family: Calibri light, sans-serif;
     font-size: 8.4pt;
     padding: 0.005cm 2px 0.005cm 2px;
+}
+
+.etiquettesContainer {
+    width: 90%;
+    height: 80%;
+    overflow: auto;
+    text-align: center;
+    margin: 0;
 }
