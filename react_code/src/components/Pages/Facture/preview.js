@@ -43,9 +43,9 @@ function Preview(props) {
                 </BS.Modal.Header>
                 <BS.Modal.Body>
                     {/* Right */}
-                    <BS.Col className="mt-5  overflow-auto text-pdf" id='print'>
+                    <BS.Col className="mt-5  overflow-auto text-pdf">
                         <BS.Row className="mt-2">
-                            <BS.Col className="mr-5">
+                            <BS.Col className="mr-5" xs lg="6">
                                 Leuvensebaan 201 A <br />
                             3040 ST-Agatha-Rode (Huldenberg)<br />
                             Tel. 016/47 16 85 - Gsm 0475-23 38 56<br />
@@ -62,26 +62,26 @@ function Preview(props) {
 
 
                         <BS.Row className="border mt-2">
-                            <BS.Col className="mr-5">
+                            <BS.Col className="mr-5" xs lg="6">
                                 Datum factuur: &nbsp;&nbsp;&nbsp; {props.state.factureDate} <br />
                             Date facture:                           <br />
                                 <br />
                             BTW nr klant:      <br />
-                            N° de TVA client: &nbsp;&nbsp;&nbsp;         {props.state.clientNumber}          <br />
+                            N° de TVA client: &nbsp;&nbsp;&nbsp;          {props.state.clientNumber}            <br />
                                 <br />
                             Nummer factuur:&nbsp;&nbsp;&nbsp; {props.state.factureNumber} <br />
                             Numéro facture:
-                </BS.Col>
+                        </BS.Col>
                             <BS.Col className="margin-left">
-                                Matexi Projects N.V. <br />
+                                {props.state.clientCompany}  <br />
                                 <br />
-                            Franklin Rooseveltlaan. 180
-                            8790 Waregem
-                </BS.Col>
+                                {props.state.clientName}   {props.state.clientFirstname} <br />
+                                {props.state.clientAdress}
+                            </BS.Col>
                         </BS.Row>
 
                         <BS.Row className="border mt-4">
-                            <BS.Col className="mr-5">
+                            <BS.Col className="mr-5" xs lg="6">
                                 Omschrijving <br />
                             Description <br />
                             </BS.Col>
@@ -91,7 +91,7 @@ function Preview(props) {
                 </BS.Col>
                         </BS.Row>
 
-                        <BS.Row className="border height-100">
+                        <BS.Row className="border height-100 no-border-bot">
                             <BS.Col className="mr-5 mt-2">
                                 P0 : 4500082808 <br />
                                 <br />
@@ -101,18 +101,17 @@ function Preview(props) {
 
                             <b>TOTAL :</b>   &nbsp;&nbsp; <span id='prix'>&nbsp;&nbsp;&nbsp; {props.state.price} € </span>
                             </BS.Col>
-
                         </BS.Row>
 
                         <BS.Row className="border no-border-top">
                             <BS.Col>
                                 Vervaldatum :  &nbsp;&nbsp; {props.state.deadline} <br />
-                                Echéance : 
-                            </BS.Col>
+                            Echéance :
+                        </BS.Col>
                             <BS.Col>
                                 Gefaktureerde werken beeindigd op :  &nbsp;&nbsp; {props.state.workDate} <br />
-                                Travaux facturé terminé le : 
-                            </BS.Col>
+                            Travaux facturé terminé le :
+                        </BS.Col>
                         </BS.Row>
 
                         <BS.Row>
@@ -140,30 +139,30 @@ function Preview(props) {
                                         <tr className="border-top">
                                             <td>
                                                 Totaal :<br />
-                                            Total:
+                                        Total:
 
-                                            </td>
+                                    </td>
                                             <td className="no-border">
                                                 {props.state.price} EUR
-                                            </td>
+                                    </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 Btw :     {props.state.tva}% <br />
-                                                Tva :
-                                            </td>
+                                        Tva :
+                                    </td>
                                             <td>
                                                 {tva(props.state.price, props.state.tva)} EUR
-                                            </td>
+                                    </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 TE BETALEN : <br />
-                                                A PAYER :
-                                            </td>
+                                        A PAYER :
+                                    </td>
                                             <td>
                                                 {total_tva(props.state.price, props.state.tva)} EUR
-                                            </td>
+                                    </td>
                                         </tr>
                                     </tbody>
                                 </BS.Table>

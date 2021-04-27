@@ -76,9 +76,9 @@ class Devis extends Component {
         // changement client
         let event_id = document.getElementById(event.target.id).innerHTML
         event_id = event_id.split('. ')[0]
-        console.log(event_id)
+
         for (let client of this.state.clients) {
-            if (client.id === event_id && event.target.name == "clientNumber") {
+            if (client.id === event_id && event.target.name === "clientNumber") {
                 this.setState({
                     clientNumber: client.number,
                     clientName: client.name,

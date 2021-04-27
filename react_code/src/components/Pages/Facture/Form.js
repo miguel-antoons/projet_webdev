@@ -14,13 +14,13 @@ class Form extends Component {
             clients_options: []
         }
         this.api_client()
+        this.save = this.save.bind(this)
     }
 
     // Récupérer tous les clients de la base de données
     async api_client() {
         return await fetch('/api/facture/get_clients').then((response) => {
             return response.json().then((result) => {
-                console.log(result)
                 let tableau_clients = [];
 
                 //Création du dictionnaire
@@ -55,13 +55,47 @@ class Form extends Component {
             clients_table.push({"client" :  client.id + '. ' + client.firstname + ' ' + client.name})
         }
         this.setState({ clients_options: clients_table })
-        console.log(this.state.clients_options)
     }
+
+    async save() {
+        
+        let id_client = document.getElementById("clientNumber").value.split(". ")[0]
+        let date_facture = document.getElementById("factureDate").value
+        let date_echeance = document.getElementById("deadline").value
+        let date_fin_travaux = document.getElementById("workDate").value
+        let taux_tva = document.getElementById("tva").value
+        let commentaire = document.getElementById("comment").value
+        let montant = document.getElementById("price").value
+        let id_texte_facture = "1"
+        
+        try{
+            let result = await fetch('/api/facture', {
+              method: 'post',
+              //mode: 'no-cors', // --> pas besoin de cette ligne
+              headers: {
+                //'Accept': 'application/json', // --> pas besoin de cette ligne non-plus
+                'Content-type': 'application/json',
+            
+              },
+              
+              body: JSON.stringify({id_client, date_facture, date_echeance, date_fin_travaux, taux_tva, commentaire, montant, id_texte_facture}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
+            });
+      
+            const data = await result.json();
+      
+            console.log(data);
+          }
+          catch(e){
+            console.log(e);
+        }
+         
+    }
+    
 
     render() {
         return (
 
-            <BS.Form>
+            <BS.Form onSubmit={this.save}>
                 <BS.Form.Group>
                     <BS.Form.Label>N° de facture</BS.Form.Label>
                     <BS.Form.Control size="sm" type="text" placeholder="Entrer numéro de facture" value={this.props.factureNumber} onChange={this.props.onChangeValue} id="factureNumber" name="factureNumber" />
@@ -107,7 +141,9 @@ class Form extends Component {
                     <BS.Form.Control size="sm" type="number" rows={3} value={this.props.price} defaultValue={0} onChange={this.props.onChangeValue} id="price" name="price" />
                 </BS.Form.Group>
                 <Preview state={this.props.returnState} />
+                <BS.Button className="no-print mb-2 ml-2" variant="info" onClick={this.save}>Sauvegarder</BS.Button> {' '}
                 <BS.Button className="no-print mb-2 ml-2" variant="info" onClick={window.print}>Imprimer</BS.Button> {' '}
+                
 
             </BS.Form>
         )

@@ -43,7 +43,7 @@ function Preview(props) {
                 </BS.Modal.Header>
                 <BS.Modal.Body>
                     {/* Right */}
-                    <BS.Col className="mt-5  overflow-auto text-pdf" id='print'>
+                    <BS.Col className="mt-5  overflow-auto text-pdf">
                         <BS.Row className="mt-2">
                             <BS.Col className="mr-5">
                                 Leuvensebaan 201 A <br />

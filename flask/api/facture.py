@@ -73,6 +73,34 @@ def facture():
 
         response = cur.fetchall()
 
+    elif request.method == 'POST':
+        # Creating a connection cursor
+        cursor = mysql.connection.cursor()
+        requete = request.json
+
+        print(requete)
+
+        # Executing SQL Statements
+    
+        cursor.execute(
+            '''INSERT INTO factures (id_client, date_facture, date_echeance,
+                date_fin_travaux, taux_tva, commentaire, montant,
+                id_texte_facture)
+            VALUES(%s,%s,%s,%s,%s,%s,%s,%s) ''',
+
+            (requete["id_client"], requete["date_facture"], requete["date_echeance"],
+                requete["date_fin_travaux"], requete["taux_tva"], requete["commentaire"], requete["montant"],
+                requete["id_texte_facture"])
+        )
+
+        # Saving the Actions performed on the DB
+        mysql.connection.commit()
+
+        # Closing the cursor
+        cursor.close()
+
+        return jsonify(msg='Le client à étét ajouté avec succès')
+
     cur.close()
 
     return json.dumps(response)

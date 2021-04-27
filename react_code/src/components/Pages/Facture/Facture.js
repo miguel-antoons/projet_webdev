@@ -27,12 +27,12 @@ class Facture extends Component {
         }
         this.api_client()
         this.handleChange = this.handleChange.bind(this)
+
     }
 
     async api_client() {
         return await fetch('/api/facture/get_clients').then((response) => {
             return response.json().then((result) => {
-                console.log(result)
                 let tableau_clients = [];
 
                 //Création du dictionnaire
@@ -68,7 +68,6 @@ class Facture extends Component {
             [name]: value
         })
 
-        console.log(event)
         let event_id = document.getElementById(event.target.id).innerHTML
         event_id = event_id.split('. ')[0]
     
@@ -104,6 +103,8 @@ class Facture extends Component {
         let date = new Date()
         return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
     }
+
+    
 
     render() {
         return (

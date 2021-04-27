@@ -71,6 +71,11 @@ class Form extends Component {
         tableau_materiel["name"] = "marteau";
         tableau_materiel["price"] = "10";
         tableau_materiels.push(tableau_materiel)
+        tableau_materiel = {};
+        tableau_materiel["id"] = "2";
+        tableau_materiel["name"] = "scie";
+        tableau_materiel["price"] = "110.25";
+        tableau_materiels.push(tableau_materiel)
         this.setState({materials : tableau_materiels})
         this.options_material(tableau_materiels)
     }
@@ -117,9 +122,9 @@ class Form extends Component {
         if (level_verify !== null) {   
             // vérification de la pièce du niveau
             if(room_verify !== 0) {
-                //si matériel existe déjà ou pas
-                let tbody = document.getElementsByName(level + room)[0]
                 
+                let tbody = document.getElementsByName(level + room)[0]
+                //si matériel existe déjà ou pas
                 if (material_verify.length > 0) {
                     let compteur = Number(material_verify[0].innerText.split(" x ")[0]) + 1
                     console.log(tbody)

@@ -1,3 +1,9 @@
+/* On screens that are 600px or less, set the background color to olive */
+@media screen and (max-width: 600px) {
+    #print {
+      display: none;
+    }
+  }
 
 .overflow-auto {
     max-height: 720px;
@@ -16,7 +22,7 @@
 }
 
 .text-pdf {
-    font-size: 0.8vw;
+    font-size: 1em;
 }
 
 .margin-left {
@@ -29,7 +35,7 @@
 
 ul {
     padding-left: 15px !important;
-    font-size: 0.4vw;
+    font-size: 0.4em;
 }
 
 .no-border {
@@ -50,4 +56,9 @@ ul {
 
 .no-border-bot {
     border-bottom: none !important;
+}
+
+
+#print h6 {
+    font-size: 1.7em;
 }
