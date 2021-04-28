@@ -5,7 +5,7 @@ create table suivi_materiel                               -- aucun lien avec le 
     ID_SUIVI_MATERIEL INT NOT NULL AUTO_INCREMENT,
     MATERIEL VARCHAR(100) NOT NULL,
     NOM VARCHAR(50) NOT NULL,
-    TEL INT,
+    TEL VARCHAR(20),
     EMAIL VARCHAR(50),
     DATE_EMPRUNT DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier
     DATE_RETOUR DATE,
