@@ -66,7 +66,6 @@
     resize: none;
     text-align: center;
     vertical-align: middle;
-    color: black;
     font-family: Calibri light, sans-serif;
     font-size: 9.8pt;
 }
@@ -82,7 +81,6 @@
     resize: none;
     text-align: right;
     vertical-align: middle;
-    color: black;
     font-family: Calibri light, sans-serif;
     font-size: 8.4pt;
     padding: 0.005cm 2px 0.005cm 2px;
@@ -94,4 +92,17 @@
     overflow: auto;
     text-align: center;
     margin: 0;
+}
+
+
+/**CSS DYNAMIQUE**/
+
+.blackNormal {
+    color: black;
+    font-style: normal;
+}
+
+.greenBold {
+    color: green;
+    font-style: bold;
 }

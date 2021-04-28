@@ -20,8 +20,9 @@ const Etiquetage = (props) => {
                 let tableContent = [[]];
                 for (let i = 0 ; i < 18 ; i++) {
                     tableContent[0].push({
+                        tempBackground: 'white',
                         color: 'black',
-                        bold: false,
+                        bold: 1,
                         colspan: 1,
                         value: ''
                     });
@@ -35,7 +36,15 @@ const Etiquetage = (props) => {
 
 
     const fuseMergePreview = (htmlElement, rowIndex, columnIndex) => {
-        console.log(htmlElement.target.colSpan, rowIndex, columnIndex);
+        console.log(etiquettes[rowIndex][columnIndex]);
+    };
+
+
+    const writeTicket = (htmlElement, rowIndex, columnIndex) => {
+        let stateCopy = etiquettes.slice();
+
+        stateCopy[rowIndex][columnIndex].value = htmlElement.target.value;
+        setEtiquettes(stateCopy);
     };
 
 
@@ -82,7 +91,7 @@ const Etiquetage = (props) => {
                     <table className="tableauxEtiquettes">
                             <tbody className="etiquettes">
                                 {etiquettes.map((row, index) => (
-                                    <Row key={index} rowIndex={index} rowContent={row} fuseMergePreview={fuseMergePreview} />
+                                    <Row key={index} writeCells={writeTicket} rowIndex={index} rowContent={row} fuseMergePreview={fuseMergePreview} />
                                 ))}
                             </tbody>
                     </table>
