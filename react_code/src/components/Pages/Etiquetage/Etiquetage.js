@@ -35,7 +35,7 @@ const Etiquetage = (props) => {
 
 
     const fuseMergePreview = (htmlElement, rowIndex, columnIndex) => {
-        console.log(htmlElement.target.colspan, rowIndex, columnIndex);
+        console.log(htmlElement.target.colSpan, rowIndex, columnIndex);
     };
 
 
