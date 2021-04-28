@@ -84,15 +84,15 @@ const Ajout_Articles = () => {
          
 
           <BS.Form.Label column="lg" lg={2} >Premier Prix : </BS.Form.Label>
-          <BS.Form.Control size="sm" type="text" placeholder="Entrer le prix de l'article"  id="Prix1" name="Prix1" 
+          <BS.Form.Control size="sm" type="number" placeholder="Entrer le prix de l'article"  id="Prix1" name="Prix1" maxLength='20' 
           value={ Prix1 } onChange={ (e) => setPrix1(e.target.value)   }  />
 
         <BS.Form.Label column="lg" lg={2} >Deuxième Prix</BS.Form.Label>
-          <BS.Form.Control size="sm" type="text" placeholder="Entrer le prix de l'article"  id="Prix2" name="Prix2" maxLength='20' 
+          <BS.Form.Control size="sm" type="number" placeholder="Entrer le prix de l'article"  id="Prix2" name="Prix2" maxLength='20' 
           value={ Prix2 } onChange={ (e) => setPrix2(e.target.value)   }  />
 
         <BS.Form.Label column="lg" lg={2} >Troisième Prix</BS.Form.Label>
-          <BS.Form.Control size="sm" type="text" placeholder="Entrer le prix de l'article" maxLength='10'  id="Prix3" name="Prix3" 
+          <BS.Form.Control size="sm" type="number" placeholder="Entrer le prix de l'article" maxLength='20'  id="Prix3" name="Prix3" 
           value={ Prix3 } onChange={ (e) => setPrix3(e.target.value)   }  />
 
          

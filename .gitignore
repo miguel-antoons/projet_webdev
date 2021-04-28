@@ -37,3 +37,6 @@ flask/requirements.txt
 .idea/workspace.xml
 .idea/inspectionProfiles/profiles_settings.xml
 flask/__pycache__
+
+#environnement 
+.env
