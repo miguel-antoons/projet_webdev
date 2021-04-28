@@ -1,4 +1,5 @@
 import unittest
+from api import *
 
 
 class EtiquettesTest(unittest.TestCase):

@@ -3,5 +3,15 @@
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": false,
     "python.linting.pycodestyleEnabled": true,
-    "python.pythonPath": "/usr/bin/python3.9"
+    "python.pythonPath": "/usr/bin/python3.9",
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./flask",
+        "-p",
+        "*test*.py"
+    ],
+    "python.testing.pytestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.unittestEnabled": true
 }
