@@ -26,6 +26,8 @@
 .changementCouleur {
     margin: 19pt;
     padding: 10pt;
+    border-radius: 20px;
+    width: 77%;
 }
 
 .titreCouleurs {
@@ -35,4 +37,8 @@
 .projectStatus {
     margin: 19pt;
     padding: 10pt;
+}
+
+.radioContainer {
+    margin-left: 25pt;
 }

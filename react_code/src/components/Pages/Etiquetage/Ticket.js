@@ -1,0 +1,65 @@
+import React from 'react';
+
+const Ticket =  ({ticketInfo, rowIndex, index, writeCells, setBold, resetTimer, changeColor, writeCNumber, setCNumberBold, changeCNumberColor}) => {
+    let circuitClasses = "circuit " + ticketInfo.color;
+    let circuitNumberClasses = "circuitNumber " + ticketInfo.circuitNumber.color;
+    let cellClasses = "module ";
+
+
+
+    if (ticketInfo.bold) {
+        circuitClasses += "Bold";
+    }
+    else {
+        circuitClasses += "Normal";
+    }
+
+    if (ticketInfo.circuitNumber.bold) {
+        circuitNumberClasses += "Bold";
+    }
+    else {
+        circuitNumberClasses += "Normal";
+    }
+
+    circuitClasses += " " + ticketInfo.tempBackground + "Back";
+    circuitNumberClasses += " " + ticketInfo.tempBackground + "Back";
+    cellClasses += ticketInfo.tempBackground + "Back";
+
+    return (
+        <td className={cellClasses} colSpan={ticketInfo.colSpan} key={index}>
+            <textarea 
+                key={"a" + {index}} 
+                onMouseDown={() => setBold(rowIndex, index)} 
+                onMouseUp={resetTimer} 
+                onChange={(event) => writeCells(event, rowIndex, index)}
+                onDoubleClick={() => changeColor(rowIndex, index)}
+                value={ticketInfo.value} 
+                className={circuitClasses} 
+                rows='6' 
+                cols='5' 
+                placeholder="Circuit ..."
+            >
+            </textarea>
+            <br />
+            <textarea 
+                key={"b" + {index}} 
+                onMouseDown={() => setCNumberBold(rowIndex, index)} 
+                onMouseUp={resetTimer} 
+                onChange={(event) => writeCNumber(event, rowIndex, index)}
+                onDoubleClick={() => changeCNumberColor(rowIndex, index)}
+                value={ticketInfo.circuitNumber.value} 
+                className={circuitNumberClasses} 
+                rows='1' 
+                cols='5' 
+                placeholder='N°'
+            >
+            </textarea>
+        </td>
+    );
+};
+
+
+
+
+export default Ticket;
+

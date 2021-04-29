@@ -97,12 +97,70 @@
 
 /**CSS DYNAMIQUE**/
 
-.blackNormal {
+/**Pour les couleurs et les styles de polices dans les colonnes**/
+.blackNormal, .blackNormal::placeholder {
     color: black;
-    font-style: normal;
+    font-weight: normal;
 }
 
-.greenBold {
+.redNormal, .redNormal::placeholder {
+    color: red;
+    font-weight: normal;
+}
+
+.greenNormal, .greenNormal::placeholder {
     color: green;
-    font-style: bold;
+    font-weight: normal;
+}
+
+.blueNormal, .blueNormal::placeholder {
+    color: #0077be;
+    font-weight: normal;
+}
+
+.blackBold, .blackBold::placeholder {
+    color: black;
+    font-weight: bold;
+}
+
+.redBold, .redBold::placeholder {
+    color: red;
+    font-weight : bold;
+}
+
+.greenBold, .greenBold::placeholder {
+    color: green;
+    font-weight: bold;
+}
+
+.blueBold, .blueBold::placeholder {
+    color: #0077be;
+    font-weight : bold;
+}
+
+
+/**Pour le preview de fusion ou merge de colonnes**/
+.greenBack {
+    background-color: #84DA81;
+}
+
+.redBack {
+    background-color: #E67575;
+}
+
+/**Pour l'arrière-plan de la partie commande ou on choisit la couleur du texte**/
+.blackCommand {
+    background-color: rgba(0, 0, 0, 0.274);
+}
+
+.redCommand {
+    background-color: #ff000065;
+}
+
+.greenCommand {
+    background-color: rgba(0, 128, 0, 0.363);
+}
+
+.blueCommand {
+    background-color: #0078be6e;
 }
