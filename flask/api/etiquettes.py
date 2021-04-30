@@ -56,6 +56,23 @@ def etiquettes():
                 'date': row[5]
             })
 
+    elif request.method == 'POST':
+        data = request.json
+        arguments = (data[0], data[1], json.dumps(data[2]), )
+
+        sql_procedure = """
+            INSERT INTO etiquettes (ID_CLIENT, CHANTIER, CODE_JSON)
+            VALUES (%s, %s, %s)
+        """
+
+        cur.execute(sql_procedure, arguments)
+        connector.commit()
+
+        response = cur.fetchall()
+
+    elif request.method == 'PUT':
+        pass
+
     elif request.method == 'DELETE':
         # get the id of the projects that has to be deleted
         id_to_delete = (int(request.args.get('id')), )
@@ -76,5 +93,27 @@ def etiquettes():
         response = cur.fetchall()
 
     cur.close()
+
+    return json.dumps(response)
+
+
+@app_etiquette.route('/api/etiquette/<id>', methods=['GET'])
+def etiquette(id):
+    connector = mysql.connection
+    cur = connector.cursor()
+
+    sql_procedure = """
+        SELECT ID_CLIENT, NOM_CLIENT, PRENOM_CLIENT, SOCIETE_CLIENT, CHANTIER,
+            CODE_JSON
+        FROM etiquettes as E
+            JOIN clients as C on E.ID_CLIENT = C.ID_CLIENT
+        WHERE ID_ETIQUETTE = %s
+    """
+
+    cur.execute(sql_procedure, id)
+
+    result = cur.fetchone()
+
+    print(result)
 
     return json.dumps(response)

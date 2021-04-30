@@ -3,27 +3,36 @@ import Row from './Row'
 import './etiquetage.css';
 import './impression.css';
 import './commandesEtiquettes.css';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
 import * as BS from "react-bootstrap";
 
 const Etiquetage = (props) => {
     const [etiquettes, setEtiquettes] = useState([]);
     const [colorDivClass, setColorDivClass] = useState("changementCouleur redCommand")
     const [selectedTextColor, setSelectedTextColor] = useState("red");
+    const [newLineColumns, setNewLineColumns] = useState(18);
+    const [projectID, setProjectID] = useState(props.match.params.id);
+    const [clientID, setClientID] = useState();
+    const [clients, setClients] = useState([]);
+    const [constructionSite, setConstructionSite] = useState("");
+    const [clientName, setClientName] = useState("");
     let longPressTimer = 0;
+    let clientInfo;
 
     useEffect(() => {
         let initiateTable;
-        if (Number(props.match.params.id)) {
-            initiateTable = () => {
-                console.log(props.match.params.id);
+        if (Number(projectID)) {
+            initiateTable = async () => {
+                const response = await fetch('/api/facture?id=' + projectID);
             };
         }
         else {
-            initiateTable = () => {
+            initiateTable = async () => {
                 let tableContent = [[]];
                 for (let i = 0 ; i < 18 ; i++) {
                     tableContent[0].push({
-                        tempBackground: 'white',
+                        tempBackground: '',
                         color: 'black',
                         bold: false,
                         colspan: 1,
@@ -36,6 +45,15 @@ const Etiquetage = (props) => {
                     });
                 }
                 setEtiquettes(tableContent);
+
+                try{
+                    const response = await fetch('/api/client');
+                    const responseData = await response.json();
+                    setClients(responseData);
+                }
+                catch (e) {
+                    console.log(e);
+                }
             };
         }
 
@@ -43,19 +61,24 @@ const Etiquetage = (props) => {
     }, [props.match.params.id]);
 
     
-    const fuseMergePreview = (htmlElement, rowIndex, columnIndex) => {
+    const fuseMergePreview = (rowIndex, columnIndex) => {
         let stateCopy = etiquettes.slice();
         
-        if (stateCopy[rowIndex][columnIndex])
-        if (columnIndex === stateCopy[rowIndex].length -1) {
+        if (columnIndex === stateCopy[rowIndex].length -1 && stateCopy[rowIndex][columnIndex].colspan <= 1) {
             stateCopy[rowIndex][columnIndex].tempBackground = "green";
+        }
+        else if (columnIndex === stateCopy[rowIndex].length -1) {
+            stateCopy[rowIndex][columnIndex].tempBackground = "red";
+        }
+        else if (stateCopy[rowIndex][columnIndex].colspan === 1) {
+            stateCopy[rowIndex][columnIndex].tempBackground = "green";
+            stateCopy[rowIndex][columnIndex + 1].tempBackground = "green";
         }
         else {
             stateCopy[rowIndex][columnIndex].tempBackground = "red";
             stateCopy[rowIndex][columnIndex + 1].tempBackground = "green";
         }
         
-
         setEtiquettes(stateCopy);
     };
 
@@ -81,7 +104,37 @@ const Etiquetage = (props) => {
 
     const fuseMergeCells = (event, rowIndex, columnIndex) => {
         event.preventDefault();
-        console.log(event.button);
+        let stateCopy = etiquettes.slice();
+        let newColumnColspan;
+        
+        if (event.button === 2 && stateCopy[rowIndex][columnIndex].colspan > 1) {
+            newColumnColspan = Math.floor(stateCopy[rowIndex][columnIndex].colspan / 2);
+            stateCopy[rowIndex].splice(
+                columnIndex + 1, 0, 
+                {
+                    tempBackground: 'white',
+                    color: 'black',
+                    bold: false,
+                    colspan: newColumnColspan,
+                    value: '',
+                    circuitNumber: {
+                        color: 'black',
+                        bold: false,
+                        value: ''
+                    }
+                }
+            );
+            stateCopy[rowIndex][columnIndex].colspan -= newColumnColspan;
+        }
+        else if (event.button === 0 && stateCopy[rowIndex].length > 1) {
+            stateCopy[rowIndex][columnIndex].colspan += stateCopy[rowIndex][columnIndex + 1].colspan;
+            stateCopy[rowIndex].splice(columnIndex + 1, 1);
+        }
+
+        
+        setEtiquettes(stateCopy);
+        clearPreview(rowIndex);
+        fuseMergePreview(rowIndex, columnIndex);
     };
 
 
@@ -133,7 +186,6 @@ const Etiquetage = (props) => {
     };
 
 
-
     const changeCNumberColor = (rowIndex, columnIndex) => {
         let stateCopy = etiquettes.slice();
         
@@ -143,11 +195,84 @@ const Etiquetage = (props) => {
     }
 
 
+    const addRow = () => {
+        let stateCopy = etiquettes.slice();
+        console.log(stateCopy);
+
+        if (newLineColumns && newLineColumns <= 18) {
+            stateCopy.push([]);
+
+            for (let i = 0 ; i < newLineColumns ; i++){
+                stateCopy[stateCopy.length -1].push({
+                    tempBackground: 'white',
+                    color: 'black',
+                    bold: false,
+                    colspan: 1,
+                    value: '',
+                    circuitNumber: {
+                        color: 'black',
+                        bold: false,
+                        value: ''
+                    }
+                });
+            }   
+        }
+        setEtiquettes(stateCopy);
+    }
+
+
+    const deleteRow = () => {
+        if (etiquettes.length > 1) {
+            let stateCopy = etiquettes.slice();
+            stateCopy.pop();
+            setEtiquettes(stateCopy);
+        }
+    }
+
+
+    const saveProject = async () => {
+        try {
+            let response = await fetch(
+                '/api/etiquettes',
+                {
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify([clientID, constructionSite, etiquettes])
+                }
+            );
+
+            const responseData = await response.json();
+            console.log(responseData);
+        }
+        catch (e) {
+            console.log(e);
+        }
+    };
+
+
+    if (clientID) {
+        clientInfo = <h3>{clientName}</h3>;
+    }
+    else {
+        clientInfo = 
+        <Autocomplete
+            options={clients}
+            getOptionLabel={(option) => option.id + ": " + option.attribute1}
+            onChange={(option) => setClientID(option.id)}
+            renderInput={(params) => <TextField {...params} label="Client" variant="outlined" />}
+        />;
+    }
+
     return (
         <BS.Row>
             <BS.Col lg="3">
-                <BS.Button variant="light" size="lg" id="addRow" className="cleanButton" onClick={() => console.log("showTickets()")}>ADD</BS.Button>
-                <BS.Button variant="light" size="lg" id="deleteRow" className="cleanButton" onClick={() => console.log("deleteRow()")}>DEL</BS.Button>
+                {clientInfo}
+                <BS.Button variant="light" size="lg" id="addRow" className="cleanButton" onClick={() => addRow()}>ADD</BS.Button>
+                <BS.Button variant="light" size="lg" id="deleteRow" className="cleanButton" onClick={() => deleteRow()}>DEL</BS.Button>
+                <h4 className="titreNouvelleColonnes">Colonnes à ajouter</h4>
+                <input value={ newLineColumns } onChange={ (e) => setNewLineColumns(e.target.value) } className="form-control form-control-lg newLineColumns" type="number" min="5" max="18" />
                 <br />
                 <div className={colorDivClass}>
                     <h4 className="titreCouleurs">Couleur</h4>
@@ -167,7 +292,7 @@ const Etiquetage = (props) => {
                     </div>
                 </div>
                 <BS.Button variant="light" size="lg" id="impression" className="cleanButton" onClick={() => console.log("printWindow()")}>PRINT</BS.Button>
-                <BS.Button variant="light" size="lg" id="save" className="cleanButton" onClick={() => console.log("saveProject()")}>SAVE</BS.Button>
+                <BS.Button variant="light" size="lg" id="save" className="cleanButton" onClick={() => saveProject()}>SAVE</BS.Button>
                 <br />
                 <div className="projectStatus">
                     <h4>Project Status</h4>
@@ -182,6 +307,7 @@ const Etiquetage = (props) => {
                 </div>
             </BS.Col>
             <BS.Col className="no_margin" lg="9">
+                <input value={ constructionSite } onChange={ (e) => setConstructionSite(e.target.value) } className="form-control form-control-lg" type="text" />
                 <div className="etiquettesContainer">
                     <table className="tableauxEtiquettes">
                             <tbody className="etiquettes">

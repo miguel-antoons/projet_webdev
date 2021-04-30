@@ -46,8 +46,7 @@ create table etiquettes                                                  -- 1 fo
     ID_ETIQUETTE INT NOT NULL AUTO_INCREMENT,
     ID_CLIENT INT NOT NULL AUTO_INCREMENT,
     CHANTIER VARCHAR NOT NULL, -- qu'est ce que ca represente ?
-    CODE_XML XML,                  -- qu'est ce que ca represente ?
-    CODE_JSON VARCHAR,                 -- qu'est ce que ca represente ?
+    CODE_JSON LONGTEXT,                 -- qu'est ce que ca represente ?
     DATE_ETIQUETTE DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier,
     CONSTRAINT pk__etiquettes PRIMARY KEY (ID_ETIQUETTE),
     CONSTRAINT fk__etiquettes__clients FOREIGN KEY (ID_CLIENT) REFERENCES clients (ID_CLIENT)

@@ -26,7 +26,7 @@ const Ticket =  ({ticketInfo, rowIndex, index, writeCells, setBold, resetTimer, 
     cellClasses += ticketInfo.tempBackground + "Back";
 
     return (
-        <td className={cellClasses} colSpan={ticketInfo.colSpan} key={index}>
+        <td className={cellClasses} colSpan={ticketInfo.colspan} key={index}>
             <textarea 
                 key={"a" + {index}} 
                 onMouseDown={() => setBold(rowIndex, index)} 
@@ -35,13 +35,13 @@ const Ticket =  ({ticketInfo, rowIndex, index, writeCells, setBold, resetTimer, 
                 onDoubleClick={() => changeColor(rowIndex, index)}
                 value={ticketInfo.value} 
                 className={circuitClasses} 
-                rows='6' 
+                rows='7' 
                 cols='5' 
                 placeholder="Circuit ..."
             >
             </textarea>
             <br />
-            <textarea 
+            <textarea
                 key={"b" + {index}} 
                 onMouseDown={() => setCNumberBold(rowIndex, index)} 
                 onMouseUp={resetTimer} 

@@ -1,5 +1,5 @@
 .cleanButton{
-    margin: 15pt;
+    margin: 5%;
     width: 3.4cm;
     height: 1.8cm;
     cursor: pointer;
@@ -24,10 +24,10 @@
 }
 
 .changementCouleur {
-    margin: 19pt;
+    margin: 7%;
     padding: 10pt;
     border-radius: 20px;
-    width: 77%;
+    width: 290px;
 }
 
 .titreCouleurs {
@@ -35,10 +35,21 @@
 }
 
 .projectStatus {
-    margin: 19pt;
+    margin: 7%;
     padding: 10pt;
 }
 
 .radioContainer {
     margin-left: 25pt;
+}
+
+.newLineColumns{
+    width: 290px;
+    margin-top: none;
+    margin-left: 7%;
+}
+
+.titreNouvelleColonnes{
+    margin-bottom: 15pt;
+    margin-left: 7%;
 }

@@ -19,8 +19,8 @@ const Row = ({rowContent, fuseMergePreview, rowIndex, writeCells, setBold, reset
                     <td 
                         className="fuseMergeCell" 
                         key={index} 
-                        colSpan={column.colSpan} 
-                        onMouseOver={(event) => fuseMergePreview(event, rowIndex, index)}
+                        colSpan={column.colspan} 
+                        onMouseOver={() => fuseMergePreview(rowIndex, index)}
                         onMouseOut={() => clearPreview(rowIndex)}
                         onContextMenu={(event) => fuseMergeCells(event, rowIndex, index)}
                         onClick={(event) => fuseMergeCells(event, rowIndex, index)}
