@@ -12,7 +12,7 @@ const Etiquetage = (props) => {
     const [colorDivClass, setColorDivClass] = useState("changementCouleur redCommand")
     const [selectedTextColor, setSelectedTextColor] = useState("red");
     const [newLineColumns, setNewLineColumns] = useState(18);
-    const [projectID, setProjectID] = useState(props.match.params.id);
+    const [projectID, setProjectID] = useState(Number(props.match.params.id));
     const [clientID, setClientID] = useState();
     const [clients, setClients] = useState([]);
     const [constructionSite, setConstructionSite] = useState("");
@@ -22,9 +22,15 @@ const Etiquetage = (props) => {
 
     useEffect(() => {
         let initiateTable;
-        if (Number(projectID)) {
+        if (projectID) {
             initiateTable = async () => {
-                const response = await fetch('/api/facture?id=' + projectID);
+                const response = await fetch('/api/etiquettes/' + projectID);
+                const responseData = await response.json();
+                setProjectID(responseData.projectID);
+                setClientName(responseData.clientInfo);
+                setClientID(responseData.clientID);
+                setConstructionSite(responseData.constructionSite);
+                setEtiquettes(JSON.parse(responseData.projectData));
             };
         }
         else {
@@ -58,7 +64,7 @@ const Etiquetage = (props) => {
         }
 
         initiateTable();
-    }, [props.match.params.id]);
+    }, [projectID]);
 
     
     const fuseMergePreview = (rowIndex, columnIndex) => {

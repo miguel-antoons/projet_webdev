@@ -97,14 +97,14 @@ def etiquettes():
     return json.dumps(response)
 
 
-@app_etiquette.route('/api/etiquette/<id>', methods=['GET'])
+@app_etiquette.route('/api/etiquettes/<id>', methods=['GET'])
 def etiquette(id):
     connector = mysql.connection
     cur = connector.cursor()
 
     sql_procedure = """
-        SELECT ID_CLIENT, NOM_CLIENT, PRENOM_CLIENT, SOCIETE_CLIENT, CHANTIER,
-            CODE_JSON
+        SELECT ID_ETIQUETTE, E.ID_CLIENT, NOM_CLIENT, PRENOM_CLIENT,
+            SOCIETE_CLIENT, CHANTIER, CODE_JSON
         FROM etiquettes as E
             JOIN clients as C on E.ID_CLIENT = C.ID_CLIENT
         WHERE ID_ETIQUETTE = %s
@@ -114,6 +114,12 @@ def etiquette(id):
 
     result = cur.fetchone()
 
-    print(result)
+    response = {
+        'projectID': result[0],
+        'clientID': result[1],
+        'clientInfo': f"{result[2]} {result[3]}, {result[4]}",
+        'constructionSite': result[5],
+        'projectData': result[6]
+    }
 
     return json.dumps(response)
