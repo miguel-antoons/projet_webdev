@@ -90,8 +90,17 @@
     width: 90%;
     height: 80%;
     overflow: auto;
-    text-align: center;
+    text-align: left;
     margin: 0;
+    padding: 0;
+}
+
+.constructionSite {
+    width: 32.5cm;
+    text-align: center;
+    margin-top: 25pt;
+    margin-left: 10pt;
+    font-size: 23pt;
 }
 
 

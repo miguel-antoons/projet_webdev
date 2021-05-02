@@ -71,7 +71,21 @@ def etiquettes():
         response = cur.fetchall()
 
     elif request.method == 'PUT':
-        pass
+        data = request.json
+        arguments = (data[0], json.dumps(data[1]), data[2], )
+
+        sql_procedure = """
+            UPDATE etiquettes
+            SET
+                CHANTIER = %s,
+                CODE_JSON =  %s
+            WHERE ID_ETIQUETTE = %s
+        """
+
+        cur.execute(sql_procedure, arguments)
+        connector.commit()
+
+        response = cur.fetchall()
 
     elif request.method == 'DELETE':
         # get the id of the projects that has to be deleted

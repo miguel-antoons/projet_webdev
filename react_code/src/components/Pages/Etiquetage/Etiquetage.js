@@ -237,23 +237,45 @@ const Etiquetage = (props) => {
 
 
     const saveProject = async () => {
-        try {
-            let response = await fetch(
-                '/api/etiquettes',
-                {
-                    method: 'post',
-                    headers: {
-                        'Content-type': 'application/json'
-                    },
-                    body: JSON.stringify([clientID, constructionSite, etiquettes])
-                }
-            );
+        if(projectID) {
+            try {
+                let response = await fetch(
+                    '/api/etiquettes',
+                    {
+                        method: 'put',
+                        headers: {
+                            'Content-type': 'application/json'
+                        },
+                        body: JSON.stringify([constructionSite, etiquettes, projectID])
+                    }
+                );
 
-            const responseData = await response.json();
-            console.log(responseData);
+                const responseData = await response.json();
+                console.log(responseData);
+            }
+            catch (e) {
+                console.log(e);
+            }
         }
-        catch (e) {
-            console.log(e);
+        else {
+            try {
+                let response = await fetch(
+                    '/api/etiquettes',
+                    {
+                        method: 'post',
+                        headers: {
+                            'Content-type': 'application/json'
+                        },
+                        body: JSON.stringify([clientID, constructionSite, etiquettes])
+                    }
+                );
+
+                const responseData = await response.json();
+                console.log(responseData);
+            }
+            catch (e) {
+                console.log(e);
+            }
         }
     };
 
@@ -272,7 +294,7 @@ const Etiquetage = (props) => {
     }
 
     return (
-        <BS.Row>
+        <BS.Row className="no_margin">
             <BS.Col lg="3">
                 {clientInfo}
                 <BS.Button variant="light" size="lg" id="addRow" className="cleanButton" onClick={() => addRow()}>ADD</BS.Button>
@@ -313,8 +335,9 @@ const Etiquetage = (props) => {
                 </div>
             </BS.Col>
             <BS.Col className="no_margin" lg="9">
-                <input value={ constructionSite } onChange={ (e) => setConstructionSite(e.target.value) } className="form-control form-control-lg" type="text" />
+                
                 <div className="etiquettesContainer">
+                    <input value={ constructionSite } onChange={ (e) => setConstructionSite(e.target.value) } className="form-control form-control-lg constructionSite" type="text" />
                     <table className="tableauxEtiquettes">
                             <tbody className="etiquettes">
                                 {etiquettes.map((row, index) => (
