@@ -60,3 +60,31 @@
     margin-top: 3%;
     margin-left: 5%;
 }
+
+.saved {
+    color: green;
+    margin-left: 10pt;
+    font-weight: bold;
+    font-size: 14pt;
+}
+
+.unsaved {
+    color: red;
+    margin-left: 10pt;
+    font-weight: bold;
+    font-size: 14pt;
+}
+
+.nOfLines {
+    margin-left: 13pt;
+    font-size: 14pt;
+    font-weight: bold;
+    color: rgb(218, 116, 0);
+}
+
+.events {
+    margin-left: 10pt;
+    font-size: 14pt;
+    font-weight: bold;
+    color: rgb(218, 116, 0);
+}

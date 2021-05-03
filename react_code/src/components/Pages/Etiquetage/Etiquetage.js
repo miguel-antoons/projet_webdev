@@ -17,6 +17,8 @@ const Etiquetage = (props) => {
     const [clients, setClients] = useState([]);
     const [constructionSite, setConstructionSite] = useState("");
     const [clientName, setClientName] = useState("");
+    const [saved, setSaved] = useState(<span></span>);
+    const [events, setEvents] = useState("");
     let longPressTimer = 0;
     let clientInfo;
 
@@ -31,6 +33,8 @@ const Etiquetage = (props) => {
                 setClientID(responseData.clientID);
                 setConstructionSite(responseData.constructionSite);
                 setEtiquettes(JSON.parse(responseData.projectData));
+                setSaved(<span className="saved">Enregistré</span>);
+                setEvents("Projet N° " + projectID + " ouvert");
             };
         }
         else {
@@ -51,6 +55,8 @@ const Etiquetage = (props) => {
                     });
                 }
                 setEtiquettes(tableContent);
+                setSaved(<span className="unsaved">Non-enregisté</span>);
+                setEvents("Nouveau projet créé");
 
                 try{
                     const response = await fetch('/api/client');
@@ -105,6 +111,8 @@ const Etiquetage = (props) => {
 
         stateCopy[rowIndex][columnIndex].value = htmlElement.target.value;
         setEtiquettes(stateCopy);
+        setSaved(<span className="unsaved">Non-enregisté</span>);
+        setEvents("Écriture dans la rangée n° " + (rowIndex + 1) + ", colonne n° " + (columnIndex+ 1));
     };
 
 
@@ -131,14 +139,17 @@ const Etiquetage = (props) => {
                 }
             );
             stateCopy[rowIndex][columnIndex].colspan -= newColumnColspan;
+            setEvents("Division à la rangée n° " + (rowIndex + 1) + " de la colonne n° " + (columnIndex+ 1));
         }
         else if (event.button === 0 && stateCopy[rowIndex].length > 1) {
             stateCopy[rowIndex][columnIndex].colspan += stateCopy[rowIndex][columnIndex + 1].colspan;
             stateCopy[rowIndex].splice(columnIndex + 1, 1);
+            setEvents("Fusion à la rangée n° " + (rowIndex + 1) + " de la colonne n° " + (columnIndex+ 1) + " et de la colonne n° " + (columnIndex + 2));
         }
 
         
         setEtiquettes(stateCopy);
+        setSaved(<span className="unsaved">Non-enregisté</span>);
         clearPreview(rowIndex);
         fuseMergePreview(rowIndex, columnIndex);
     };
@@ -149,6 +160,8 @@ const Etiquetage = (props) => {
 
         stateCopy[rowIndex][columnIndex].circuitNumber.value = htmlElement.target.value;
         setEtiquettes(stateCopy);
+        setSaved(<span className="unsaved">Non-enregisté</span>);
+        setEvents("Écriture dans la rangée n° " + (rowIndex + 1) + ", colonne n° " + (columnIndex+ 1));
     }
 
 
@@ -158,6 +171,8 @@ const Etiquetage = (props) => {
 
             stateCopy[rowIndex][columnIndex].bold = !stateCopy[rowIndex][columnIndex].bold;
             setEtiquettes(stateCopy);
+            setSaved(<span className="unsaved">Non-enregisté</span>);
+            setEvents("Style du texte changée en gras à la rangée n° " + (rowIndex + 1) + " à la colonne n° " + (columnIndex + 1));
         }, 500)
     };
 
@@ -168,6 +183,8 @@ const Etiquetage = (props) => {
 
             stateCopy[rowIndex][columnIndex].circuitNumber.bold = !stateCopy[rowIndex][columnIndex].circuitNumber.bold;
             setEtiquettes(stateCopy);
+            setSaved(<span className="unsaved">Non-enregisté</span>);
+            setEvents("Style du texte changée en gras à la rangée n° " + (rowIndex + 1) + " à la colonne n° " + (columnIndex + 1));
         }, 500);
     };
 
@@ -189,6 +206,7 @@ const Etiquetage = (props) => {
         stateCopy[rowIndex][columnIndex].color = selectedTextColor;
 
         setEtiquettes(stateCopy);
+        setSaved(<span className="unsaved">Non-enregisté</span>);
     };
 
 
@@ -198,6 +216,7 @@ const Etiquetage = (props) => {
         stateCopy[rowIndex][columnIndex].circuitNumber.color = selectedTextColor;
 
         setEtiquettes(stateCopy);
+        setSaved(<span className="unsaved">Non-enregisté</span>);
     }
 
 
@@ -224,6 +243,8 @@ const Etiquetage = (props) => {
             }   
         }
         setEtiquettes(stateCopy);
+        setSaved(<span className="unsaved">Non-enregisté</span>);
+        setEvents("Ajout de la ligne n° " + etiquettes.length);
     }
 
 
@@ -232,6 +253,8 @@ const Etiquetage = (props) => {
             let stateCopy = etiquettes.slice();
             stateCopy.pop();
             setEtiquettes(stateCopy);
+            setSaved(<span className="unsaved">Non-enregisté</span>);
+            setEvents("Supression de la ligne n° " + (etiquettes.length + 1));
         }
     }
 
@@ -277,6 +300,7 @@ const Etiquetage = (props) => {
                 console.log(e);
             }
         }
+        setSaved(<span className="saved">Enregistré</span>);
     };
 
 
@@ -323,21 +347,21 @@ const Etiquetage = (props) => {
                 <BS.Button variant="light" size="lg" id="save" className="cleanButton" onClick={() => saveProject()}>SAVE</BS.Button>
                 <br />
                 <div className="projectStatus">
-                    <h4>Project Status</h4>
-                    <h5>Save status</h5>
-                    <span id="saveStatus"></span>
+                    <h4>Informations Projet</h4>
+                    <h5>Enregistrement</h5>
+                    {saved}
                     <br /><br />
-                    <h5>Number of lines</h5>
-                    <span id="nOfLines"></span>
+                    <h5>Nombre de Lignes</h5>
+                    <span className="nOfLines">{etiquettes.length} lignes</span>
                     <br /><br />
                     <h5>Recent events</h5>
-                    <p id="events"></p>
+                    <p className="events">{events}</p>
                 </div>
             </BS.Col>
             <BS.Col className="no_margin" lg="9">
-                <input value={ constructionSite } onChange={ (e) => setConstructionSite(e.target.value) } className="form-control form-control-lg constructionSite" type="text" />
+                <input value={ constructionSite } onChange={ (e) => {setConstructionSite(e.target.value); setSaved(<span className="unsaved">Non-enregisté</span>);} } className="form-control form-control-lg constructionSite" type="text" placeholder="Chantier" />
                 <div className="etiquettesContainer">
-                    <table className="tableauxEtiquettes">
+                    <table className="tableauxEtiquettes" onChange={() => console.log('hgello')}>
                             <tbody className="etiquettes">
                                 {etiquettes.map((row, index) => (
                                     <Row 
