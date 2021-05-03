@@ -24,7 +24,8 @@
 }
 
 .changementCouleur {
-    margin: 7%;
+    margin-left: 7%;
+    margin-top: 7%;
     padding: 10pt;
     border-radius: 20px;
     width: 290px;
@@ -35,7 +36,8 @@
 }
 
 .projectStatus {
-    margin: 7%;
+    margin-top: 0;
+    margin-left: 7%;
     padding: 10pt;
 }
 
@@ -52,4 +54,9 @@
 .titreNouvelleColonnes{
     margin-bottom: 15pt;
     margin-left: 7%;
+}
+
+.clientInfo {
+    margin-top: 3%;
+    margin-left: 5%;
 }

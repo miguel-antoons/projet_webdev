@@ -24,9 +24,12 @@
 }
 
 .fuseMergeCell {
+    font-size: 7pt;
+    font-weight: bold;
     border-collapse: collapse;
     cursor: pointer;
     padding: 0;
+    padding-left: 3px;
 }
 
 .fuseMergeCell:hover {
@@ -83,15 +86,18 @@
     vertical-align: middle;
     font-family: Calibri light, sans-serif;
     font-size: 8.4pt;
-    padding: 0.005cm 2px 0.005cm 2px;
+    padding-top: 0.005cm;
+    padding-right: 2px;
+    padding-bottom: 0.005cm;
+    padding-left: 2px;
 }
 
 .etiquettesContainer {
     width: 90%;
-    height: 80%;
+    height: 20cm;
     overflow: auto;
     text-align: left;
-    margin: 0;
+    margin: 2%;
     padding: 0;
 }
 
@@ -99,7 +105,7 @@
     width: 32.5cm;
     text-align: center;
     margin-top: 25pt;
-    margin-left: 10pt;
+    margin-left: calc(2% + 10pt);
     font-size: 23pt;
 }
 

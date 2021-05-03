@@ -281,7 +281,7 @@ const Etiquetage = (props) => {
 
 
     if (clientID) {
-        clientInfo = <h3>{clientName}</h3>;
+        clientInfo = <h3 className="clientInfo">{clientName}</h3>;
     }
     else {
         clientInfo = 
@@ -335,9 +335,8 @@ const Etiquetage = (props) => {
                 </div>
             </BS.Col>
             <BS.Col className="no_margin" lg="9">
-                
+                <input value={ constructionSite } onChange={ (e) => setConstructionSite(e.target.value) } className="form-control form-control-lg constructionSite" type="text" />
                 <div className="etiquettesContainer">
-                    <input value={ constructionSite } onChange={ (e) => setConstructionSite(e.target.value) } className="form-control form-control-lg constructionSite" type="text" />
                     <table className="tableauxEtiquettes">
                             <tbody className="etiquettes">
                                 {etiquettes.map((row, index) => (

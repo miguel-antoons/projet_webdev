@@ -5,7 +5,6 @@ import './commandesEtiquettes.css';
 
 
 const Row = ({rowContent, fuseMergePreview, rowIndex, writeCells, setBold, resetTimer, changeColor, clearPreview, writeCNumber, setCNumberBold, changeCNumberColor, fuseMergeCells}) => {
-    
     // const cssTicket = {
     //     color: rowContent.color,
     //     backgroundColor: rowContent.tempBackground,
@@ -25,6 +24,7 @@ const Row = ({rowContent, fuseMergePreview, rowIndex, writeCells, setBold, reset
                         onContextMenu={(event) => fuseMergeCells(event, rowIndex, index)}
                         onClick={(event) => fuseMergeCells(event, rowIndex, index)}
                     >
+                    {index? "" : rowIndex + 1}
                     </td>
                 ))}
             </tr>
