@@ -5,12 +5,12 @@
     cursor: pointer;
     text-align: center;
     font-weight: bold;
-    font-size: 20pt;
+    font-size: 18pt;
     font-style: italic;
     border-radius: 16px;
     background-color: #ff4500;
     color: whitesmoke;
-    font-family: Verdana, sans-serif;
+    font-family: calibri, sans-serif;
 }
 
 .cleanButton:hover{

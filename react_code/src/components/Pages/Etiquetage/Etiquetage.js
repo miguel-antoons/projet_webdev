@@ -6,6 +6,9 @@ import './commandesEtiquettes.css';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import * as BS from "react-bootstrap";
+import * as icon from 'react-icons/io5';
+import { useLocation } from 'react-router';
+import { icons } from 'react-icons/lib';
 
 
 const Etiquetage = (props) => {
@@ -20,6 +23,8 @@ const Etiquetage = (props) => {
     const [clientName, setClientName] = useState("");                                   // contains the client name and surname shown on top of the page
     const [saved, setSaved] = useState(<span></span>);                                  // inidiquates of the project has been modified or if it is still saved
     const [events, setEvents] = useState("");                                           // contains the most recent event that happened on the project
+    let {query} = useLocation();                                                        // check if we have to print or not
+    const [print, setPrint] = useState(query);                                          // put the print variable in the state so that is not alwau-ys requested again
     const traductions = {                                                               // contains color translations to French
         colors: {
             green: 'verte', 
@@ -61,6 +66,12 @@ const Etiquetage = (props) => {
                 setConstructionSite(responseData.constructionSite);
                 setEtiquettes(JSON.parse(responseData.projectData));
                 setSaved(<span className="saved">Enregistré</span>);
+
+                // s'il faut imprimer, imprimer la page et mettre query à false pour ne pas réimprimer
+                if (print) {
+                    window.print();
+                    setPrint(false);
+                }
             };
         }
         // if it is a newly created project
@@ -443,34 +454,42 @@ const Etiquetage = (props) => {
         />;
     }
 
+
     return (
         <BS.Row className="no_margin programContainer" >
             <BS.Col className="no_print" lg="3">
                 {clientInfo}
-                <BS.Button variant="light" size="lg" id="addRow" className="cleanButton" onClick={() => addRow()}>ADD</BS.Button>
-                <BS.Button variant="light" size="lg" id="deleteRow" className="cleanButton" onClick={() => deleteRow()}>DEL</BS.Button>
+                <BS.Button variant="light" size="lg" className="cleanButton" onClick={() => addRow()}><icon.IoAddCircle /> Add</BS.Button>
+                <BS.Button variant="light" size="lg" className="cleanButton" onClick={() => deleteRow()}><icon.IoCut /> Del</BS.Button>
                 <h4 className="titreNouvelleColonnes">Colonnes à ajouter</h4>
-                <input value={ newLineColumns } onChange={ (e) => setNewLineColumns(e.target.value) } className="form-control form-control-lg newLineColumns" type="number" min="5" max="18" />
+                <input 
+                    value={ newLineColumns } 
+                    onChange={ (e) => setNewLineColumns(e.target.value) } 
+                    className="form-control form-control-lg newLineColumns" 
+                    type="number" 
+                    min="5" 
+                    max="18" 
+                />
                 <br />
                 <div className={colorDivClass}>
                     <h4 className="titreCouleurs">Couleur</h4>
                     <div className="radioContainer">
                         <label htmlFor="black">
-                            <input type="radio" id="black" name="color" value="black" onClick={(event) => setTextColor(event.target.value)} /> Noir
+                            <input type="radio" name="color" value="black" onClick={(event) => setTextColor(event.target.value)} /> Noir
                         </label><br />
                         <label htmlFor="red">
-                            <input type="radio" id="red" name="color" value="red" onClick={(event) => setTextColor(event.target.value)} defaultChecked /> Rouge
+                            <input type="radio" name="color" value="red" onClick={(event) => setTextColor(event.target.value)} defaultChecked /> Rouge
                         </label><br />
                         <label htmlFor="blue">
-                            <input type="radio" id="blue" name="color" value="blue" onClick={(event) => setTextColor(event.target.value)} /> Bleue
+                            <input type="radio" name="color" value="blue" onClick={(event) => setTextColor(event.target.value)} /> Bleue
                         </label><br />
                         <label htmlFor="green">
-                            <input type="radio" id="green" name="color" value="green" onClick={(event) => setTextColor(event.target.value)} /> Vert
+                            <input type="radio" name="color" value="green" onClick={(event) => setTextColor(event.target.value)} /> Vert
                         </label>
                     </div>
                 </div>
-                <BS.Button variant="light" size="lg" id="impression" className="cleanButton" onClick={() => window.print()}>PRINT</BS.Button>
-                <BS.Button variant="light" size="lg" id="save" className="cleanButton" onClick={() => saveProject()}>SAVE</BS.Button>
+                <BS.Button variant="light" size="lg"className="cleanButton" onClick={() => window.print()}><icon.IoPrint /> Print</BS.Button>
+                <BS.Button variant="light" size="lg"className="cleanButton" onClick={() => saveProject()}><icon.IoSave /> Save</BS.Button>
                 <br />
                 <div className="projectStatus">
                     <h5>Enregistrement</h5>
