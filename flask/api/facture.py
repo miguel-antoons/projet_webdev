@@ -90,8 +90,8 @@ def facture():
                 id_texte_facture)
             VALUES(%s,%s,%s,%s,%s,%s,%s,%s) ''',
 
-            (requete["id_client"], requete["date_facture"], 
-             requete["date_echeance"], requete["date_fin_travaux"], 
+            (requete["id_client"], requete["date_facture"],
+             requete["date_echeance"], requete["date_fin_travaux"],
              requete["taux_tva"], requete["commentaire"], requete["montant"],
              requete["id_texte_facture"])
         )
