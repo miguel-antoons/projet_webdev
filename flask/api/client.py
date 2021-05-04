@@ -132,3 +132,13 @@ def client():
     cur.close()
 
     return json.dumps(response)
+
+
+@app_client.route("/api/client/<id>", methods=['GET'])
+def client_id(id):
+    cursor = mysql.connection.cursor()
+
+    cursor.execute("SELECT * FROM clients where ID_CLIENT = %s", (id))
+    data = cursor.fetchall()
+
+    return json.dumps(data)

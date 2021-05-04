@@ -13,14 +13,16 @@ def facture():
 
     # API will return all the elements
     if request.method == 'GET':
+
         # get the filter to apply to the elements
         filter = request.args.get('filter')
+        print(filter)
         arguments = ()
 
         # prepare the sql statement (which contains arguments in order to
         # avoid sql injection)
         sql_procedure = """
-            SELECT F.ID_FACTURE, C.NOM_CLIENT, C.PRENOM_CLIENT,
+            SELECT F.ID_FACTURE, C.ID_CLIENT, C.NOM_CLIENT, C.PRENOM_CLIENT,
                 C.SOCIETE_CLIENT,
                 date_format(F.DATE_ECHEANCE, '%%e-%%c-%%Y'),
                 date_format(F.DATE_FACTURE, '%%D %%M %%Y')
@@ -73,7 +75,69 @@ def facture():
 
         response = cur.fetchall()
 
-    cur.close()
+    elif request.method == 'POST':
+        # Creating a connection cursor
+        cursor = mysql.connection.cursor()
+        requete = request.json
+
+        print(requete)
+
+        # Executing SQL Statements
+
+        cursor.execute(
+            '''INSERT INTO factures (id_client, date_facture, date_echeance,
+                date_fin_travaux, taux_tva, commentaire, montant,
+                id_texte_facture)
+            VALUES(%s,%s,%s,%s,%s,%s,%s,%s) ''',
+
+            (requete["id_client"], requete["date_facture"], 
+             requete["date_echeance"], requete["date_fin_travaux"], 
+             requete["taux_tva"], requete["commentaire"], requete["montant"],
+             requete["id_texte_facture"])
+        )
+
+        # Saving the Actions performed on the DB
+        mysql.connection.commit()
+
+        # Closing the cursor
+        cursor.close()
+
+        return jsonify(msg='Le client a été ajouté avec succès')
+
+    elif request.method == 'PUT':
+        # Creating a connection cursor
+        cursor = mysql.connection.cursor()
+        requete = request.json
+
+        print(requete)
+        print("clientID: ", requete["id_client"])
+        print("idfacture: ", requete["factureId"])
+        # Executing SQL Statements
+        cursor.execute(
+            '''UPDATE factures
+                SET id_client = %s,
+                    date_facture = %s,
+                    date_echeance = %s,
+                    date_fin_travaux = %s,
+                    taux_tva = %s,
+                    COMMENTAIRE = %s,
+                    montant = %s,
+                    id_texte_facture = %s
+                where ID_FACTURE = %s
+             ''',
+
+            (requete["id_client"], requete["date_facture"],
+             requete["date_echeance"], requete["date_fin_travaux"],
+             requete["taux_tva"], requete["commentaire"], requete["montant"],
+             requete["id_texte_facture"], requete["factureId"])
+        )
+
+        # Saving the Actions performed on the DB
+        mysql.connection.commit()
+
+        # Closing the cursor
+        cur.close()
+        return jsonify(msg='Le client a été modifié avec succès')
 
     return json.dumps(response)
 
@@ -90,3 +154,13 @@ def clients():
         tableau_client[i[0]] = [i[1:]]
     print(tableau_client)
     return jsonify(tableau_client)
+
+
+@app_facture.route("/api/facture/get_facture_id/<id>", methods=['GET'])
+def facture_id(id):
+    cursor = mysql.connection.cursor()
+    print(id)
+    cursor.execute("SELECT * FROM factures where ID_FACTURE = %s", (id))
+    data = cursor.fetchall()
+
+    return jsonify(data)
