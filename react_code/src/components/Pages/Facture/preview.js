@@ -67,7 +67,7 @@ function Preview(props) {
                             Date facture:                           <br />
                                 <br />
                             BTW nr klant:      <br />
-                            N° de TVA client: &nbsp;&nbsp;&nbsp;          {props.state.clientNumber}            <br />
+                            N° de TVA client: &nbsp;&nbsp;&nbsp;          {props.state.clientTva}            <br />
                                 <br />
                             Nummer factuur:&nbsp;&nbsp;&nbsp; {props.state.factureNumber} <br />
                             Numéro facture:

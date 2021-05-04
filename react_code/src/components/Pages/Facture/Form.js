@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import './Form.css'
 
+// ATTENTION CHANGER TABLE FACTURE BDD
 
 class Form extends Component {
     constructor(props) {
@@ -15,6 +16,7 @@ class Form extends Component {
         }
         this.api_client()
         this.save = this.save.bind(this)
+        
     }
 
     // Récupérer tous les clients de la base de données
@@ -58,7 +60,9 @@ class Form extends Component {
     }
 
     async save() {
-        
+        let url = window.location.href.split("/")
+        let param = url.length - 1 
+        let factureId = url[param]
         let id_client = document.getElementById("clientNumber").value.split(". ")[0]
         let date_facture = document.getElementById("factureDate").value
         let date_echeance = document.getElementById("deadline").value
@@ -67,26 +71,51 @@ class Form extends Component {
         let commentaire = document.getElementById("comment").value
         let montant = document.getElementById("price").value
         let id_texte_facture = "1"
+
+        // ajout de facture
+        if(Number(factureId) === 0) {
+            try{
+                let result = await fetch('/api/facture', {
+                method: 'post',
+                //mode: 'no-cors', // --> pas besoin de cette ligne
+                headers: {
+                    //'Accept': 'application/json', // --> pas besoin de cette ligne non-plus
+                    'Content-type': 'application/json',
+                
+                },
+                
+                body: JSON.stringify({id_client, date_facture, date_echeance, date_fin_travaux, taux_tva, commentaire, montant, id_texte_facture}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
+                });
         
-        try{
-            let result = await fetch('/api/facture', {
-              method: 'post',
-              //mode: 'no-cors', // --> pas besoin de cette ligne
-              headers: {
-                //'Accept': 'application/json', // --> pas besoin de cette ligne non-plus
-                'Content-type': 'application/json',
-            
-              },
-              
-              body: JSON.stringify({id_client, date_facture, date_echeance, date_fin_travaux, taux_tva, commentaire, montant, id_texte_facture}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
-            });
-      
-            const data = await result.json();
-      
-            console.log(data);
-          }
-          catch(e){
-            console.log(e);
+                const data = await result.json();
+                console.log(data)
+        
+            }
+            catch(e){
+                console.log(e);
+            }
+        }
+        //modification de facture
+        else {
+            try{
+                let result = await fetch('/api/facture', {
+                method: 'put',
+                //mode: 'no-cors', // --> pas besoin de cette ligne
+                headers: {
+                    //'Accept': 'application/json', // --> pas besoin de cette ligne non-plus
+                    'Content-type': 'application/json',
+                
+                },
+                
+                body: JSON.stringify({factureId, id_client, date_facture, date_echeance, date_fin_travaux, taux_tva, commentaire, montant, id_texte_facture}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
+                });
+        
+                const data = await result.json();
+                console.log(data)
+            }
+            catch(e){
+                console.log(e);
+            }
         }
          
     }
@@ -96,10 +125,12 @@ class Form extends Component {
         return (
 
             <BS.Form onSubmit={this.save}>
+                {/*
                 <BS.Form.Group>
                     <BS.Form.Label>N° de facture</BS.Form.Label>
                     <BS.Form.Control size="sm" type="text" placeholder="Entrer numéro de facture" value={this.props.factureNumber} onChange={this.props.onChangeValue} id="factureNumber" name="factureNumber" />
                 </BS.Form.Group>
+                */}
                 <BS.Form.Group>
                     <BS.Form.Label>Client</BS.Form.Label>
                     <Autocomplete
@@ -114,7 +145,7 @@ class Form extends Component {
                 </BS.Form.Group>
                 <BS.Form.Group>
                     <BS.Form.Label>Date facture</BS.Form.Label >
-                    <BS.Form.Control size="sm" type="date" value={this.props.factureDate} onChange={this.props.onChangeValue} id="factureDate" name="factureDate" />
+                    <BS.Form.Control size="sm" type="date" value={this.props.factureDate} format="dd/mm/yyyy" onChange={this.props.onChangeValue} id="factureDate" name="factureDate" />
                 </BS.Form.Group>
                 <BS.Form.Group>
                     <BS.Form.Label>Travaux terminé le</BS.Form.Label>
@@ -141,7 +172,7 @@ class Form extends Component {
                     <BS.Form.Control size="sm" type="number" rows={3} value={this.props.price} defaultValue={0} onChange={this.props.onChangeValue} id="price" name="price" />
                 </BS.Form.Group>
                 <Preview state={this.props.returnState} />
-                <BS.Button className="no-print mb-2 ml-2" variant="info" onClick={this.save}>Sauvegarder</BS.Button> {' '}
+                <BS.Button id="save" className="no-print mb-2 ml-2" variant="info" onClick={this.save}>Sauvegarder</BS.Button> {' '}
                 <BS.Button className="no-print mb-2 ml-2" variant="info" onClick={window.print}>Imprimer</BS.Button> {' '}
                 
 
