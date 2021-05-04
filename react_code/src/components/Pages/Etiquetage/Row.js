@@ -5,12 +5,6 @@ import './commandesEtiquettes.css';
 
 
 const Row = ({rowContent, fuseMergePreview, rowIndex, writeCells, setBold, resetTimer, changeColor, clearPreview, writeCNumber, setCNumberBold, changeCNumberColor, fuseMergeCells}) => {
-    // const cssTicket = {
-    //     color: rowContent.color,
-    //     backgroundColor: rowContent.tempBackground,
-    //     fontStyle: rowContent.bold
-    // };
-
     return (
         <>
             <tr className="fuseMergeRow">

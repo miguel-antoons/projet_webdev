@@ -56,10 +56,13 @@ def etiquettes():
                 'date': row[5]
             })
 
+    # API will create a new row for the new project in the database
     elif request.method == 'POST':
+        # get the data from the post and put inside a tuple
         data = request.json
         arguments = (data[0], data[1], json.dumps(data[2]), )
 
+        # sql procedure to create a new row
         sql_procedure = """
             INSERT INTO etiquettes (ID_CLIENT, CHANTIER, CODE_JSON)
             VALUES (%s, %s, %s);
@@ -68,6 +71,7 @@ def etiquettes():
         cur.execute(sql_procedure, arguments)
         connector.commit()
 
+        # get the id of the newly created row
         sql_procedure = """
             SELECT LAST_INSERT_ID();
         """
@@ -75,14 +79,18 @@ def etiquettes():
         cur.execute(sql_procedure)
         mysql_result = cur.fetchall()
 
+        # set the response to the id of the newly created row
         response = {
             'projectID': mysql_result[0][0]
         }
 
+    # method to update a project
     elif request.method == 'PUT':
+        # get the data from the post and put inside a tuple
         data = request.json
         arguments = (data[0], json.dumps(data[1]), data[2], )
 
+        # sql procedure to update the row
         sql_procedure = """
             UPDATE etiquettes
             SET
@@ -120,12 +128,16 @@ def etiquettes():
     return json.dumps(response)
 
 
+# api to get a particular row of the database (aka one project)
 @app_etiquette.route('/api/etiquettes/<id>', methods=['GET'])
 def etiquette(id):
     connector = mysql.connection
+
+    # arguments equal the id of the requested project
     arguments = (id, )
     cur = connector.cursor()
 
+    # prepare the sql procedure to get one and only one row
     sql_procedure = """
         SELECT ID_ETIQUETTE, E.ID_CLIENT, NOM_CLIENT, PRENOM_CLIENT,
             SOCIETE_CLIENT, CHANTIER, CODE_JSON
@@ -136,8 +148,10 @@ def etiquette(id):
 
     cur.execute(sql_procedure, arguments)
 
+    # get the one result form the sql procedure
     result = cur.fetchone()
 
+    # prepare the response
     response = {
         'projectID': result[0],
         'clientID': result[1],
@@ -146,4 +160,5 @@ def etiquette(id):
         'projectData': result[6]
     }
 
+    cur.close()
     return json.dumps(response)

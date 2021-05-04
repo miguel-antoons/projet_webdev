@@ -1,12 +1,12 @@
 import React from 'react';
 
 const Ticket =  ({ticketInfo, rowIndex, index, writeCells, setBold, resetTimer, changeColor, writeCNumber, setCNumberBold, changeCNumberColor}) => {
+    // set the different element classes depending on the state color values
     let circuitClasses = "circuit " + ticketInfo.color;
     let circuitNumberClasses = "circuitNumber " + ticketInfo.circuitNumber.color;
     let cellClasses = "module ";
 
-
-
+    // set the different elements classes depending on the state bold value
     if (ticketInfo.bold) {
         circuitClasses += "Bold";
     }
@@ -14,6 +14,7 @@ const Ticket =  ({ticketInfo, rowIndex, index, writeCells, setBold, resetTimer, 
         circuitClasses += "Normal";
     }
 
+    // set the different elements classes depending on the state bold value
     if (ticketInfo.circuitNumber.bold) {
         circuitNumberClasses += "Bold";
     }

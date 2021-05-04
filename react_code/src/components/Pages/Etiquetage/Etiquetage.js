@@ -6,21 +6,21 @@ import './commandesEtiquettes.css';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import * as BS from "react-bootstrap";
-import { red } from '@material-ui/core/colors';
+
 
 const Etiquetage = (props) => {
-    const [etiquettes, setEtiquettes] = useState([]);
-    const [colorDivClass, setColorDivClass] = useState("changementCouleur redCommand")
-    const [selectedTextColor, setSelectedTextColor] = useState("red");
-    const [newLineColumns, setNewLineColumns] = useState(18);
-    const [projectID, setProjectID] = useState(Number(props.match.params.id));
-    const [clientID, setClientID] = useState();
-    const [clients, setClients] = useState([]);
-    const [constructionSite, setConstructionSite] = useState("");
-    const [clientName, setClientName] = useState("");
-    const [saved, setSaved] = useState(<span></span>);
-    const [events, setEvents] = useState("");
-    const traductions = {
+    const [etiquettes, setEtiquettes] = useState([]);                                   // contains the different characteristics of each row and cell in th table
+    const [colorDivClass, setColorDivClass] = useState("changementCouleur redCommand")  // contains the class value of the color div
+    const [selectedTextColor, setSelectedTextColor] = useState("red");                  // sets the color to change to on double click on a cell
+    const [newLineColumns, setNewLineColumns] = useState(18);                           // contains the value of cells to add when a new row is requested
+    const [projectID, setProjectID] = useState(Number(props.match.params.id));          // contains the project ID
+    const [clientID, setClientID] = useState();                                         // contains the clientID
+    const [clients, setClients] = useState([]);                                         // contains the client to chose from when creating a new project
+    const [constructionSite, setConstructionSite] = useState("");                       // contains the construction site of the project, this is shown on top of the page
+    const [clientName, setClientName] = useState("");                                   // contains the client name and surname shown on top of the page
+    const [saved, setSaved] = useState(<span></span>);                                  // inidiquates of the project has been modified or if it is still saved
+    const [events, setEvents] = useState("");                                           // contains the most recent event that happened on the project
+    const traductions = {                                                               // contains color translations to French
         colors: {
             green: 'verte', 
             red: 'rouge',
@@ -28,16 +28,25 @@ const Etiquetage = (props) => {
             blue: 'bleue'
         }
     };
-    let longPressTimer = 0;
-    let clientInfo;
+    let longPressTimer = 0;                                                             // contains the timer value to perform a long press on a cell
+    let clientInfo;                                                                     // contains the information about the client
 
+    /**
+     * Function fires on page load and when new projectID is set
+     */
     useEffect(() => {
-        let initiateTable;
+        let initiateTable;      // wil contain the function to call eventually
+
+        // if there is a projectID greater than 0 (which means the project already existed)
         if (projectID) {
+            /**
+             * function will call an api to get the requested project
+             */
             initiateTable = async () => {
                 const response = await fetch('/api/etiquettes/' + projectID);
                 const responseData = await response.json();
 
+                // set the recent events part on the page
                 if (clientName === "" && clientID) {
                     setEvents("Projet enregistré pour la première fois avec ID " + projectID);
                 }
@@ -45,6 +54,7 @@ const Etiquetage = (props) => {
                     setEvents("Projet N° " + projectID + " ouvert");
                 }
 
+                // prepare the different states
                 setProjectID(responseData.projectID);
                 setClientName(responseData.clientInfo);
                 setClientID(responseData.clientID);
@@ -53,7 +63,13 @@ const Etiquetage = (props) => {
                 setSaved(<span className="saved">Enregistré</span>);
             };
         }
+        // if it is a newly created project
         else {
+            /**
+             * function adds a first row to the table.
+             * this row can NEVER be deleted.
+             * (one row contains 18 cells)
+             */
             initiateTable = async () => {
                 let tableContent = [[]];
                 for (let i = 0 ; i < 18 ; i++) {
@@ -70,10 +86,13 @@ const Etiquetage = (props) => {
                         }
                     });
                 }
+
+                // set the different state values
                 setEtiquettes(tableContent);
                 setSaved(<span className="unsaved">Non-enregisté</span>);
                 setEvents("Nouveau projet créé");
 
+                // get the basic client information so that the user can choose a client to link this project
                 try{
                     const response = await fetch('/api/client');
                     const responseData = await response.json();
@@ -86,12 +105,19 @@ const Etiquetage = (props) => {
         }
 
         initiateTable();
+    // eslint-disable-next-line
     }, [projectID]);
 
-    
+    /**
+     * Funtion shows which columns will be merged (red columns) on right mouse click
+     * and which columns will be fused (green columns) on left mouse click
+     * @param {number} rowIndex 
+     * @param {number} columnIndex 
+     */
     const fuseMergePreview = (rowIndex, columnIndex) => {
         let stateCopy = etiquettes.slice();
         
+        // set different colors depending on the column index and the number of columns
         if (columnIndex === stateCopy[rowIndex].length -1 && stateCopy[rowIndex][columnIndex].colspan <= 1) {
             stateCopy[rowIndex][columnIndex].tempBackground = "green";
         }
@@ -110,7 +136,10 @@ const Etiquetage = (props) => {
         setEtiquettes(stateCopy);
     };
 
-
+    /**
+     * clears the colors set on preview   ^^^
+     * @param {number} rowIndex 
+     */
     const clearPreview = (rowIndex) => {
         let stateCopy = etiquettes.slice();
 
@@ -121,23 +150,39 @@ const Etiquetage = (props) => {
         setEtiquettes(stateCopy);
     };
 
-
+    /**
+     * function takes the value of the html element and stores it in the project state on the right row and in the right column.
+     * when a sequance of characters are equal to delta and a space, these characters are deleted and instead 
+     * the greek symbol delta is written
+     * @param {htmlObject} htmlElement contains the vlaues of the written html element
+     * @param {number} rowIndex 
+     * @param {number} columnIndex 
+     */
     const writeTicket = (htmlElement, rowIndex, columnIndex) => {
         let stateCopy = etiquettes.slice();
+        
+        stateCopy[rowIndex][columnIndex].value = htmlElement.target.value.replace('delta ', '\u0394 ');
 
-        stateCopy[rowIndex][columnIndex].value = htmlElement.target.value;
         setEtiquettes(stateCopy);
         setSaved(<span className="unsaved">Non-enregisté</span>);
         setEvents("Écriture dans la rangée n° " + (rowIndex + 1) + ", colonne n° " + (columnIndex+ 1));
     };
 
-
+    /**
+     * function fuses or merges cells from the table
+     * @param {htmlObject} event 
+     * @param {number} rowIndex 
+     * @param {number} columnIndex 
+     */
     const fuseMergeCells = (event, rowIndex, columnIndex) => {
         event.preventDefault();
         let stateCopy = etiquettes.slice();
         let newColumnColspan;
         
+        // if the click is a right click and the colspan is greater than 1
         if (event.button === 2 && stateCopy[rowIndex][columnIndex].colspan > 1) {
+
+            // divide the column in 2 parts and generate a new column
             newColumnColspan = Math.floor(stateCopy[rowIndex][columnIndex].colspan / 2);
             stateCopy[rowIndex].splice(
                 columnIndex + 1, 0, 
@@ -154,11 +199,16 @@ const Etiquetage = (props) => {
                     }
                 }
             );
+
+            // decrease the colspan of the existing column
             stateCopy[rowIndex][columnIndex].colspan -= newColumnColspan;
             setEvents("Division à la rangée n° " + (rowIndex + 1) + " de la colonne n° " + (columnIndex+ 1));
         }
+        // if the click is a left click and there are more than 1 column left in the row
         else if (event.button === 0 && stateCopy[rowIndex].length > 1) {
+            // increase the left column with the right column's colspan
             stateCopy[rowIndex][columnIndex].colspan += stateCopy[rowIndex][columnIndex + 1].colspan;
+            // delete the right column
             stateCopy[rowIndex].splice(columnIndex + 1, 1);
             setEvents("Fusion à la rangée n° " + (rowIndex + 1) + " de la colonne n° " + (columnIndex+ 1) + " et de la colonne n° " + (columnIndex + 2));
         }
@@ -170,7 +220,12 @@ const Etiquetage = (props) => {
         fuseMergePreview(rowIndex, columnIndex);
     };
 
-
+    /**
+     * function stores the value of the written textarea in the program state
+     * @param {htmlObject} htmlElement 
+     * @param {number} rowIndex 
+     * @param {number} columnIndex 
+     */
     const writeCNumber = (htmlElement, rowIndex, columnIndex) => {
         let stateCopy = etiquettes.slice();
 
@@ -180,8 +235,13 @@ const Etiquetage = (props) => {
         setEvents("Écriture dans la rangée n° " + (rowIndex + 1) + ", colonne n° " + (columnIndex+ 1));
     }
 
-
+    /**
+     * sets bold text on a long click (500ms) on a big textarea
+     * @param {number} rowIndex 
+     * @param {number} columnIndex 
+     */
     const setBoldText = (rowIndex, columnIndex) => {
+        // start the timer and tell what to do at the end of the timer
         longPressTimer = window.setTimeout(function () {
             let stateCopy = etiquettes.slice();
 
@@ -192,7 +252,11 @@ const Etiquetage = (props) => {
         }, 500)
     };
 
-
+     /**
+     * sets bold text on a long click (500ms) on a little textarea
+     * @param {number} rowIndex 
+     * @param {number} columnIndex 
+     */
     const setCNumberBold = (rowIndex, columnIndex) => {
         longPressTimer = window.setTimeout(function () {
             let stateCopy = etiquettes.slice();
@@ -204,18 +268,27 @@ const Etiquetage = (props) => {
         }, 500);
     };
 
-
+    /**
+     * resets the timer for long presses (in case the user didn't hold long enough)
+     */
     const resetLongPressTimer = () => {
         clearTimeout(longPressTimer);
     };
 
-
+    /**
+     * sets the new color to apply on double click and changes the color div background color
+     * @param {string} newColor 
+     */
     const setTextColor = (newColor) => {
         setSelectedTextColor(newColor);
         setColorDivClass("changementCouleur " + newColor + "Command");
     };
 
-
+    /**
+     * changes the color of a big textarea to the, at the time of double click, selected color
+     * @param {number} rowIndex 
+     * @param {number} columnIndex 
+     */
     const changeTextColor = (rowIndex, columnIndex) => {
         let stateCopy = etiquettes.slice();
         
@@ -226,7 +299,11 @@ const Etiquetage = (props) => {
         setEvents("Changement de couleur à la rangée n° " + (rowIndex + 1) + ", colonne n° " + (columnIndex + 1) + " vers la couleur " + traductions.colors[selectedTextColor]);
     };
 
-
+    /**
+     * changes the color of a little textarea to the, at the time of double click, selected color
+     * @param {number} rowIndex 
+     * @param {number} columnIndex 
+     */
     const changeCNumberColor = (rowIndex, columnIndex) => {
         let stateCopy = etiquettes.slice();
         
@@ -237,13 +314,19 @@ const Etiquetage = (props) => {
         setEvents("Changement de couleur à la rangée n° " + (rowIndex + 1) + ", colonne n° " + (columnIndex + 1) + " vers la couleur " + traductions.colors[selectedTextColor]);
     }
 
-
+    /**
+     * adds a row to the table, the new row will contain the number of columns 
+     * specified in the 'newLineColumns' state variable, this variable is changeable by the user.
+     * The 'newLineColumns' value can't be greater than 18 and must at least be equal to 1
+     */
     const addRow = () => {
         let stateCopy = etiquettes.slice();
 
         if (newLineColumns && newLineColumns <= 18) {
+            // first push a new row to the state
             stateCopy.push([]);
 
+            // then complete the row with the number of columns specified by the user (--> 'newLineColumns')
             for (let i = 0 ; i < newLineColumns ; i++){
                 stateCopy[stateCopy.length -1].push({
                     tempBackground: 'white',
@@ -258,33 +341,44 @@ const Etiquetage = (props) => {
                     }
                 });
             }
+
             setEtiquettes(stateCopy);
             setSaved(<span className="unsaved">Non-enregisté</span>);
-            setEvents("Ajout d'une " + etiquettes.length + "e ligne");
+            setEvents("Ajout d'une " + (etiquettes.length + 1) + "e ligne");
         }
         else {
             setEvents(<span style={{color: "red"}}>Nombre de colonnes non valide</span>);
         }
     }
 
-
+    /**
+     * deletes a row and all of its columns from the project state.
+     * this function can be executed only if there are more than 1 rows left
+     */
     const deleteRow = () => {
         if (etiquettes.length > 1) {
             let stateCopy = etiquettes.slice();
             stateCopy.pop();
             setEtiquettes(stateCopy);
             setSaved(<span className="unsaved">Non-enregisté</span>);
-            setEvents("Supression de la ligne n° " + (etiquettes.length + 1));
+            setEvents("Supression de la ligne n° " + (etiquettes.length));
         }
         else {
             setEvents(<span style={{color: "red"}}>Impossible de suprimmer la première ligne du tableau</span>)
         }
     }
 
-
+    /**
+     * function sends the project state to the backend server with the appropriate api.
+     * The http method will either be POST if it is the first time the project is saved or
+     * PUT if it isn't
+     */
     const saveProject = async () => {
+        // if all the input are correcctly specified (client and construction site)
         if (clientID && constructionSite){
+            // if there is already a prohjectID in which case it means the project already existed before
             if(projectID) {
+                // try to put and, by doing so, update the project in the database
                 try {
                     await fetch(
                         '/api/etiquettes',
@@ -301,8 +395,10 @@ const Etiquetage = (props) => {
                     console.log(e);
                 }
             }
+            // if the project id equals to 0, it means the project didn't exist before and it has still to be created
             else {
                 try {
+                    // send the data with the http POST method too create the new row in the database
                     let response = await fetch(
                         '/api/etiquettes',
                         {
@@ -313,7 +409,8 @@ const Etiquetage = (props) => {
                             body: JSON.stringify([clientID, constructionSite, etiquettes])
                         }
                     );
-
+                    
+                    // when the project is saved, wait for the project id to be returned and set the projectID state
                     const responseData = await response.json();
                     setProjectID(responseData.projectID);
                     setEvents(<span style={{color: "green"}}>Document enregistré</span>);
@@ -329,13 +426,16 @@ const Etiquetage = (props) => {
         }
     };
 
-
+    // if there is a clientID and a projectID
     if (clientID && projectID) {
+        // just show the client name
         clientInfo = <h3 className="clientInfo">{clientName}</h3>;
     }
     else {
+        // ask the user which client to choose
         clientInfo = 
         <Autocomplete
+            style={{marginTop: "7%", marginLeft: "6%", width: "290px"}}
             options={clients}
             getOptionLabel={(option) => option.id + ": " + option.attribute1}
             onChange={(option) => setClientID(Number(option.target.innerHTML.split(':')[0]))}
@@ -344,7 +444,7 @@ const Etiquetage = (props) => {
     }
 
     return (
-        <BS.Row className="no_margin">
+        <BS.Row className="no_margin programContainer" >
             <BS.Col className="no_print" lg="3">
                 {clientInfo}
                 <BS.Button variant="light" size="lg" id="addRow" className="cleanButton" onClick={() => addRow()}>ADD</BS.Button>
