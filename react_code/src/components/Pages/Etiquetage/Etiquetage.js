@@ -6,6 +6,7 @@ import './commandesEtiquettes.css';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import * as BS from "react-bootstrap";
+import { red } from '@material-ui/core/colors';
 
 const Etiquetage = (props) => {
     const [etiquettes, setEtiquettes] = useState([]);
@@ -19,6 +20,14 @@ const Etiquetage = (props) => {
     const [clientName, setClientName] = useState("");
     const [saved, setSaved] = useState(<span></span>);
     const [events, setEvents] = useState("");
+    const traductions = {
+        colors: {
+            green: 'verte', 
+            red: 'rouge',
+            black: 'noire',
+            blue: 'bleue'
+        }
+    };
     let longPressTimer = 0;
     let clientInfo;
 
@@ -28,13 +37,20 @@ const Etiquetage = (props) => {
             initiateTable = async () => {
                 const response = await fetch('/api/etiquettes/' + projectID);
                 const responseData = await response.json();
+
+                if (clientName === "" && clientID) {
+                    setEvents("Projet enregistré pour la première fois avec ID " + projectID);
+                }
+                else {
+                    setEvents("Projet N° " + projectID + " ouvert");
+                }
+
                 setProjectID(responseData.projectID);
                 setClientName(responseData.clientInfo);
                 setClientID(responseData.clientID);
                 setConstructionSite(responseData.constructionSite);
                 setEtiquettes(JSON.parse(responseData.projectData));
                 setSaved(<span className="saved">Enregistré</span>);
-                setEvents("Projet N° " + projectID + " ouvert");
             };
         }
         else {
@@ -207,6 +223,7 @@ const Etiquetage = (props) => {
 
         setEtiquettes(stateCopy);
         setSaved(<span className="unsaved">Non-enregisté</span>);
+        setEvents("Changement de couleur à la rangée n° " + (rowIndex + 1) + ", colonne n° " + (columnIndex + 1) + " vers la couleur " + traductions.colors[selectedTextColor]);
     };
 
 
@@ -217,12 +234,12 @@ const Etiquetage = (props) => {
 
         setEtiquettes(stateCopy);
         setSaved(<span className="unsaved">Non-enregisté</span>);
+        setEvents("Changement de couleur à la rangée n° " + (rowIndex + 1) + ", colonne n° " + (columnIndex + 1) + " vers la couleur " + traductions.colors[selectedTextColor]);
     }
 
 
     const addRow = () => {
         let stateCopy = etiquettes.slice();
-        console.log(stateCopy);
 
         if (newLineColumns && newLineColumns <= 18) {
             stateCopy.push([]);
@@ -240,11 +257,14 @@ const Etiquetage = (props) => {
                         value: ''
                     }
                 });
-            }   
+            }
+            setEtiquettes(stateCopy);
+            setSaved(<span className="unsaved">Non-enregisté</span>);
+            setEvents("Ajout d'une " + etiquettes.length + "e ligne");
         }
-        setEtiquettes(stateCopy);
-        setSaved(<span className="unsaved">Non-enregisté</span>);
-        setEvents("Ajout de la ligne n° " + etiquettes.length);
+        else {
+            setEvents(<span style={{color: "red"}}>Nombre de colonnes non valide</span>);
+        }
     }
 
 
@@ -256,55 +276,61 @@ const Etiquetage = (props) => {
             setSaved(<span className="unsaved">Non-enregisté</span>);
             setEvents("Supression de la ligne n° " + (etiquettes.length + 1));
         }
+        else {
+            setEvents(<span style={{color: "red"}}>Impossible de suprimmer la première ligne du tableau</span>)
+        }
     }
 
 
     const saveProject = async () => {
-        if(projectID) {
-            try {
-                let response = await fetch(
-                    '/api/etiquettes',
-                    {
-                        method: 'put',
-                        headers: {
-                            'Content-type': 'application/json'
-                        },
-                        body: JSON.stringify([constructionSite, etiquettes, projectID])
-                    }
-                );
+        if (clientID && constructionSite){
+            if(projectID) {
+                try {
+                    await fetch(
+                        '/api/etiquettes',
+                        {
+                            method: 'put',
+                            headers: {
+                                'Content-type': 'application/json'
+                            },
+                            body: JSON.stringify([constructionSite, etiquettes, projectID])
+                        }
+                    );
+                }
+                catch (e) {
+                    console.log(e);
+                }
+            }
+            else {
+                try {
+                    let response = await fetch(
+                        '/api/etiquettes',
+                        {
+                            method: 'post',
+                            headers: {
+                                'Content-type': 'application/json'
+                            },
+                            body: JSON.stringify([clientID, constructionSite, etiquettes])
+                        }
+                    );
 
-                const responseData = await response.json();
-                console.log(responseData);
+                    const responseData = await response.json();
+                    setProjectID(responseData.projectID);
+                    setEvents(<span style={{color: "green"}}>Document enregistré</span>);
+                }
+                catch (e) {
+                    console.log(e);
+                }
             }
-            catch (e) {
-                console.log(e);
-            }
+            setSaved(<span className="saved">Enregistré</span>);
         }
         else {
-            try {
-                let response = await fetch(
-                    '/api/etiquettes',
-                    {
-                        method: 'post',
-                        headers: {
-                            'Content-type': 'application/json'
-                        },
-                        body: JSON.stringify([clientID, constructionSite, etiquettes])
-                    }
-                );
-
-                const responseData = await response.json();
-                console.log(responseData);
-            }
-            catch (e) {
-                console.log(e);
-            }
+            setEvents(<span style={{color: "red"}}>Assurez vou que les champs clients et chantier sont bien remplis adéquatement</span>);
         }
-        setSaved(<span className="saved">Enregistré</span>);
     };
 
 
-    if (clientID) {
+    if (clientID && projectID) {
         clientInfo = <h3 className="clientInfo">{clientName}</h3>;
     }
     else {
@@ -312,14 +338,14 @@ const Etiquetage = (props) => {
         <Autocomplete
             options={clients}
             getOptionLabel={(option) => option.id + ": " + option.attribute1}
-            onChange={(option) => setClientID(option.id)}
+            onChange={(option) => setClientID(Number(option.target.innerHTML.split(':')[0]))}
             renderInput={(params) => <TextField {...params} label="Client" variant="outlined" />}
         />;
     }
 
     return (
         <BS.Row className="no_margin">
-            <BS.Col lg="3">
+            <BS.Col className="no_print" lg="3">
                 {clientInfo}
                 <BS.Button variant="light" size="lg" id="addRow" className="cleanButton" onClick={() => addRow()}>ADD</BS.Button>
                 <BS.Button variant="light" size="lg" id="deleteRow" className="cleanButton" onClick={() => deleteRow()}>DEL</BS.Button>
@@ -343,25 +369,30 @@ const Etiquetage = (props) => {
                         </label>
                     </div>
                 </div>
-                <BS.Button variant="light" size="lg" id="impression" className="cleanButton" onClick={() => console.log("printWindow()")}>PRINT</BS.Button>
+                <BS.Button variant="light" size="lg" id="impression" className="cleanButton" onClick={() => window.print()}>PRINT</BS.Button>
                 <BS.Button variant="light" size="lg" id="save" className="cleanButton" onClick={() => saveProject()}>SAVE</BS.Button>
                 <br />
                 <div className="projectStatus">
-                    <h4>Informations Projet</h4>
                     <h5>Enregistrement</h5>
                     {saved}
                     <br /><br />
                     <h5>Nombre de Lignes</h5>
                     <span className="nOfLines">{etiquettes.length} lignes</span>
                     <br /><br />
-                    <h5>Recent events</h5>
+                    <h5>Événements Récents</h5>
                     <p className="events">{events}</p>
                 </div>
             </BS.Col>
             <BS.Col className="no_margin" lg="9">
-                <input value={ constructionSite } onChange={ (e) => {setConstructionSite(e.target.value); setSaved(<span className="unsaved">Non-enregisté</span>);} } className="form-control form-control-lg constructionSite" type="text" placeholder="Chantier" />
+                <input 
+                    value={ constructionSite }
+                    onChange={ (e) => {setConstructionSite(e.target.value); setSaved(<span className="unsaved">Non-enregisté</span>);}} 
+                    className="form-control form-control-lg constructionSite" 
+                    type="text" 
+                    placeholder="Chantier" 
+                />
                 <div className="etiquettesContainer">
-                    <table className="tableauxEtiquettes" onChange={() => console.log('hgello')}>
+                    <table className="tableauxEtiquettes">
                             <tbody className="etiquettes">
                                 {etiquettes.map((row, index) => (
                                     <Row 

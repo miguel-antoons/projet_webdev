@@ -62,13 +62,22 @@ def etiquettes():
 
         sql_procedure = """
             INSERT INTO etiquettes (ID_CLIENT, CHANTIER, CODE_JSON)
-            VALUES (%s, %s, %s)
+            VALUES (%s, %s, %s);
         """
 
         cur.execute(sql_procedure, arguments)
         connector.commit()
 
-        response = cur.fetchall()
+        sql_procedure = """
+            SELECT LAST_INSERT_ID();
+        """
+
+        cur.execute(sql_procedure)
+        mysql_result = cur.fetchall()
+
+        response = {
+            'projectID': mysql_result[0][0]
+        }
 
     elif request.method == 'PUT':
         data = request.json
@@ -114,6 +123,7 @@ def etiquettes():
 @app_etiquette.route('/api/etiquettes/<id>', methods=['GET'])
 def etiquette(id):
     connector = mysql.connection
+    arguments = (id, )
     cur = connector.cursor()
 
     sql_procedure = """
@@ -124,7 +134,7 @@ def etiquette(id):
         WHERE ID_ETIQUETTE = %s
     """
 
-    cur.execute(sql_procedure, id)
+    cur.execute(sql_procedure, arguments)
 
     result = cur.fetchone()
 
