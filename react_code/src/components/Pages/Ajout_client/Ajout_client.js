@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 // ici le component s'appelle home puisque je travaillais dessus, ça n'a pas d'importance et chez toi il s'apellera probablemnt autrement
-const Ajout_Client = () => {
+const Ajout_Client = (props) => {
     // Met le state des inputs
     const [name, setName] = useState('');
     const [firstname, setFirstname] = useState('');
@@ -19,6 +19,9 @@ const Ajout_Client = () => {
     const [tva,setTva] = useState('');
     const [number,setNumber] = useState('');
     const [email,setEmail] = useState('');
+
+    console.log(Number(props.match.params.id))
+    
     
 
     
@@ -26,33 +29,68 @@ const Ajout_Client = () => {
 
     // envoi les données des inputs onSubmit
     const sendPost = async (event) => {
+
+        let id = Number(props.match.params.id)
       
       // évite que la page se recharge onSubmit du formulaire
       event.preventDefault();
+
+      //if props.match.paramsid = 0:
+
+      if (Number(props.match.params.id) === 0) {
+        try{
+            let result = await fetch('/api/client', {
+              method: 'post',
+              //mode: 'no-cors', // 
+              headers: {
+                //'Accept': 'application/json'
+                'Content-type': 'application/json',
+            
+              },
+              
+              body: JSON.stringify({name, firstname, societe, titre, langue,adress,tva,number,email}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
+              
+            });
+      
+            const data = await result.json();
+            console.log(data);
+          }
+          catch(e){
+            console.log(e);
+          }
+      
+         
+        }
+
+      else {
+        try{
+            let result = await fetch('/api/client', {
+              method: 'put',
+              //mode: 'no-cors', // 
+              headers: {
+                //'Accept': 'application/json'
+                'Content-type': 'application/json',
+            
+              },
+              
+              body: JSON.stringify({id,name, firstname, societe, titre, langue,adress,tva,number,email}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
+            });
+      
+            const data = await result.json();
+      
+            console.log(data);
+          }
+          catch(e){
+            console.log(e);
+          }
+
+      }
+      
+    
+      }
       
 
-      try{
-        let result = await fetch('/api/client', {
-          method: 'post',
-          //mode: 'no-cors', // 
-          headers: {
-            //'Accept': 'application/json'
-            'Content-type': 'application/json',
-        
-          },
-          
-          body: JSON.stringify({name, firstname, societe, titre, langue,adress,tva,number,email}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
-        });
-  
-        const data = await result.json();
-  
-        console.log(data);
-      }
-      catch(e){
-        console.log(e);
-      }
      
-    };
   
     return (
 
@@ -64,7 +102,7 @@ const Ajout_Client = () => {
 
 
         <BS.Form.Group  >
-          <BS.Form.Label column="lg" lg={2}  class="col-auto col-form-label" >Nom</BS.Form.Label>
+          <BS.Form.Label column="lg" lg={2}  className="col-auto col-form-label" >Nom</BS.Form.Label>
           <BS.Form.Control size="sm" type="text" placeholder="Entrer le nom du client"  id="name" name="name" 
           value={ name } onChange={ (e) => setName(e.target.value)   } required />
 
