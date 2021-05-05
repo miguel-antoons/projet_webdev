@@ -17,10 +17,16 @@
 
 .text-pdf {
     font-size: 0.8vw;
+    font-family: 'Times New Roman', Times, serif;
+    position: relative;
 }
 
 .margin-left {
     margin-left: 10vw;
+}
+
+.margin-top {
+    margin-top: 20px !important;
 }
 
 .height-100 {
@@ -70,4 +76,16 @@ hr {
 
 .width-600 {
     width: 600px;
+}
+
+.h7 {
+    font-size: 1.2em;
+}
+
+#print {
+    overflow-wrap: anywhere;
+}
+
+.margin-right-20 {
+    margin-right: 20px;
 }

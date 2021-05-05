@@ -16,9 +16,9 @@ class ApiTest(unittest.TestCase):
     def test_facture_all(self):
         r = requests.get(ApiTest.FACTURE_URL)
         self.assertEqual(r.status_code, 200)
-        self.assertEqual(len(r.json()), 1)
+        self.assertEqual(len(r.json()), 2)
 
-    def test_facture_all(self):
+    def test_facture_clients(self):
         r = requests.get(ApiTest.FACTURE_CLIENTS_URL)
         self.assertEqual(r.status_code, 200)
         self.assertEqual(len(r.json()), 4)

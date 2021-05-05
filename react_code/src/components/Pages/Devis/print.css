@@ -1,4 +1,6 @@
 @media print {
+   
+      
     .no-print {
         display : none;
     }
@@ -9,7 +11,8 @@
     }
 
     .text-pdf {
-        font-size: 15px;
+        font-size: 17px;
+        font-family: 'Times New Roman', Times, serif;
     }
     
     .margin-left {
@@ -28,4 +31,12 @@
     .padding-right {
         padding-right: 620px;
     }
+
+    .divFooter {
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+      }
+
+      tfoot {display: table-footer-group;}
 }

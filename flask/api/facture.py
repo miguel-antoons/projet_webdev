@@ -16,13 +16,12 @@ def facture():
 
         # get the filter to apply to the elements
         filter = request.args.get('filter')
-        print(filter)
         arguments = ()
 
         # prepare the sql statement (which contains arguments in order to
         # avoid sql injection)
         sql_procedure = """
-            SELECT F.ID_FACTURE, C.ID_CLIENT, C.NOM_CLIENT, C.PRENOM_CLIENT,
+            SELECT F.ID_FACTURE, C.NOM_CLIENT, C.PRENOM_CLIENT,
                 C.SOCIETE_CLIENT,
                 date_format(F.DATE_ECHEANCE, '%%e-%%c-%%Y'),
                 date_format(F.DATE_FACTURE, '%%D %%M %%Y')
@@ -90,8 +89,8 @@ def facture():
                 id_texte_facture)
             VALUES(%s,%s,%s,%s,%s,%s,%s,%s) ''',
 
-            (requete["id_client"], requete["date_facture"], 
-             requete["date_echeance"], requete["date_fin_travaux"], 
+            (requete["id_client"], requete["date_facture"],
+             requete["date_echeance"], requete["date_fin_travaux"],
              requete["taux_tva"], requete["commentaire"], requete["montant"],
              requete["id_texte_facture"])
         )

@@ -14,7 +14,8 @@ class Form extends Component {
             clients_options: [],
             materials: [],
             material_options: [],
-            room: ''
+            room: '',
+            house : {}
         }
         this.addMaterial = this.addMaterial.bind(this)
         this.api_client()
@@ -90,6 +91,7 @@ class Form extends Component {
     }
 
     addMaterial() {
+        document.getElementById("materials").innerHTML = ""
         let level = document.getElementById("level").value
         let room = document.getElementById("room").value
         let material = document.getElementById("material").value
@@ -100,50 +102,36 @@ class Form extends Component {
             }
         }
 
-        let level_verify = document.getElementById(level)
-        let room_verify = document.getElementsByName(room) 
-        let material_verify = document.getElementsByName(level + room + material.id)
+        // Initilisation du tableau
+        if (this.state.house[level] === undefined) this.state.house[level] = {}
+        if (this.state.house[level][room] === undefined) this.state.house[level][room] = {}
+        if (this.state.house[level][room][material["id"]] === undefined) this.state.house[level][room][material["id"]] = {}
+        
+        if (this.state.house[level][room][material["id"]]["name"] !== undefined) {
+            this.state.house[level][room][material["id"]]["counter"] += 1
+        }
+        else {
+            this.state.house[level][room][material["id"]]["name"] = material["name"]
+            this.state.house[level][room][material["id"]]["price"] = material["price"]
+            this.state.house[level][room][material["id"]]["counter"] = 1
+        }
 
-        // vérifier si la pièce a déjà été utilisée à ce niveau
-        if (room_verify.length > 0)
-            for (let element of room_verify) {
-                if(element.parentNode === level_verify) {
-                    room_verify = element        
-                }
-                else {
-                    room_verify = 0
-                }
-            }
-        else {
-            room_verify = 0
-        }
-        
-        //vérification du niveau
-        if (level_verify !== null) {   
-            // vérification de la pièce du niveau
-            if(room_verify !== 0) {
-                
-                let tbody = document.getElementsByName(level + room)[0]
-                //si matériel existe déjà ou pas
-                if (material_verify.length > 0) {
-                    let compteur = Number(material_verify[0].innerText.split(" x ")[0]) + 1
-                    console.log(tbody)
-                    tbody.innerHTML = '<tr name="' + level + room + material.id + '"><td class="width-600">' + compteur + ' x ' +  material.name + '</td><td>' + Number(material.price) * compteur +' €</td></tr>'
-                }
-                else {
-                    tbody.innerHTML += '<tr name="' + level + room + material.id + '"><td class="width-600">1 x ' +  material.name + '</td><td>' + material.price +' €</td></tr>'
-                }
-            }
-            else {
-                level_verify.innerHTML += '<br /><table name="' + room + '"><thead><tr><th><b> ' + room  + '</b> </th></tr></thead><tbody name="' +  level + room + '"> <tr name="' + level + room + material.id + '"><td class="width-600">1 x ' +  material.name + '</td><td>' + material.price +' €</td></tr></tbody></table>'
+        let house_levels = Object.keys(this.state.house)
+        for(let house_level of house_levels) {
+            let level_rooms = Object.keys(this.state.house[house_level])
+            // Titre niveau de la maison
+            document.getElementById("materials").innerHTML += "<br /><span class='h7'>Niveau : " + house_level + "</span><br />"
+            for (let house_room of level_rooms) {
+                let room_materials = Object.keys(this.state.house[house_level][house_room])
+                // Titre de la pièce du niveau
+                document.getElementById("materials").innerHTML += "<u><b>" + house_room + "</b></u><br />"
+                for (let house_material of room_materials) {
+                    
+                    // Matériel de la pièce
+                    document.getElementById("materials").innerHTML += this.state.house[house_level][house_room][house_material]["counter"] + " x " + this.state.house[house_level][house_room][house_material]["name"] + "(s/x)<div class='float-right margin-right-20'>" + this.state.house[house_level][house_room][house_material]["counter"] * this.state.house[house_level][house_room][house_material]["price"] +" €</div><br />"
+                }    
             }
         }
-        else {
-            
-            document.getElementById("materials").innerHTML += '<br /><div id="' + level + '"> <b><u>Niveau : ' +  level + '</u></b><table name="' + room + '"><thead><tr><th><b> ' + room  + '</b> </th></tr></thead><tbody name="' +  level + room + '"> <tr name="' + level + room + material.id + '"><td class="width-600">1 x ' +  material.name + '</td><td>' + material.price +' €</td></tr></tbody></table>'
-        }
-        
-        return false;
     }
     
 
@@ -151,10 +139,12 @@ class Form extends Component {
         return (
 
             <BS.Form>
+                {/*
                 <BS.Form.Group>
                     <BS.Form.Label>N° de devis</BS.Form.Label>
                     <BS.Form.Control size="sm" type="text" placeholder="Entrer numéro de devis" value={this.props.devisNumber} onChange={this.props.onChangeValue} id="devisNumber" name="devisNumber" />
                 </BS.Form.Group>
+                */}
                 <BS.Form.Group>
                     <BS.Form.Label>Client</BS.Form.Label>
                     <Autocomplete
@@ -174,6 +164,14 @@ class Form extends Component {
                 <BS.Form.Group>
                     <BS.Form.Label>Commentaire</BS.Form.Label>
                     <BS.Form.Control size="sm" as="textarea" placeholder="Commentaire" rows={3} value={this.props.comment} onChange={this.props.onChangeValue} id="comment" name="comment" />
+                </BS.Form.Group>
+                <BS.Form.Group>
+                    <BS.Form.Label>Prix total</BS.Form.Label>
+                    <BS.Form.Control size="sm" type="number"  placeholder="example: 150, 122.25" rows={3} value={this.props.price} onChange={this.props.onChangeValue} id="price" name="price" />
+                </BS.Form.Group>
+                <BS.Form.Group>
+                    <BS.Form.Label>Pourcentage</BS.Form.Label>
+                    <BS.Form.Control size="sm" type="number"  placeholder="example: 50%, 60%" rows={3} value={this.props.percent} onChange={this.props.onChangeValue} id="percent" name="percent" />
                 </BS.Form.Group>
                 <hr />
                 <BS.Form.Group>
