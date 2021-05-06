@@ -1,4 +1,4 @@
-from flask import Blueprint, request, json
+from flask import Blueprint, request, json, jsonify
 from .database import mysql
 
 
@@ -73,6 +73,76 @@ def devis():
 
         response = cur.fetchall()
 
-    cur.close()
+    elif request.method == 'POST':
+        # Creating a connection cursor
+        cursor = mysql.connection.cursor()
+        requete = request.json
+
+        print(requete)
+
+        # Executing SQL Statements
+
+        cursor.execute(
+            '''INSERT INTO devis (id_client, date_devis,
+            chantier, choix_prix, modification_prix_pourcentage,
+            modification_prix_fixe, id_devis_texte)
+            VALUES(%s,%s,%s,%s,%s,%s,%s) ''',
+
+            (requete["id_client"], requete["date_devis"],
+             requete["chantier"], requete["choix_prix"],
+             requete["modification_prix_pourcentage"],
+             requete["modification_prix_fixe"],
+             requete["id_texte_devis"])
+        )
+
+        # Saving the Actions performed on the DB
+        mysql.connection.commit()
+
+        # Closing the cursor
+        cursor.close()
+
+        return jsonify(msg='Le devis a été ajouté avec succès')
+
+    elif request.method == 'PUT':
+        # Creating a connection cursor
+        cursor = mysql.connection.cursor()
+        requete = request.json
+
+        print(requete)
+        # Executing SQL Statements
+        cursor.execute(
+            '''UPDATE devis
+                SET id_client = %s,
+                    date_devis = %s,
+                    chantier = %s,
+                    choix_prix = %s,
+                    modification_prix_pourcentage = %s,
+                    modification_prix_fixe = %s,
+                    id_devis_texte = %s
+                where ID_DEVIS = %s
+             ''',
+
+            (requete["id_client"], requete["date_devis"],
+             requete["chantier"], requete["choix_prix"],
+             requete["modification_prix_pourcentage"], requete["modification_prix_fixe"], requete["id_texte_devis"],
+             requete["devisId"])
+        )
+
+        # Saving the Actions performed on the DB
+        mysql.connection.commit()
+
+        # Closing the cursor
+        cur.close()
+        return jsonify(msg='Le devis a été modifié avec succès')
 
     return json.dumps(response)
+
+
+@app_devis.route("/api/devis/get_devis_id/<id>", methods=['GET'])
+def devis_id(id):
+    cursor = mysql.connection.cursor()
+    print(id)
+    cursor.execute("SELECT * FROM devis where ID_devis = %s", (id))
+    data = cursor.fetchall()
+
+    return jsonify(data)

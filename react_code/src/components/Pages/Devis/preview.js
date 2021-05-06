@@ -67,7 +67,10 @@ function Preview(props) {
                             </BS.Col>
                             <BS.Col className="margin-left">
                                 <br />
-                                Sint Agatha Rode, {props.state.devisDate}
+                                Sint Agatha Rode, {props.state.devisDate}<br /><br />
+                                {props.state.clientName} {props.state.clientFirstname},<br />
+                                {props.state.clientAdress}
+
                             </BS.Col>
                         </BS.Row>
 
@@ -143,7 +146,6 @@ function Preview(props) {
                             BE35 7340 1927 6737
                         </BS.Col>
                         </BS.Row>
-
 
                     </BS.Col>
 

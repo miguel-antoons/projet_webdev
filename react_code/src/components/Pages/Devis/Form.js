@@ -14,10 +14,15 @@ class Form extends Component {
             clients_options: [],
             materials: [],
             material_options: [],
-            room: '',
             house : {}
         }
+
+        let url = window.location.href.split("/")
+        let param = url.length - 1 
+        if(url[param] !== 0) this.set_state_devis(url[param])
+
         this.addMaterial = this.addMaterial.bind(this)
+        this.save = this.save.bind(this)
         this.api_client()
         setTimeout(() => {this.api_material(); }, 100)
     }
@@ -90,6 +95,20 @@ class Form extends Component {
         this.setState({material_options: materials_table})
     }
 
+    // set house
+    async set_state_devis(id) {
+        return await fetch('/api/devis/get_devis_id/' + id).then((response) => {
+            return response.json().then((result) => {
+                this.setState({ 
+                    house: JSON.parse(result[0][4])
+                })
+                this.fill_text_materials()
+            }).catch((err) => {
+                console.log(err);
+            })
+        })
+    }
+
     addMaterial() {
         document.getElementById("materials").innerHTML = ""
         let level = document.getElementById("level").value
@@ -115,11 +134,16 @@ class Form extends Component {
             this.state.house[level][room][material["id"]]["price"] = material["price"]
             this.state.house[level][room][material["id"]]["counter"] = 1
         }
+        
+        this.fill_text_materials()
+    }
 
+    fill_text_materials() {
         let house_levels = Object.keys(this.state.house)
         for(let house_level of house_levels) {
             let level_rooms = Object.keys(this.state.house[house_level])
             // Titre niveau de la maison
+           
             document.getElementById("materials").innerHTML += "<br /><span class='h7'>Niveau : " + house_level + "</span><br />"
             for (let house_room of level_rooms) {
                 let room_materials = Object.keys(this.state.house[house_level][house_room])
@@ -132,6 +156,69 @@ class Form extends Component {
                 }    
             }
         }
+    }
+
+    async save() {   
+        let url = window.location.href.split("/")
+        let param = url.length - 1 
+
+        let devisId = url[param]
+        let id_client = this.props.returnState.clientId
+        let id_texte_devis = "1"
+        let date_devis = this.props.returnState.devisDate
+        let chantier = JSON.stringify(this.state.house)
+        let choix_prix = this.props.returnState.price
+        let modification_prix_pourcentage = this.props.returnState.percent
+        let modification_prix_fixe = this.props.returnState.price
+
+        
+        // ajout de devis
+        if(Number(devisId) === 0) {
+            try{
+                let result = await fetch('/api/devis', {
+                method: 'post',
+                //mode: 'no-cors', // --> pas besoin de cette ligne
+                headers: {
+                    //'Accept': 'application/json', // --> pas besoin de cette ligne non-plus
+                    'Content-type': 'application/json',
+                
+                },
+                
+                body: JSON.stringify({id_client, date_devis, chantier, choix_prix, modification_prix_pourcentage, modification_prix_fixe, id_texte_devis}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
+                });
+        
+                const data = await result.json();
+                document.getElementById("msg").innerText = "*" + data["msg"]
+        
+            }
+            catch(e){
+                console.log(e);
+            }
+        }
+        //modification de devis
+        else {
+            try{
+                let result = await fetch('/api/devis', {
+                method: 'put',
+                //mode: 'no-cors', // --> pas besoin de cette ligne
+                headers: {
+                    //'Accept': 'application/json', // --> pas besoin de cette ligne non-plus
+                    'Content-type': 'application/json',
+                
+                },
+                
+                body: JSON.stringify({devisId, id_client, date_devis, chantier, choix_prix, modification_prix_pourcentage, modification_prix_fixe, id_texte_devis}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
+                });
+        
+                const data = await result.json();
+                document.getElementById("msg").innerText = "*" + data["msg"]
+            }
+            catch(e){
+                console.log(e);
+            }
+        }
+        
+         
     }
     
 
@@ -201,8 +288,10 @@ class Form extends Component {
                         </BS.Col>
                     </BS.Form.Row>
                 </BS.Form.Group>
-                <Preview state={this.props.returnState} />
+                {/*<Preview state={this.props.returnState} />*/}
+                <BS.Button id="save" className="no-print mb-2 ml-2" variant='dark' onClick={this.save}>Sauvegarder</BS.Button> {' '}
                 <BS.Button className="no-print mb-2 ml-2" variant="info" onClick={window.print}>Imprimer</BS.Button> {' '}
+                <div id="msg"></div>
 
             </BS.Form>
         )

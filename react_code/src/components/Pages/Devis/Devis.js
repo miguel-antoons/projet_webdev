@@ -12,6 +12,7 @@ class Devis extends Component {
         this.state = {
             devisNumber: '',
             //client 
+            clientId : '',
             clientNumber: '',
             clientName: '',
             clientFirstname: '',
@@ -23,8 +24,16 @@ class Devis extends Component {
             comment: '',
             price: '0',
             percent: '50',
+            house : '',
             clients: []
         }
+
+        let url = window.location.href.split("/")
+        let param = url.length - 1 
+        if(url[param] !== 0) {
+            this.set_state_devis(url[param])
+        }
+
         this.api_client()
         this.handleChange = this.handleChange.bind(this)
     }
@@ -75,6 +84,7 @@ class Devis extends Component {
         for (let client of this.state.clients) {
             if (client.id === event_id && event_name === "clientNumber") {
                 this.setState({
+                    clientId: client.id,
                     clientNumber: client.number,
                     clientName: client.name,
                     clientFirstname: client.firstname,
@@ -94,6 +104,71 @@ class Devis extends Component {
             }
         }
     }
+
+    
+    // set l'état du formulaire avec l'id du devis rentré en param
+    async set_state_devis(id) {
+        return await fetch('/api/devis/get_devis_id/' + id).then((response) => {
+            return response.json().then((result) => {
+                this.setState({ 
+                    devisNumber: id,
+                    devisDate: this.change_date_format(result[0][3]),
+                    comment: '',
+                    price: result[0][5],
+                    percent: result[0][6],
+                    house: JSON.parse(result[0][4])
+                })
+
+                // remplir le formulaire
+                document.getElementById("devisDate").value = this.change_date_format(result[0][3])
+                document.getElementById("price").value =  result[0][5]
+                document.getElementById("percent").value =  result[0][6]
+                
+
+                this.set_state_client(result[0][1])
+                //changer bouton sauvegarder par modifier
+                document.getElementById("save").innerText = "Modifier"
+            }).catch((err) => {
+                console.log(err);
+            })
+        })
+    }
+
+    change_date_format(date) {
+        let facture_date = Date.parse(date)
+        facture_date = new Date(facture_date)
+        return ("0" + facture_date.getFullYear()).slice(-4) + "-" + ("0" + (facture_date.getMonth() + 1)).slice(-2) + "-" + ("0" + facture_date.getDate()).slice(-2)
+    }
+
+    // set l'état du formulaire avec l'id de la devis rentré en param
+    async set_state_client(id) {
+        return await fetch('/api/client/' + id).then((response) => {
+            return response.json().then((result) => {
+                this.setState({ 
+                    clientId: result[0][0],
+                    clientName: result[0][1],
+                    clientFirstname: result[0][2],
+                    clientTva: result[0][6],
+                    clientCompany: result[0][3],
+                    clientAdress: result[0][4],
+                    title: result[0][9],
+                    clientNumber: result[0][10]
+                })
+                
+                // remplir le formulaire, ne fonctionne pas
+                /*
+                let option = {client : this.state.clientNumber + '. ' + this.state.clientFirstname + ' ' + this.state.clientName}
+                console.log(option)
+                document.getElementById("clientNumber").Value = option
+                document.getElementById('clientNumber').getElementsByTagName('option')[2].selected = 'selected'
+                */
+            }).catch((err) => {
+                console.log(err);
+            })
+        })
+    }
+
+    
 
     tva(price_str, tva_str) {
         let price = Number(price_str)
@@ -149,7 +224,10 @@ class Devis extends Component {
                             </BS.Col>
                             <BS.Col className="margin-left">
                                 <br />
-                                Sint Agatha Rode, {this.state.devisDate}
+                                Sint Agatha Rode, {this.state.devisDate}<br /><br />
+                                {this.state.clientName} {this.state.clientFirstname},<br />
+                                {this.state.clientAdress}
+
                             </BS.Col>
                         </BS.Row>
 
@@ -162,9 +240,9 @@ class Devis extends Component {
                             </BS.Col>
                         </BS.Row>
 
-                        <div id="materials">{/*section liste des matériels*/}</div>
+                        <div id="materials" className="margin-bot-100">{/*section liste des matériels*/}</div>
 
-                        <div>
+                        <div className="pagebreak">
                         <span><b><u>Conditions générales</u></b></span><br />
                         L'installation commence juste après le coffret compteur,  pour autant que celui-ci se trouve dans le corps principal du bâtiment.  <br />
                         Les prises et interrupteurs sont de marque NIKO type ORIGINAL WHITE pour le matériel encastré et de type HYDRO 55 pour le matériel apparent.  <br />
