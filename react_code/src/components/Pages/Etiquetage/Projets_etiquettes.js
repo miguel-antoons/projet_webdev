@@ -8,7 +8,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 
 function ProjetsEtiquettes () {
-    const [sort, setSort] = useState('{"key": "date", "sign": 0}');
+    const [sort, setSort] = useState('{"key": "date", "sign": 1}');
     const [search, setSearch] = useState('');
     const [shownContent, setShownContent] = useState([]);
     const three_months_ago = new Date();
@@ -18,8 +18,8 @@ function ProjetsEtiquettes () {
     const pathname = "/etiquetage/";
 
     const sortOptions = [
-        { value: '{"key": "date", "sign": 0}', label: "Récent à Ancien", key: 1},
-        { value: '{"key": "date", "sign": 1}', label: "Ancien à Récent", key: 2},
+        { value: '{"key": "date", "sign": 1}', label: "Récent à Ancien", key: 1},
+        { value: '{"key": "date", "sign": 0}', label: "Ancien à Récent", key: 2},
         { value: '{"key": "attribute1", "sign": 0}', label: "A-Z Client", key: 3},
         { value: '{"key": "attribute1", "sign": 1}', label: "Z-A Client", key: 4},
         { value: '{"key": "attribute2", "sign": 0}', label: "A-Z Chantier", key: 5},
