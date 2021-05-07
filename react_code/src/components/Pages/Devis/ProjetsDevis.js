@@ -22,8 +22,8 @@ function ProjetsDevis () {
         { value: '{"key": "date", "sign": 1}', label: "Ancien à Récent", key: 2},
         { value: '{"key": "attribute1", "sign": 0}', label: "A-Z Client", key: 3},
         { value: '{"key": "attribute1", "sign": 1}', label: "Z-A Client", key: 4},
-        { value: '{"key": "attribute2", "sign": 0}', label: "A-Z Chantier", key: 5},
-        { value: '{"key": "attribute2", "sign": 1}', label: "Z-A Chantier", key: 6} 
+        { value: '{"key": "attribute2", "sign": 0}', label: "A-Z Chantier_nom", key: 5},
+        { value: '{"key": "attribute2", "sign": 1}', label: "Z-A Chantier_nom", key: 6} 
     ];
 
     // GET information about all content, fires on page load and on filter change

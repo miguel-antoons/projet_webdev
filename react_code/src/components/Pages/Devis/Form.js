@@ -23,6 +23,7 @@ class Form extends Component {
 
         this.addMaterial = this.addMaterial.bind(this)
         this.save = this.save.bind(this)
+        this.deleteMaterial = this.deleteMaterial.bind(this)
         this.api_client()
         setTimeout(() => {this.api_material(); }, 100)
     }
@@ -110,10 +111,14 @@ class Form extends Component {
     }
 
     addMaterial() {
-        document.getElementById("materials").innerHTML = ""
         let level = document.getElementById("level").value
         let room = document.getElementById("room").value
         let material = document.getElementById("material").value
+        if (level === "" || room === "" || material === "") {
+            document.getElementById("msg").innerText = "*Veuillez remplir le niveau, la pièce et le matériel à rajouter"
+            return
+        }
+        document.getElementById("materials").innerHTML = ""
         material = material.split('. ')[0]
         for (let element of this.state.materials) {
             if (element.id === material){
@@ -138,6 +143,41 @@ class Form extends Component {
         this.fill_text_materials()
     }
 
+    /**
+     * Permet de supprimer matériel de la liste
+     * @returns 
+     */
+    deleteMaterial() {
+        let level = document.getElementById("level").value
+        let room = document.getElementById("room").value
+        let material = document.getElementById("material").value
+        material = material.split('. ')[0]
+        if (level === "" || room === "" || material === "") {
+            document.getElementById("msg").innerText = "*Veuillez remplir le niveau, la pièce et le matériel à suppimer"
+            return
+        }
+
+        if(this.state.house[level] !== undefined ) {
+            if(this.state.house[level][room] !== undefined ) {
+                if(this.state.house[level][room][material] !== undefined ) {
+                    if (this.state.house[level][room][material]["counter"] > 1) {
+                        this.state.house[level][room][material]["counter"] = this.state.house[level][room][material]["counter"] - 1 
+                    }
+                    else {
+                        delete this.state.house[level][room][material]
+                        //suprimer pièce et niveau si vide 
+                        if (Object.keys(this.state.house[level][room]).length === 0) delete this.state.house[level][room]
+                        if (Object.keys(this.state.house[level]).length === 0) delete this.state.house[level]
+                    }
+                }
+            }
+        }
+
+        document.getElementById("materials").innerHTML = ""
+        this.fill_text_materials()
+    }
+
+
     fill_text_materials() {
         let house_levels = Object.keys(this.state.house)
         for(let house_level of house_levels) {
@@ -152,7 +192,8 @@ class Form extends Component {
                 for (let house_material of room_materials) {
                     
                     // Matériel de la pièce
-                    document.getElementById("materials").innerHTML += this.state.house[house_level][house_room][house_material]["counter"] + " x " + this.state.house[house_level][house_room][house_material]["name"] + "(s/x)<div class='float-right margin-right-20'>" + this.state.house[house_level][house_room][house_material]["counter"] * this.state.house[house_level][house_room][house_material]["price"] +" €</div><br />"
+                    let price = this.state.house[house_level][house_room][house_material]["counter"] * this.state.house[house_level][house_room][house_material]["price"] + (this.state.house[house_level][house_room][house_material]["counter"] * this.state.house[house_level][house_room][house_material]["price"]) / 100 * this.props.returnState.percent
+                    document.getElementById("materials").innerHTML += this.state.house[house_level][house_room][house_material]["counter"] + " x " + this.state.house[house_level][house_room][house_material]["name"] + "(s/x)<div class='float-right margin-right-20'>" + price +" €</div><br />"
                 }    
             }
         }
@@ -170,7 +211,8 @@ class Form extends Component {
         let choix_prix = this.props.returnState.price
         let modification_prix_pourcentage = this.props.returnState.percent
         let modification_prix_fixe = this.props.returnState.price
-
+        let chantier_nom = this.props.returnState.site
+        let commentaire = this.props.returnState.comment
         
         // ajout de devis
         if(Number(devisId) === 0) {
@@ -184,7 +226,7 @@ class Form extends Component {
                 
                 },
                 
-                body: JSON.stringify({id_client, date_devis, chantier, choix_prix, modification_prix_pourcentage, modification_prix_fixe, id_texte_devis}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
+                body: JSON.stringify({chantier_nom, id_client, date_devis, commentaire, chantier, choix_prix, modification_prix_pourcentage, modification_prix_fixe, id_texte_devis}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
                 });
         
                 const data = await result.json();
@@ -207,7 +249,7 @@ class Form extends Component {
                 
                 },
                 
-                body: JSON.stringify({devisId, id_client, date_devis, chantier, choix_prix, modification_prix_pourcentage, modification_prix_fixe, id_texte_devis}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
+                body: JSON.stringify({chantier_nom, devisId, id_client, date_devis, commentaire, chantier, choix_prix, modification_prix_pourcentage, modification_prix_fixe, id_texte_devis}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
                 });
         
                 const data = await result.json();
@@ -232,6 +274,11 @@ class Form extends Component {
                     <BS.Form.Control size="sm" type="text" placeholder="Entrer numéro de devis" value={this.props.devisNumber} onChange={this.props.onChangeValue} id="devisNumber" name="devisNumber" />
                 </BS.Form.Group>
                 */}
+
+                <BS.Form.Group>
+                    <BS.Form.Label>Chantier</BS.Form.Label>
+                    <BS.Form.Control  type="text" placeholder="Entrez le nom du chantier" value={this.props.site} onChange={this.props.onChangeValue} id="site" name="site" required />    
+                </BS.Form.Group>
                 <BS.Form.Group>
                     <BS.Form.Label>Client</BS.Form.Label>
                     <Autocomplete
@@ -272,7 +319,7 @@ class Form extends Component {
                 <BS.Form.Group>
                     <BS.Form.Label>Matériel</BS.Form.Label>
                     <BS.Form.Row>
-                        <BS.Col sm={9}>
+                        <BS.Col sm={6}>
                             <Autocomplete
                             id="material" 
                             name="material"
@@ -283,9 +330,12 @@ class Form extends Component {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </BS.Col>
-                        <BS.Col sm={2}>
-                            <BS.Button variant="outline-secondary" onClick={this.addMaterial} >Ajouter</BS.Button>
+                        <BS.Col sm={2.5}>
+                            <BS.Button variant="outline-secondary" onClick={this.addMaterial} >Ajout</BS.Button>
                         </BS.Col>
+                        <BS.Col sm={2}>
+                            <BS.Button variant="danger" onClick={this.deleteMaterial}>Suppr</BS.Button>
+                        </BS.Col>    
                     </BS.Form.Row>
                 </BS.Form.Group>
                 {/*<Preview state={this.props.returnState} />*/}

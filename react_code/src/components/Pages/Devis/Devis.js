@@ -20,10 +20,11 @@ class Devis extends Component {
             clientAdress: '',
             title: 'Mr.',
 
+            site: '',
             devisDate: '',
             comment: '',
             price: '0',
-            percent: '50',
+            percent: '0',
             house : '',
             clients: []
         }
@@ -103,6 +104,10 @@ class Devis extends Component {
                 }
             }
         }
+
+        if (name === "percent") {
+            
+        }
     }
 
     
@@ -118,8 +123,10 @@ class Devis extends Component {
                     percent: result[0][6],
                     house: JSON.parse(result[0][4])
                 })
-
+                console.log(result[0])
                 // remplir le formulaire
+                document.getElementById("comment").value = result[0][12]
+                document.getElementById("site").value = result[0][11]
                 document.getElementById("devisDate").value = this.change_date_format(result[0][3])
                 document.getElementById("price").value =  result[0][5]
                 document.getElementById("percent").value =  result[0][6]
@@ -273,11 +280,11 @@ class Devis extends Component {
                         </div>
 
                         <span><b><u>Prix</u></b></span><br />
-                        L'installation décrite ci-dessus peut-être résalisée pour la somme hors TVA de <span>{this.state.price}</span> Euro <br /><br /><br />
+                        L'installation décrite ci-dessus peut-être résalisée pour la somme hors TVA de <span>{ this.state.price + (this.state.price / 100 * this.state.percent)}</span> Euro <br /><br /><br />
 
                         <span><b><u>Paimement</u></b></span><br />
-                        {this.state.percent} % dès la fin de la pose des tabues pour l'installation électrique. <br />
-                        {this.state.percent} % à la réception de l'installation électrique pour un organisme agréé. <br />
+                        50 % dès la fin de la pose des tabues pour l'installation électrique. <br />
+                        50 % à la réception de l'installation électrique pour un organisme agréé. <br />
                         <br /><br /><br /><br />
                         En attendant une réponse de votre part, je me tiens à votre entière disposition pour toutes <br />
                         informations supplémentaires éventuelles.<br />

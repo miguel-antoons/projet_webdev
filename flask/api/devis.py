@@ -22,7 +22,7 @@ def devis():
         # avoid sql injection)
         sql_procedure = """
             SELECT D.ID_DEVIS, C.NOM_CLIENT, C.PRENOM_CLIENT, C.SOCIETE_CLIENT,
-                D.CHANTIER, date_format(D.DATE_DEVIS, '%%D %%M %%Y')
+                D.CHANTIER_NOM, date_format(D.DATE_DEVIS, '%%D %%M %%Y')
             FROM devis as D
                 join clients as C on D.ID_CLIENT = C.ID_CLIENT
             WHERE D.DATE_DEVIS >= str_to_date(%s, %s)
@@ -85,14 +85,15 @@ def devis():
         cursor.execute(
             '''INSERT INTO devis (id_client, date_devis,
             chantier, choix_prix, modification_prix_pourcentage,
-            modification_prix_fixe, id_devis_texte)
-            VALUES(%s,%s,%s,%s,%s,%s,%s) ''',
+            modification_prix_fixe, id_devis_texte, chantier_nom, commentaire)
+            VALUES(%s,%s,%s,%s,%s,%s,%s, %s, %s) ''',
 
             (requete["id_client"], requete["date_devis"],
              requete["chantier"], requete["choix_prix"],
              requete["modification_prix_pourcentage"],
              requete["modification_prix_fixe"],
-             requete["id_texte_devis"])
+             requete["id_texte_devis"], requete["chantier_nom"],
+             requete["commentaire"])
         )
 
         # Saving the Actions performed on the DB
@@ -118,14 +119,18 @@ def devis():
                     choix_prix = %s,
                     modification_prix_pourcentage = %s,
                     modification_prix_fixe = %s,
-                    id_devis_texte = %s
+                    id_devis_texte = %s,
+                    chantier_nom = %s,
+                    commentaire = %s
                 where ID_DEVIS = %s
              ''',
 
             (requete["id_client"], requete["date_devis"],
              requete["chantier"], requete["choix_prix"],
-             requete["modification_prix_pourcentage"], requete["modification_prix_fixe"], requete["id_texte_devis"],
-             requete["devisId"])
+             requete["modification_prix_pourcentage"],
+             requete["modification_prix_fixe"],
+             requete["id_texte_devis"], requete["chantier_nom"],
+             requete["commentaire"], requete["devisId"])
         )
 
         # Saving the Actions performed on the DB
