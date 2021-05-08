@@ -1,4 +1,4 @@
-from flask import Blueprint, request, json
+from flask import Blueprint, request, json, jsonify
 from .database import mysql
 
 
@@ -58,3 +58,15 @@ def articles():
     cur.close()
 
     return json.dumps(response)
+
+
+@app_article.route("/api/articles/all", methods=['GET'])
+def articles_all():
+    cursor = mysql.connection.cursor()
+    cursor.execute("""SELECT ID_ARTICLE,
+    LIBELLE_FR, LIBELLE_NL, CATEGORIE,
+    PRIX_1, PRIX_2, PRIX_3
+    FROM articles""")
+    data = cursor.fetchall()
+
+    return jsonify(data)

@@ -62,3 +62,8 @@ ul {
 #print h6 {
     font-size: 1.7em;
 }
+
+#msg {
+    font-size: 0.7em;
+    color: red;
+}

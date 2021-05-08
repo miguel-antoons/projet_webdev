@@ -43,9 +43,9 @@ function Preview(props) {
                 </BS.Modal.Header>
                 <BS.Modal.Body>
                     {/* Right */}
-                    <BS.Col className="mt-5  overflow-auto text-pdf">
+                    <BS.Col className="mt-5  overflow-auto text-pdf" id='print'>
                         <BS.Row className="mt-2">
-                            <BS.Col className="mr-5">
+                            <BS.Col className="mr-5" xs lg="6">
                                 Leuvensebaan 201 A <br />
                             3040 ST-Agatha-Rode (Huldenberg)<br />
                             Tel. 016/47 16 85 - Gsm 0475-23 38 56<br />
@@ -59,117 +59,80 @@ function Preview(props) {
                             Intallations électriques - Domotique<br /><br /><br />
                             </BS.Col>
                         </BS.Row>
+                        <hr />
 
+                        <BS.Row className="mt-2">
+                            <BS.Col className="mr-5" xs lg="6">
 
-                        <BS.Row className="border mt-2">
-                            <BS.Col className="mr-5">
-                                Datum factuur: &nbsp;&nbsp;&nbsp; {props.state.factureDate} <br />
-                            Date facture:                           <br />
-                                <br />
-                            BTW nr klant:      <br />
-                            N° de TVA client: &nbsp;&nbsp;&nbsp;         {props.state.clientNumber}          <br />
-                                <br />
-                            Nummer factuur:&nbsp;&nbsp;&nbsp; {props.state.factureNumber} <br />
-                            Numéro facture:
-                </BS.Col>
-                            <BS.Col className="margin-left">
-                                Matexi Projects N.V. <br />
-                                <br />
-                            Franklin Rooseveltlaan. 180
-                            8790 Waregem
-                </BS.Col>
-                        </BS.Row>
-
-                        <BS.Row className="border mt-4">
-                            <BS.Col className="mr-5">
-                                Omschrijving <br />
-                            Description <br />
                             </BS.Col>
                             <BS.Col className="margin-left">
-                                Prijs Zonder BTW <br />
-                            Prix Sans TVA
-                </BS.Col>
-                        </BS.Row>
-
-                        <BS.Row className="border height-100">
-                            <BS.Col className="mr-5 mt-2">
-                                P0 : 4500082808 <br />
                                 <br />
-                                <span id='description'>{props.state.comment} </span> <br /><br /><br /><br />
+                                Sint Agatha Rode, {props.state.devisDate}<br /><br />
+                                {props.state.clientName} {props.state.clientFirstname},<br />
+                                {props.state.clientAdress}
 
-                            Livraison et placement de matériel d'éclairage &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                            <b>TOTAL :</b>   &nbsp;&nbsp; <span id='prix'>&nbsp;&nbsp;&nbsp; {props.state.price} € </span>
-                            </BS.Col>
-
-                        </BS.Row>
-
-                        <BS.Row className="border no-border-top">
-                            <BS.Col>
-                                Vervaldatum :  &nbsp;&nbsp; {props.state.deadline} <br />
-                                Echéance : 
-                            </BS.Col>
-                            <BS.Col>
-                                Gefaktureerde werken beeindigd op :  &nbsp;&nbsp; {props.state.workDate} <br />
-                                Travaux facturé terminé le : 
                             </BS.Col>
                         </BS.Row>
 
-                        <BS.Row>
-                            <BS.Col xs lg="8  small">
-                                {/* NL*/}
-                                <h6>Aglemene verkoopsvoorwaarden : </h6>
-                                <ul>
-                                    <li>Betaalbar binnen de 15 kalenderdagen na opsteldatum.</li>
-                                    <li>In geval van niet-betaling op de vergaldag zal het nog te betalen saldo worden verhoogd met een forfaitaire vergoeding van 10 % en een nalatigheidsinstrest van 1% per maand.</li>
-                                    <li>In geval van betwisting is alleen de rechtbank van Leuven bevoegd.</li>
-                                    <li>Alle klachten moeten schriftelijk per aangetekende zending binnen de 8 dagen na factuurdatum gemaakt worden om in aanmerking te komen</li>
-                                </ul>
-                                {/* Français*/}
-                                <h6>Conditions Générales de ventes : </h6>
-                                <ul>
-                                    <li>Payble endéans les 15 jours calendriers suivant la date de rédaction</li>
-                                    <li>En cas de non payement à l'échéance, le solde de facture sera majoré d'un indeminté de 10% et d'un intérêt de retard de 1% par mois.</li>
-                                    <li>En cas de contestation, les tribunaux de Louvain sont seuls compétents.</li>
-                                    <li>Toute réclamation doit nous parvenir par écrit dans les 8 jours par lettre recommandée suivant la date de facturation pour être prise en considération</li>
-                                </ul>
-                            </BS.Col>
-                            <BS.Col className="pr-0">
-                                <BS.Table className="border">
-                                    <tbody>
-                                        <tr className="border-top">
-                                            <td>
-                                                Totaal :<br />
-                                            Total:
+                        <BS.Row className="mt-4">
+                            <BS.Col className="mr-5" xs lg="6">
+                                Référence devis : {props.state.devisNumber} <br /><br />
+                                <div id="sexe"></div>
+                                {props.state.comment}<br /><br />
 
-                                            </td>
-                                            <td className="no-border">
-                                                {props.state.price} EUR
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Btw :     {props.state.tva}% <br />
-                                                Tva :
-                                            </td>
-                                            <td>
-                                                {tva(props.state.price, props.state.tva)} EUR
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                TE BETALEN : <br />
-                                                A PAYER :
-                                            </td>
-                                            <td>
-                                                {total_tva(props.state.price, props.state.tva)} EUR
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </BS.Table>
                             </BS.Col>
                         </BS.Row>
-                        <BS.Row className="small center border-top">
+
+                        <div id="materials">{/*section liste des matériels*/}</div>
+
+                        <div>
+                        <span><b><u>Conditions générales</u></b></span><br />
+                        L'installation commence juste après le coffret compteur,  pour autant que celui-ci se trouve dans le corps principal du bâtiment.  <br />
+                        Les prises et interrupteurs sont de marque NIKO type ORIGINAL WHITE pour le matériel encastré et de type HYDRO 55 pour le matériel apparent.  <br />
+                        Aucun appareil d'éclairage est prévu dans cette offre, sauf ceux des représailles ci-dessus. <br />
+                        Les prix unitaires sont valables pour autant que le bâtiment n'est pas constitué de plusieurs petits bâtiments ou annexes;  dans ce cas une offre précise peut être demandée. 
+                        La protection des circuits sera réalisée par disjoncteurs multipolaires adaptés à la section des fils. 
+                        Coffret divisionnaire et disjoncteurs ABB VYNCKIER. 
+                        Le contrôle de l'installation électrique par un organisme agréé est compris dans cette offre.  <br />
+                        La boucle de terre est considérée comme existante et de résistance inférieure à 30 Ohms.  <br />
+                        Bouton de sonnerie NIKO, sonnerie (ding dong) FRIEDLAND.  
+                        Les travaux de terrassement et de tubage-câblage extérieur ne sont jamais compris dans l'offre. <br />
+                        Le nettoyage du bâtiment avant le début des travaux, n'est pas compris dans cette offre.  <br />
+                        Le bâtiment devra être propre et libre de tous les déchets et matériaux laissés par de precedents corps de métier.  
+                        Tous les déchets provenant de nos travaux seront repris. 
+                        De l'eau et 1 prise de courant de minimum 20A seront disponibles sur le chantier dès le début
+                        de nos travaux;  si l'utilisation d'un groupe électrogène est nécessaire, cela vous sera facturé en 
+                        supplément à ce devis.  <br />
+                        Une toilette doit être disponible sur le chantier.  
+                        Dans cette offre est prévue une visite de chantier préliminaire au début des travaux.  <br />
+                        Toutes les factures concernant ce chantier doivent être payées dans les quinze jours suivant la
+                        date de facturation. 
+                        En cas de non paiement à l'échéance, le solde de la facture sera majoré d'une indemnit
+                        forfaitaire de 10% et d'un intérêt de retard de 1% par mois.  <br />
+                        En cas de contestation, les tribunaux de Louvain sont seuls compétents.  <br />
+                        Toute réclamation doit nous parvenir par écrit dans les 8 jours par lettre recommandée suivant 
+                        la date de facturation pour être pris en considération.  <br />
+                        Les prix mentionnés ci-dessus restent valables pendant 3 mois.<br /><br />
+                        </div>
+
+                        <span><b><u>Prix</u></b></span><br />
+                        L'installation décrite ci-dessus peut-être résalisée pour la somme hors TVA de <span>{props.state.price}</span> Euro <br /><br /><br />
+
+                        <span><b><u>Paimement</u></b></span><br />
+                        {props.state.percent} % dès la fin de la pose des tabues pour l'installation électrique. <br />
+                        {props.state.percent} % à la réception de l'installation électrique pour un organisme agréé. <br />
+                        <br /><br /><br /><br />
+                        En attendant une réponse de votre part, je me tiens à votre entière disposition pour toutes <br />
+                        informations supplémentaires éventuelles.<br />
+                        <br />
+                        Avec mes salutations distinguées<br />
+                        <br />
+                        Pour accord (le maître d'ouvrage) <span className="margin-left">LUC ANTOONS</span>
+
+
+
+                        {/*footer*/}
+                        <BS.Row className="small center border-top divFooter margin-top">
                             <BS.Col>
                                 Ond Nr - Nr Ent <br />
                             BE0885.315.931
@@ -183,7 +146,6 @@ function Preview(props) {
                             BE35 7340 1927 6737
                         </BS.Col>
                         </BS.Row>
-
 
                     </BS.Col>
 

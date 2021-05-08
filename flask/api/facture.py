@@ -16,13 +16,12 @@ def facture():
 
         # get the filter to apply to the elements
         filter = request.args.get('filter')
-        print(filter)
         arguments = ()
 
         # prepare the sql statement (which contains arguments in order to
         # avoid sql injection)
         sql_procedure = """
-            SELECT F.ID_FACTURE, C.ID_CLIENT, C.NOM_CLIENT, C.PRENOM_CLIENT,
+            SELECT F.ID_FACTURE, C.NOM_CLIENT, C.PRENOM_CLIENT,
                 C.SOCIETE_CLIENT,
                 date_format(F.DATE_ECHEANCE, '%%e-%%c-%%Y'),
                 date_format(F.DATE_FACTURE, '%%D %%M %%Y')
@@ -102,7 +101,7 @@ def facture():
         # Closing the cursor
         cursor.close()
 
-        return jsonify(msg='Le client a été ajouté avec succès')
+        return jsonify(msg='La facture a été ajouté avec succès')
 
     elif request.method == 'PUT':
         # Creating a connection cursor
@@ -137,7 +136,7 @@ def facture():
 
         # Closing the cursor
         cur.close()
-        return jsonify(msg='Le client a été modifié avec succès')
+        return jsonify(msg='La facture a été modifié avec succès')
 
     return json.dumps(response)
 

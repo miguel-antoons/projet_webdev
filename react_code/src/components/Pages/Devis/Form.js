@@ -14,9 +14,16 @@ class Form extends Component {
             clients_options: [],
             materials: [],
             material_options: [],
-            room: ''
+            house : {}
         }
+
+        let url = window.location.href.split("/")
+        let param = url.length - 1 
+        if(url[param] !== 0) this.set_state_devis(url[param])
+
         this.addMaterial = this.addMaterial.bind(this)
+        this.save = this.save.bind(this)
+        this.deleteMaterial = this.deleteMaterial.bind(this)
         this.api_client()
         setTimeout(() => {this.api_material(); }, 100)
     }
@@ -63,87 +70,206 @@ class Form extends Component {
     }
 
     // Requête liste matériels
-    api_material() {
-        let tableau_materiels= [];
-        //Création du dictionnaire
-        let tableau_materiel = {};
-        tableau_materiel["id"] = "1";
-        tableau_materiel["name"] = "marteau";
-        tableau_materiel["price"] = "10";
-        tableau_materiels.push(tableau_materiel)
-        tableau_materiel = {};
-        tableau_materiel["id"] = "2";
-        tableau_materiel["name"] = "scie";
-        tableau_materiel["price"] = "110.25";
-        tableau_materiels.push(tableau_materiel)
-        this.setState({materials : tableau_materiels})
-        this.options_material(tableau_materiels)
+    async api_material() {
+        return await fetch('/api/articles/all').then((response) => {
+            return response.json().then((result) => {
+
+                let tableau_materiels= [];
+
+                for (let article of result) {
+                    let tableau_materiel = {};
+                    tableau_materiel["id"] = article[0];
+                    tableau_materiel["categorie"] = article[1];
+                    tableau_materiel["name"] = article[2];
+                    tableau_materiel["price1"] = article[4];
+                    tableau_materiel["price2"] = article[5];
+                    tableau_materiel["price3"] = article[6];
+                    tableau_materiels.push(tableau_materiel)
+                }
+                this.setState({materials : tableau_materiels})
+                this.options_material(tableau_materiels)
+            }).catch((err) => {
+                console.log(err);
+            })
+        })
     }
 
     //Créer option des matériels
     options_material(materials){
         let materials_table = [];
         for (let material of materials) {
-            materials_table.push({"material": material.id + '. ' + material.name + ' (' + material.price + ' €)'})
+            materials_table.push({"material": material.id + '. ' + material.name + ' (' + material.price1 + ', ' + material.price2 + ', '+ material.price3 + ')'})
         }
         this.setState({material_options: materials_table})
+    }
+
+    // set house
+    async set_state_devis(id) {
+        return await fetch('/api/devis/get_devis_id/' + id).then((response) => {
+            return response.json().then((result) => {
+                this.setState({ 
+                    house: JSON.parse(result[0][4])
+                })
+                this.fill_text_materials()
+            }).catch((err) => {
+                console.log(err);
+            })
+        })
     }
 
     addMaterial() {
         let level = document.getElementById("level").value
         let room = document.getElementById("room").value
         let material = document.getElementById("material").value
-        material = material.split('. ')[0]
+        if (level === "" || room === "" || material === "") {
+            document.getElementById("msg").innerText = "*Veuillez remplir le niveau, la pièce et le matériel à rajouter"
+            return
+        }
+        document.getElementById("materials").innerHTML = ""
+        material = Number(material.split('. ')[0])
         for (let element of this.state.materials) {
             if (element.id === material){
                 material = element
             }
         }
 
-        let level_verify = document.getElementById(level)
-        let room_verify = document.getElementsByName(room) 
-        let material_verify = document.getElementsByName(level + room + material.id)
+        // Initilisation du tableau
+        if (this.state.house[level] === undefined) this.state.house[level] = {}
+        if (this.state.house[level][room] === undefined) this.state.house[level][room] = {}
+        if (this.state.house[level][room][material["id"]] === undefined) this.state.house[level][room][material["id"]] = {}
+        
+        if (this.state.house[level][room][material["id"]]["name"] !== undefined) {
+            this.state.house[level][room][material["id"]]["counter"] += 1
+        }
+        else {
+            this.state.house[level][room][material["id"]]["name"] = material["name"]
+            console.log(material[this.props.returnState.price_choice])
+            this.state.house[level][room][material["id"]]["price"] = material[this.props.returnState.price_choice]
+            this.state.house[level][room][material["id"]]["counter"] = 1
+        }
+        console.log(this.state.house)
+        this.props.returnState.house = this.state.house
+        this.fill_text_materials()
+    }
 
-        // vérifier si la pièce a déjà été utilisée à ce niveau
-        if (room_verify.length > 0)
-            for (let element of room_verify) {
-                if(element.parentNode === level_verify) {
-                    room_verify = element        
-                }
-                else {
-                    room_verify = 0
+    /**
+     * Permet de supprimer matériel de la liste
+     * @returns 
+     */
+    deleteMaterial() {
+        let level = document.getElementById("level").value
+        let room = document.getElementById("room").value
+        let material = document.getElementById("material").value
+        material = material.split('. ')[0]
+        if (level === "" || room === "" || material === "") {
+            document.getElementById("msg").innerText = "*Veuillez remplir le niveau, la pièce et le matériel à suppimer"
+            return
+        }
+
+        if(this.state.house[level] !== undefined ) {
+            if(this.state.house[level][room] !== undefined ) {
+                if(this.state.house[level][room][material] !== undefined ) {
+                    if (this.state.house[level][room][material]["counter"] > 1) {
+                        this.state.house[level][room][material]["counter"] = this.state.house[level][room][material]["counter"] - 1 
+                    }
+                    else {
+                        delete this.state.house[level][room][material]
+                        //suprimer pièce et niveau si vide 
+                        if (Object.keys(this.state.house[level][room]).length === 0) delete this.state.house[level][room]
+                        if (Object.keys(this.state.house[level]).length === 0) delete this.state.house[level]
+                    }
                 }
             }
-        else {
-            room_verify = 0
         }
+
+        document.getElementById("materials").innerHTML = ""
+        this.fill_text_materials()
+    }
+
+    // permet de remplir zone matériels du devis
+    fill_text_materials() {
+        let house_levels = Object.keys(this.state.house)
+        for(let house_level of house_levels) {
+            let level_rooms = Object.keys(this.state.house[house_level])
+            // Titre niveau de la maison
+           
+            document.getElementById("materials").innerHTML += "<br /><span class='h7'>Niveau : " + house_level + "</span><br />"
+            for (let house_room of level_rooms) {
+                let room_materials = Object.keys(this.state.house[house_level][house_room])
+                // Titre de la pièce du niveau
+                document.getElementById("materials").innerHTML += "<u><b>" + house_room + "</b></u><br />"
+                for (let house_material of room_materials) {
+                    
+                    // Matériel de la pièce
+                    let price = this.state.house[house_level][house_room][house_material]["counter"] * this.state.house[house_level][house_room][house_material]["price"] + (this.state.house[house_level][house_room][house_material]["counter"] * this.state.house[house_level][house_room][house_material]["price"]) / 100 * this.props.returnState.percent
+                    document.getElementById("materials").innerHTML += this.state.house[house_level][house_room][house_material]["counter"] + " x " + this.state.house[house_level][house_room][house_material]["name"] + "(s/x)<div class='float-right margin-right-20'>" + price +" €</div><br />"
+                }    
+            }
+        }
+    }
+
+    async save() {   
+        let url = window.location.href.split("/")
+        let param = url.length - 1 
+
+        let devisId = url[param]
+        let id_client = this.props.returnState.clientId
+        let id_texte_devis = "1"
+        let date_devis = this.props.returnState.devisDate
+        let chantier = JSON.stringify(this.state.house)
+        let choix_prix = this.props.returnState.price
+        let modification_prix_pourcentage = this.props.returnState.percent
+        let modification_prix_fixe = this.props.returnState.price
+        let chantier_nom = this.props.returnState.site
+        let commentaire = this.props.returnState.comment
         
-        //vérification du niveau
-        if (level_verify !== null) {   
-            // vérification de la pièce du niveau
-            if(room_verify !== 0) {
+        // ajout de devis
+        if(Number(devisId) === 0) {
+            try{
+                let result = await fetch('/api/devis', {
+                method: 'post',
+                //mode: 'no-cors', // --> pas besoin de cette ligne
+                headers: {
+                    //'Accept': 'application/json', // --> pas besoin de cette ligne non-plus
+                    'Content-type': 'application/json',
                 
-                let tbody = document.getElementsByName(level + room)[0]
-                //si matériel existe déjà ou pas
-                if (material_verify.length > 0) {
-                    let compteur = Number(material_verify[0].innerText.split(" x ")[0]) + 1
-                    console.log(tbody)
-                    tbody.innerHTML = '<tr name="' + level + room + material.id + '"><td class="width-600">' + compteur + ' x ' +  material.name + '</td><td>' + Number(material.price) * compteur +' €</td></tr>'
-                }
-                else {
-                    tbody.innerHTML += '<tr name="' + level + room + material.id + '"><td class="width-600">1 x ' +  material.name + '</td><td>' + material.price +' €</td></tr>'
-                }
+                },
+                
+                body: JSON.stringify({chantier_nom, id_client, date_devis, commentaire, chantier, choix_prix, modification_prix_pourcentage, modification_prix_fixe, id_texte_devis}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
+                });
+        
+                const data = await result.json();
+                document.getElementById("msg").innerText = "*" + data["msg"]
+        
             }
-            else {
-                level_verify.innerHTML += '<br /><table name="' + room + '"><thead><tr><th><b> ' + room  + '</b> </th></tr></thead><tbody name="' +  level + room + '"> <tr name="' + level + room + material.id + '"><td class="width-600">1 x ' +  material.name + '</td><td>' + material.price +' €</td></tr></tbody></table>'
+            catch(e){
+                console.log(e);
             }
         }
+        //modification de devis
         else {
-            
-            document.getElementById("materials").innerHTML += '<br /><div id="' + level + '"> <b><u>Niveau : ' +  level + '</u></b><table name="' + room + '"><thead><tr><th><b> ' + room  + '</b> </th></tr></thead><tbody name="' +  level + room + '"> <tr name="' + level + room + material.id + '"><td class="width-600">1 x ' +  material.name + '</td><td>' + material.price +' €</td></tr></tbody></table>'
+            try{
+                let result = await fetch('/api/devis', {
+                method: 'put',
+                //mode: 'no-cors', // --> pas besoin de cette ligne
+                headers: {
+                    //'Accept': 'application/json', // --> pas besoin de cette ligne non-plus
+                    'Content-type': 'application/json',
+                
+                },
+                
+                body: JSON.stringify({chantier_nom, devisId, id_client, date_devis, commentaire, chantier, choix_prix, modification_prix_pourcentage, modification_prix_fixe, id_texte_devis}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
+                });
+        
+                const data = await result.json();
+                document.getElementById("msg").innerText = "*" + data["msg"]
+            }
+            catch(e){
+                console.log(e);
+            }
         }
         
-        return false;
+         
     }
     
 
@@ -151,9 +277,16 @@ class Form extends Component {
         return (
 
             <BS.Form>
+                {/*
                 <BS.Form.Group>
                     <BS.Form.Label>N° de devis</BS.Form.Label>
                     <BS.Form.Control size="sm" type="text" placeholder="Entrer numéro de devis" value={this.props.devisNumber} onChange={this.props.onChangeValue} id="devisNumber" name="devisNumber" />
+                </BS.Form.Group>
+                */}
+
+                <BS.Form.Group>
+                    <BS.Form.Label>Chantier</BS.Form.Label>
+                    <BS.Form.Control  type="text" placeholder="Entrez le nom du chantier" value={this.props.site} onChange={this.props.onChangeValue} id="site" name="site" required />    
                 </BS.Form.Group>
                 <BS.Form.Group>
                     <BS.Form.Label>Client</BS.Form.Label>
@@ -175,6 +308,14 @@ class Form extends Component {
                     <BS.Form.Label>Commentaire</BS.Form.Label>
                     <BS.Form.Control size="sm" as="textarea" placeholder="Commentaire" rows={3} value={this.props.comment} onChange={this.props.onChangeValue} id="comment" name="comment" />
                 </BS.Form.Group>
+                <BS.Form.Group>
+                    <BS.Form.Label>Prix total</BS.Form.Label>
+                    <BS.Form.Control size="sm" type="number"  placeholder="example: 150, 122.25" rows={3} value={this.props.price} onChange={this.props.onChangeValue} id="price" name="price" />
+                </BS.Form.Group>
+                <BS.Form.Group>
+                    <BS.Form.Label>Pourcentage</BS.Form.Label>
+                    <BS.Form.Control size="sm" type="number"  placeholder="example: 50%, 60%" rows={3} value={this.props.percent} onChange={this.props.onChangeValue} id="percent" name="percent" />
+                </BS.Form.Group>
                 <hr />
                 <BS.Form.Group>
                     <BS.Form.Label>Niveau</BS.Form.Label>
@@ -184,10 +325,15 @@ class Form extends Component {
                     <BS.Form.Label>Pièce</BS.Form.Label>
                     <BS.Form.Control  type="text" placeholder="Entrez le nom de la pièce" value={this.props.room} onChange={this.props.onChangeValue} id="room" name="room" required />    
                 </BS.Form.Group>
+                <div onChange={this.props.onChangeValue} value={this.props.price_choice}  name="price_choice"> 
+                    <input type="radio" value="price1" name="price_choice" id="price_choice1" defaultChecked /> Prix 1   &nbsp;&nbsp;
+                    <input type="radio" value="price2" name="price_choice" id="price_choice2" /> Prix 2   &nbsp;&nbsp;
+                    <input type="radio" value="price3" name="price_choice" id="price_choice3" /> Prix 3   &nbsp;&nbsp;
+                </div>
                 <BS.Form.Group>
                     <BS.Form.Label>Matériel</BS.Form.Label>
                     <BS.Form.Row>
-                        <BS.Col sm={9}>
+                        <BS.Col sm={6}>
                             <Autocomplete
                             id="material" 
                             name="material"
@@ -198,13 +344,18 @@ class Form extends Component {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </BS.Col>
-                        <BS.Col sm={2}>
-                            <BS.Button variant="outline-secondary" onClick={this.addMaterial} >Ajouter</BS.Button>
+                        <BS.Col sm={2.5}>
+                            <BS.Button variant="outline-secondary" onClick={this.addMaterial} >Ajout</BS.Button>
                         </BS.Col>
+                        <BS.Col sm={2}>
+                            <BS.Button variant="danger" onClick={this.deleteMaterial}>Suppr</BS.Button>
+                        </BS.Col>    
                     </BS.Form.Row>
                 </BS.Form.Group>
-                <Preview state={this.props.returnState} />
+                {/*<Preview state={this.props.returnState} />*/}
+                <BS.Button id="save" className="no-print mb-2 ml-2" variant='dark' onClick={this.save}>Sauvegarder</BS.Button> {' '}
                 <BS.Button className="no-print mb-2 ml-2" variant="info" onClick={window.print}>Imprimer</BS.Button> {' '}
+                <div id="msg"></div>
 
             </BS.Form>
         )
