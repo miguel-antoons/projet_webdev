@@ -70,28 +70,35 @@ class Form extends Component {
     }
 
     // Requête liste matériels
-    api_material() {
-        let tableau_materiels= [];
-        //Création du dictionnaire
-        let tableau_materiel = {};
-        tableau_materiel["id"] = "1";
-        tableau_materiel["name"] = "marteau";
-        tableau_materiel["price"] = "10";
-        tableau_materiels.push(tableau_materiel)
-        tableau_materiel = {};
-        tableau_materiel["id"] = "2";
-        tableau_materiel["name"] = "scie";
-        tableau_materiel["price"] = "110.25";
-        tableau_materiels.push(tableau_materiel)
-        this.setState({materials : tableau_materiels})
-        this.options_material(tableau_materiels)
+    async api_material() {
+        return await fetch('/api/articles/all').then((response) => {
+            return response.json().then((result) => {
+
+                let tableau_materiels= [];
+
+                for (let article of result) {
+                    let tableau_materiel = {};
+                    tableau_materiel["id"] = article[0];
+                    tableau_materiel["categorie"] = article[1];
+                    tableau_materiel["name"] = article[2];
+                    tableau_materiel["price1"] = article[4];
+                    tableau_materiel["price2"] = article[5];
+                    tableau_materiel["price3"] = article[6];
+                    tableau_materiels.push(tableau_materiel)
+                }
+                this.setState({materials : tableau_materiels})
+                this.options_material(tableau_materiels)
+            }).catch((err) => {
+                console.log(err);
+            })
+        })
     }
 
     //Créer option des matériels
     options_material(materials){
         let materials_table = [];
         for (let material of materials) {
-            materials_table.push({"material": material.id + '. ' + material.name + ' (' + material.price + ' €)'})
+            materials_table.push({"material": material.id + '. ' + material.name + ' (' + material.price1 + ', ' + material.price2 + ', '+ material.price3 + ')'})
         }
         this.setState({material_options: materials_table})
     }
@@ -119,7 +126,7 @@ class Form extends Component {
             return
         }
         document.getElementById("materials").innerHTML = ""
-        material = material.split('. ')[0]
+        material = Number(material.split('. ')[0])
         for (let element of this.state.materials) {
             if (element.id === material){
                 material = element
@@ -136,10 +143,12 @@ class Form extends Component {
         }
         else {
             this.state.house[level][room][material["id"]]["name"] = material["name"]
-            this.state.house[level][room][material["id"]]["price"] = material["price"]
+            console.log(material[this.props.returnState.price_choice])
+            this.state.house[level][room][material["id"]]["price"] = material[this.props.returnState.price_choice]
             this.state.house[level][room][material["id"]]["counter"] = 1
         }
-        
+        console.log(this.state.house)
+        this.props.returnState.house = this.state.house
         this.fill_text_materials()
     }
 
@@ -177,7 +186,7 @@ class Form extends Component {
         this.fill_text_materials()
     }
 
-
+    // permet de remplir zone matériels du devis
     fill_text_materials() {
         let house_levels = Object.keys(this.state.house)
         for(let house_level of house_levels) {
@@ -316,6 +325,11 @@ class Form extends Component {
                     <BS.Form.Label>Pièce</BS.Form.Label>
                     <BS.Form.Control  type="text" placeholder="Entrez le nom de la pièce" value={this.props.room} onChange={this.props.onChangeValue} id="room" name="room" required />    
                 </BS.Form.Group>
+                <div onChange={this.props.onChangeValue} value={this.props.price_choice}  name="price_choice"> 
+                    <input type="radio" value="price1" name="price_choice" id="price_choice1" defaultChecked /> Prix 1   &nbsp;&nbsp;
+                    <input type="radio" value="price2" name="price_choice" id="price_choice2" /> Prix 2   &nbsp;&nbsp;
+                    <input type="radio" value="price3" name="price_choice" id="price_choice3" /> Prix 3   &nbsp;&nbsp;
+                </div>
                 <BS.Form.Group>
                     <BS.Form.Label>Matériel</BS.Form.Label>
                     <BS.Form.Row>

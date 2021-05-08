@@ -26,6 +26,7 @@ class Devis extends Component {
             price: '0',
             percent: '0',
             house : '',
+            price_choice : 'price1',
             clients: []
         }
 
@@ -77,7 +78,7 @@ class Devis extends Component {
         this.setState({
             [name]: value
         })
-
+        
         // changement client
         let event_id = document.getElementById(event.target.id).innerHTML
         event_id = event_id.split('. ')[0]
@@ -95,7 +96,6 @@ class Devis extends Component {
                 })
 
                 // changement de sexe
-                console.log(this.state.title)
                 if (this.state.title === "Mr.") {
                     document.getElementById("sexe").innerText = "Monsieur, "
                 }
@@ -104,12 +104,33 @@ class Devis extends Component {
                 }
             }
         }
-
         if (name === "percent") {
-            
+            document.getElementById("materials").innerHTML = ""
+            this.fill_text_materials(value)
         }
     }
 
+    // permet de remplir zone matériels du devis
+    fill_text_materials(percent) {
+        let house_levels = Object.keys(this.state.house)
+        for(let house_level of house_levels) {
+            let level_rooms = Object.keys(this.state.house[house_level])
+            // Titre niveau de la maison
+           
+            document.getElementById("materials").innerHTML += "<br /><span class='h7'>Niveau : " + house_level + "</span><br />"
+            for (let house_room of level_rooms) {
+                let room_materials = Object.keys(this.state.house[house_level][house_room])
+                // Titre de la pièce du niveau
+                document.getElementById("materials").innerHTML += "<u><b>" + house_room + "</b></u><br />"
+                for (let house_material of room_materials) {
+                    
+                    // Matériel de la pièce
+                    let price = this.state.house[house_level][house_room][house_material]["counter"] * this.state.house[house_level][house_room][house_material]["price"] + (this.state.house[house_level][house_room][house_material]["counter"] * this.state.house[house_level][house_room][house_material]["price"]) / 100 * percent
+                    document.getElementById("materials").innerHTML += this.state.house[house_level][house_room][house_material]["counter"] + " x " + this.state.house[house_level][house_room][house_material]["name"] + "(s/x)<div class='float-right margin-right-20'>" + price +" €</div><br />"
+                } 
+            }
+        }
+    }
     
     // set l'état du formulaire avec l'id du devis rentré en param
     async set_state_devis(id) {
@@ -118,12 +139,12 @@ class Devis extends Component {
                 this.setState({ 
                     devisNumber: id,
                     devisDate: this.change_date_format(result[0][3]),
-                    comment: '',
+                    comment: result[0][12],
                     price: result[0][5],
                     percent: result[0][6],
                     house: JSON.parse(result[0][4])
                 })
-                console.log(result[0])
+
                 // remplir le formulaire
                 document.getElementById("comment").value = result[0][12]
                 document.getElementById("site").value = result[0][11]
@@ -161,6 +182,14 @@ class Devis extends Component {
                     title: result[0][9],
                     clientNumber: result[0][10]
                 })
+
+                // changement de sexe
+                if (result[0][9] === "Mr.") {
+                    document.getElementById("sexe").innerText = "Monsieur, "
+                }
+                else {
+                    document.getElementById("sexe").innerText = "Madame, "
+                }
                 
                 // remplir le formulaire, ne fonctionne pas
                 /*
@@ -280,7 +309,7 @@ class Devis extends Component {
                         </div>
 
                         <span><b><u>Prix</u></b></span><br />
-                        L'installation décrite ci-dessus peut-être résalisée pour la somme hors TVA de <span>{ this.state.price + (this.state.price / 100 * this.state.percent)}</span> Euro <br /><br /><br />
+                        L'installation décrite ci-dessus peut-être résalisée pour la somme hors TVA de <span>{ (Number(this.state.price) + (this.state.price / 100 * this.state.percent)).toFixed(2)}</span> Euro <br /><br /><br />
 
                         <span><b><u>Paimement</u></b></span><br />
                         50 % dès la fin de la pose des tabues pour l'installation électrique. <br />
