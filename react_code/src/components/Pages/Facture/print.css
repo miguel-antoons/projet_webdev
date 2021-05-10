@@ -24,4 +24,8 @@
     .text-pdf {
         font-size: 15px;
     }
+
+    #print h6 {
+        font-size: 13px;
+    }
 }

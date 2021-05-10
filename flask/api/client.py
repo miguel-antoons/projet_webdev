@@ -144,5 +144,13 @@ def put_client(requete):
 
     return jsonify(msg='Le client à été modifier avec succès')
 
-    
-    
+
+@app_client.route("/api/client/<id>", methods=['GET'])
+def client_id(id):
+    cursor = mysql.connection.cursor()
+
+    cursor.execute("SELECT * FROM clients where ID_CLIENT = %s", (id))
+    data = cursor.fetchall()
+
+    return json.dumps(data)
+

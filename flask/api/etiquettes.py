@@ -56,6 +56,54 @@ def etiquettes():
                 'date': row[5]
             })
 
+    # API will create a new row for the new project in the database
+    elif request.method == 'POST':
+        # get the data from the post and put inside a tuple
+        data = request.json
+        arguments = (data[0], data[1], json.dumps(data[2]), )
+
+        # sql procedure to create a new row
+        sql_procedure = """
+            INSERT INTO etiquettes (ID_CLIENT, CHANTIER, CODE_JSON)
+            VALUES (%s, %s, %s);
+        """
+
+        cur.execute(sql_procedure, arguments)
+        connector.commit()
+
+        # get the id of the newly created row
+        sql_procedure = """
+            SELECT LAST_INSERT_ID();
+        """
+
+        cur.execute(sql_procedure)
+        mysql_result = cur.fetchall()
+
+        # set the response to the id of the newly created row
+        response = {
+            'projectID': mysql_result[0][0]
+        }
+
+    # method to update a project
+    elif request.method == 'PUT':
+        # get the data from the post and put inside a tuple
+        data = request.json
+        arguments = (data[0], json.dumps(data[1]), data[2], )
+
+        # sql procedure to update the row
+        sql_procedure = """
+            UPDATE etiquettes
+            SET
+                CHANTIER = %s,
+                CODE_JSON =  %s
+            WHERE ID_ETIQUETTE = %s
+        """
+
+        cur.execute(sql_procedure, arguments)
+        connector.commit()
+
+        response = cur.fetchall()
+
     elif request.method == 'DELETE':
         # get the id of the projects that has to be deleted
         id_to_delete = (int(request.args.get('id')), )
@@ -77,4 +125,40 @@ def etiquettes():
 
     cur.close()
 
+    return json.dumps(response)
+
+
+# api to get a particular row of the database (aka one project)
+@app_etiquette.route('/api/etiquettes/<id>', methods=['GET'])
+def etiquette(id):
+    connector = mysql.connection
+
+    # arguments equal the id of the requested project
+    arguments = (id, )
+    cur = connector.cursor()
+
+    # prepare the sql procedure to get one and only one row
+    sql_procedure = """
+        SELECT ID_ETIQUETTE, E.ID_CLIENT, NOM_CLIENT, PRENOM_CLIENT,
+            SOCIETE_CLIENT, CHANTIER, CODE_JSON
+        FROM etiquettes as E
+            JOIN clients as C on E.ID_CLIENT = C.ID_CLIENT
+        WHERE ID_ETIQUETTE = %s
+    """
+
+    cur.execute(sql_procedure, arguments)
+
+    # get the one result form the sql procedure
+    result = cur.fetchone()
+
+    # prepare the response
+    response = {
+        'projectID': result[0],
+        'clientID': result[1],
+        'clientInfo': f"{result[2]} {result[3]}, {result[4]}",
+        'constructionSite': result[5],
+        'projectData': result[6]
+    }
+
+    cur.close()
     return json.dumps(response)

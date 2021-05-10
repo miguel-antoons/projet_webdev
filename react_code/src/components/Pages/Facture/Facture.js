@@ -8,12 +8,16 @@ import Form from './Form'
 class Facture extends Component {
     constructor(props) {
         super(props)
+        let url = window.location.href.split("/")
+        let param = url.length - 1 
 
+       
         this.state = {
             factureNumber: '',
             clientNumber: '',
             clientName: '',
             clientFirstname: '',
+            clientTva: '',
             clientCompany: '',
             clientAdress: '',
             title: 'M.',
@@ -25,14 +29,18 @@ class Facture extends Component {
             price: '0',
             clients: []
         }
+        if(url[param] !== 0) {
+            this.set_state_facture(url[param])
+        }
+
         this.api_client()
         this.handleChange = this.handleChange.bind(this)
+
     }
 
     async api_client() {
         return await fetch('/api/facture/get_clients').then((response) => {
             return response.json().then((result) => {
-
                 let tableau_clients = [];
 
                 //Création du dictionnaire
@@ -60,6 +68,70 @@ class Facture extends Component {
         })
     }
 
+    // set l'état du formulaire avec l'id de la facture rentré en param
+    async set_state_facture(id) {
+        return await fetch('/api/facture/get_facture_id/' + id).then((response) => {
+            return response.json().then((result) => {
+                this.setState({ 
+                    factureNumber: id,
+                    factureDate: this.change_date_format(result[0][3]),
+                    workDate: this.change_date_format(result[0][5]),
+                    deadline: this.change_date_format(result[0][4]),
+                    tva: result[0][6],
+                    comment: result[0][7],
+                    price: result[0][8]
+                })
+                // remplir le formulaire
+                document.getElementById("factureDate").value = this.change_date_format(result[0][3])
+                document.getElementById("workDate").value =  this.change_date_format(result[0][5])
+                document.getElementById("deadline").value =  this.change_date_format(result[0][4])
+                document.getElementById("tva").value =  result[0][6]
+                document.getElementById("comment").value =  result[0][7]
+                document.getElementById("price").value =  result[0][8]
+                
+
+                this.set_state_client(result[0][1])
+                //changer bouton sauvegarder par modifier
+                document.getElementById("save").innerText = "Modifier"
+            }).catch((err) => {
+                console.log(err);
+            })
+        })
+    }
+
+    change_date_format(date) {
+        let facture_date = Date.parse(date)
+        facture_date = new Date(facture_date)
+        return ("0" + facture_date.getFullYear()).slice(-4) + "-" + ("0" + (facture_date.getMonth() + 1)).slice(-2) + "-" + ("0" + facture_date.getDate()).slice(-2)
+    }
+
+    // set l'état du formulaire avec l'id de la facture rentré en param
+    async set_state_client(id) {
+        return await fetch('/api/client/' + id).then((response) => {
+            return response.json().then((result) => {
+                this.setState({ 
+                    clientNumber: result[0][0],
+                    clientName: result[0][1],
+                    clientFirstname: result[0][2],
+                    clientTva: result[0][6],
+                    clientCompany: result[0][3],
+                    clientAdress: result[0][4],
+                    title: result[0][9]
+                })
+                
+                // remplir le formulaire, ne fonctionne pas
+                /*
+                let option = {client : this.state.clientNumber + '. ' + this.state.clientFirstname + ' ' + this.state.clientName}
+                console.log(option)
+                document.getElementById("clientNumber").Value = option
+                document.getElementById('clientNumber').getElementsByTagName('option')[2].selected = 'selected'
+                */
+            }).catch((err) => {
+                console.log(err);
+            })
+        })
+    }
+
     handleChange(event) {
         const name = event.target.name
         const value = event.target.value
@@ -68,22 +140,25 @@ class Facture extends Component {
             [name]: value
         })
 
-        console.log(event)
-        let event_id = document.getElementById(event.target.id).innerHTML
-        event_id = event_id.split(' : ')[0]
-    
-        for (let client of this.state.clients) {
-            if (client.id === event_id) {
-                this.setState({
-                    clientNumber: client.number,
-                    clientName: client.name,
-                    clientFirstname: client.firstname,
-                    clientCompany: client.company,
-                    clientAdress: client.adress
-                })
+        if (document.getElementById(event.target.id) !== null) {
+            let event_id = document.getElementById(event.target.id).innerHTML
+            event_id = event_id.split('. ')[0]
+        
+            for (let client of this.state.clients) {
+                if (client.id === event_id) {
+                    this.setState({
+                        clientNumber: client.number,
+                        clientTva: client.tva,
+                        clientName: client.name,
+                        clientFirstname: client.firstname,
+                        clientCompany: client.company,
+                        clientAdress: client.adress
+                    })
 
+                }
             }
         }
+        
     }
 
     tva(price_str, tva_str) {
@@ -105,6 +180,8 @@ class Facture extends Component {
         return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
     }
 
+    
+
     render() {
         return (
             <BS.Container>
@@ -116,7 +193,7 @@ class Facture extends Component {
                     </BS.Col>
 
                     {/* Right */}
-                    <BS.Col className="mt-5  overflow-auto text-pdf" id='print'>
+                    <BS.Col className="mt-5 overflow-auto-facture overflow-auto text-pdf" id='print'>
                         <BS.Row className="mt-2">
                             <BS.Col className="mr-5" xs lg="6">
                                 Leuvensebaan 201 A <br />
@@ -140,7 +217,7 @@ class Facture extends Component {
                             Date facture:                           <br />
                                 <br />
                             BTW nr klant:      <br />
-                            N° de TVA client: &nbsp;&nbsp;&nbsp;          {this.state.clientNumber}            <br />
+                            N° de TVA client: &nbsp;&nbsp;&nbsp;          {this.state.clientTva}            <br />
                                 <br />
                             Nummer factuur:&nbsp;&nbsp;&nbsp; {this.state.factureNumber} <br />
                             Numéro facture:
