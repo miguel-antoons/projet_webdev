@@ -272,6 +272,24 @@ class Form extends Component {
          
     }
 
+    print() {
+        let cssPagedMedia = (function () {
+            let style = document.createElement('style');
+            document.head.appendChild(style);
+            return function (rule) {
+                style.innerHTML = rule;
+            };
+        }());
+        
+        cssPagedMedia.size = function (size) {
+            cssPagedMedia('@page {size: ' + size + '}');
+        };
+        
+        cssPagedMedia.size('length');
+
+        window.print()
+    }
+    
 
     render() {
         return (
@@ -301,7 +319,7 @@ class Form extends Component {
                     />
                 </BS.Form.Group>
                 <BS.Form.Group>
-                    <BS.Form.Label>Date devis</BS.Form.Label >
+                    <BS.Form.Label>Date devis</BS.Form.Label>
                     <BS.Form.Control size="sm" type="date" value={this.props.devisDate} onChange={this.props.onChangeValue} id="devisDate" name="devisDate" />
                 </BS.Form.Group>
                 <BS.Form.Group>
@@ -354,7 +372,7 @@ class Form extends Component {
                 </BS.Form.Group>
                 {/*<Preview state={this.props.returnState} />*/}
                 <BS.Button id="save" className="no-print mb-2 ml-2" variant='dark' onClick={this.save}>Sauvegarder</BS.Button> {' '}
-                <BS.Button className="no-print mb-2 ml-2" variant="info" onClick={window.print}>Imprimer</BS.Button> {' '}
+                <BS.Button className="no-print mb-2 ml-2" variant="info" onClick={this.print}>Imprimer</BS.Button> {' '}
                 <div id="msg"></div>
 
             </BS.Form>
