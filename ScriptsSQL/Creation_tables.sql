@@ -165,5 +165,5 @@ create table factures                                                    -- 3 fo
     ID_TEXTE_FACTURE INT NOT NULL,
     CONSTRAINT pk__factures PRIMARY KEY (ID_FACTURE),
     CONSTRAINT fk__factures__texte_factures FOREIGN KEY (ID_TEXTE_FACTURE) REFERENCES texte_factures (ID_TEXTE_FACTURE),
-    CONSTRAINT fk__factures__clients FOREIGN KEY (ID_CLIENT) REFERENCES clients (ID_CLIENT),
+    CONSTRAINT fk__factures__clients FOREIGN KEY (ID_CLIENT) REFERENCES clients (ID_CLIENT)
 );
