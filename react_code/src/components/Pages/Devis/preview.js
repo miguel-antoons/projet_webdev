@@ -7,21 +7,7 @@ import { useState } from "react";
 
 function Preview(props) {
     const [lgShow, setLgShow] = useState(false);
-
-    function tva (price_str, tva_str) {
-        let price = Number(price_str)
-        let tva = Number(tva_str)
-        let total_tva = (price / 100) * tva
-        return Math.round(total_tva*100)/100
-    }
-
-    function total_tva (price_str, tva_str){
-        let price = Number(price_str)
-        let tva = Number(tva_str)
-        let total_tva =  price + (price / 100) * tva
-        return Math.round(total_tva*100)/100
-    }
-
+    
     function currentDate() {
         let date=new Date()
         return date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()
