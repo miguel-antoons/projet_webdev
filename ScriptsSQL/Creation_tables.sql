@@ -42,7 +42,8 @@ create table clients                                      -- 1 lien avec facture
 
 create table etiquettes                                                  -- 1 foreign key vers client (id)
 (
-    ID_CLIENT INT NOT NULL AUTO_INCREMENT,
+    ID_ETIQUETTE INT NOT NULL AUTO_INCREMENT,
+    ID_CLIENT INT NOT NULL,
     CHANTIER VARCHAR NOT NULL, -- qu'est ce que ca represente ?
     CODE_JSON LONGTEXT,                 -- qu'est ce que ca represente ?
     DATE_ETIQUETTE DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier,
@@ -65,7 +66,9 @@ create table devis (
     ID_CLIENT INT NOT NULL,
     ID_DEVIS_TEXTE INT NOT NULL,
     DATE_DEVIS DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier
-    CHANTIER VARCHAR(255) NOT NULL,
+    CHANTIER LONGTEXT,
+    COMMENTAIRE varchar(255),
+    CHANTIER_NOM varchar(255),
     CHOIX_PRIX INT,              -- BETWEEN 1 AND 3 ,
     MODIFICATION_PRIX_POURCENTAGE INT,
     MODIFICATION_PRIX_FIXE INT,
@@ -162,6 +165,5 @@ create table factures                                                    -- 3 fo
     ID_TEXTE_FACTURE INT NOT NULL,
     CONSTRAINT pk__factures PRIMARY KEY (ID_FACTURE),
     CONSTRAINT fk__factures__texte_factures FOREIGN KEY (ID_TEXTE_FACTURE) REFERENCES texte_factures (ID_TEXTE_FACTURE),
-    CONSTRAINT fk__factures__clients FOREIGN KEY (ID_CLIENT) REFERENCES clients (ID_CLIENT),
-    CONSTRAINT fk__factures__devis FOREIGN KEY (ID_DEVIS) REFERENCES devis (ID_DEVIS)
+    CONSTRAINT fk__factures__clients FOREIGN KEY (ID_CLIENT) REFERENCES clients (ID_CLIENT)
 );
