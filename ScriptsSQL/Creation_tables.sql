@@ -152,7 +152,6 @@ create table factures                                                    -- 3 fo
 (
     ID_FACTURE INT NOT NULL AUTO_INCREMENT,
     ID_CLIENT INT NOT NULL,
-    ID_DEVIS INT NOT NULL,
     DATE_FACTURE DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier
     DATE_ECHEANCE DATE,
     DATE_FIN_TRAVAUX DATE,
