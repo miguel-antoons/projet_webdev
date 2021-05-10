@@ -37,4 +37,5 @@ flask/__pycache__
 .env
 .vscode
 build
+**/build
 flask/requirements copy.txt
