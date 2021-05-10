@@ -11,6 +11,10 @@ from os import environ
 app = Flask(__name__)
 # CORS(app)
 
+app.config['MYSQL_HOST'] = '127.0.0.1'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'Dev-Web1234'
+app.config['MYSQL_DB'] = 'projet-dev'
 
 
 

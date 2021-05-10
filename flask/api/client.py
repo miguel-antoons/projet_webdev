@@ -62,78 +62,87 @@ def client():
     elif request.method == 'POST':
     
         requete = request.json
-
-        nom = requete["name"]
-        prenom = requete["firstname"]
-        societe = requete["societe"]
-        titre = requete["titre"]
-        langue =  requete["langue"]
-        adress = requete["adress"] 
-        tva = requete["tva"]
-        number = requete["number"]
-        email = requete["email"] 
+        post_client(requete)
 
 
-        # Creating a connection cursor
-        cursor = mysql.connection.cursor()
-
-        # Executing SQL Statements
-
-        cursor.execute(
-            '''INSERT INTO clients (NOM_CLIENT,PRENOM_CLIENT,TITRE_CLIENT,SOCIETE_CLIENT,LANGUE_CLIENT,ADRESSE_CLIENT,NUMERO_TVA_CLIENT ,TELEPHONE_CLIENT ,EMAIL_CLIENT  )
-            VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s) ''',
-
-            (nom, prenom, titre, societe, langue, adress, tva, number, email)
-        )
-
-        # Saving the Actions performed on the DB
-        mysql.connection.commit()
-
-        # Closing the cursor
-        cursor.close()
-
-        return jsonify(msg='Le client à étét ajouté avec succès')
 
     elif request.method == 'PUT':
         
         requete = request.json
+        put_client(requete)
+
+
+    return json.dumps(response)
+
+
+def post_client(requete):
+
+    nom = requete["name"]
+    prenom = requete["firstname"]
+    societe = requete["societe"]
+    titre = requete["titre"]
+    langue =  requete["langue"]
+    adress = requete["adress"] 
+    tva = requete["tva"]
+    number = requete["number"]
+    email = requete["email"] 
+
+
+    # Creating a connection cursor
+    cursor = mysql.connection.cursor()
+
+    # Executing SQL Statements
+
+    cursor.execute(
+        '''INSERT INTO clients (NOM_CLIENT,PRENOM_CLIENT,TITRE_CLIENT,SOCIETE_CLIENT,LANGUE_CLIENT,ADRESSE_CLIENT,NUMERO_TVA_CLIENT ,TELEPHONE_CLIENT ,EMAIL_CLIENT  )
+        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s) ''',
+
+        (nom, prenom, titre, societe, langue, adress, tva, number, email)
+    )
+
+    # Saving the Actions performed on the DB
+    mysql.connection.commit()
+
+    # Closing the cursor
+    cursor.close()
+
+    return jsonify(msg='Le client à étét ajouté avec succès')      
 
         
 
-        print("methode PUT")
-        print(requete)
+def put_client(requete):
+    print("methode PUT")
+    print(requete)
 
         
-        id = str(requete["id"])
-        nom = str(requete["name"])
-        prenom = str(requete["firstname"])
-        societe = str(requete["societe"])
-        titre = str(requete["titre"])
-        langue =  str(requete["langue"])
-        adress = str(requete["adress"] )
-        tva = str(requete["tva"])
-        number = str(requete["number"])
-        email = str(requete["email"])
+    id = str(requete["id"])
+    nom = str(requete["name"])
+    prenom = str(requete["firstname"])
+    societe = str(requete["societe"])
+    titre = str(requete["titre"])
+    langue =  str(requete["langue"])
+    adress = str(requete["adress"] )
+    tva = str(requete["tva"])
+    number = str(requete["number"])
+    email = str(requete["email"])
 
-         # Creating a connection cursor
-        cursor = mysql.connection.cursor()
+        # Creating a connection cursor
+    cursor = mysql.connection.cursor()
+ 
+    # Executing SQL Statements
 
-        # Executing SQL Statements
+    cursor.execute(
+        "UPDATE clients SET NOM_CLIENT='" + nom + "',PRENOM_CLIENT='" + prenom + "',TITRE_CLIENT = '" + titre + "',SOCIETE_CLIENT= '" + societe + "',LANGUE_CLIENT= '" + langue + "',ADRESSE_CLIENT= '" + adress + "',NUMERO_TVA_CLIENT= '" + tva  + "',TELEPHONE_CLIENT= '" + number + "',EMAIL_CLIENT= '" + email + "'WHERE ID_CLIENT='" + id + "' " 
+    
+    )
 
-        cursor.execute(
-            "UPDATE clients SET NOM_CLIENT='" + nom + "',PRENOM_CLIENT='" + prenom + "',TITRE_CLIENT = '" + titre + "',SOCIETE_CLIENT= '" + societe + "',LANGUE_CLIENT= '" + langue + "',ADRESSE_CLIENT= '" + adress + "',NUMERO_TVA_CLIENT= '" + tva  + "',TELEPHONE_CLIENT= '" + number + "',EMAIL_CLIENT= '" + email + "'WHERE ID_CLIENT='" + id + "' " 
-        
-        )
+    # Saving the Actions performed on the DB
+    mysql.connection.commit()
 
-        # Saving the Actions performed on the DB
-        mysql.connection.commit()
+    # Closing the cursor
+    cursor.close()
 
-        # Closing the cursor
-        cursor.close()
-
-
-
-        return jsonify(msg='Le client à été modifier avec succès')
+    return jsonify(msg='Le client à été modifier avec succès')
 
     
-    return json.dumps(response)
+    
