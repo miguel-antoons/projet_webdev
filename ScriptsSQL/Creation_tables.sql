@@ -43,7 +43,7 @@ create table clients                                      -- 1 lien avec facture
 create table etiquettes                                                  -- 1 foreign key vers client (id)
 (
     ID_ETIQUETTE INT NOT NULL AUTO_INCREMENT,
-    ID_CLIENT INT NOT NULL AUTO_INCREMENT,
+    ID_CLIENT INT NOT NULL,
     CHANTIER VARCHAR NOT NULL, -- qu'est ce que ca represente ?
     CODE_JSON LONGTEXT,                 -- qu'est ce que ca represente ?
     DATE_ETIQUETTE DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier,
