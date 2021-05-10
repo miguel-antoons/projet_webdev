@@ -436,7 +436,10 @@ const Etiquetage = (props) => {
         }
     };
 
-
+    /**
+     * Change css rules in order to adapt the css for printing,
+     * and finally print the table
+     */
     const printWindow = () => {
         let cssPagedMedia = (function () {
             let style = document.createElement('style');
@@ -454,6 +457,7 @@ const Etiquetage = (props) => {
         window.print();
     };
 
+    
     // if there is a clientID and a projectID
     if (clientID && projectID) {
         // just show the client name
