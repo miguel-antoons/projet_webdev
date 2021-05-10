@@ -42,6 +42,7 @@ create table clients                                      -- 1 lien avec facture
 
 create table etiquettes                                                  -- 1 foreign key vers client (id)
 (
+    ID_ETIQUETTE INT NOT NULL AUTO_INCREMENT,
     ID_CLIENT INT NOT NULL AUTO_INCREMENT,
     CHANTIER VARCHAR NOT NULL, -- qu'est ce que ca represente ?
     CODE_JSON LONGTEXT,                 -- qu'est ce que ca represente ?
@@ -65,7 +66,7 @@ create table devis (
     ID_CLIENT INT NOT NULL,
     ID_DEVIS_TEXTE INT NOT NULL,
     DATE_DEVIS DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier
-    CHANTIER VARCHAR(255) NOT NULL,
+    CHANTIER LONGTEXT,
     COMMENTAIRE varchar(255),
     CHANTIER_NOM varchar(255),
     CHOIX_PRIX INT,              -- BETWEEN 1 AND 3 ,
