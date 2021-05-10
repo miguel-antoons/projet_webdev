@@ -437,6 +437,24 @@ const Etiquetage = (props) => {
         }
     };
 
+
+    const printWindow = () => {
+        let cssPagedMedia = (function () {
+            let style = document.createElement('style');
+            document.head.appendChild(style);
+            return function (rule) {
+                style.innerHTML = rule;
+            };
+        }());
+        
+        cssPagedMedia.size = function (size) {
+            cssPagedMedia('@page {size: ' + size + '}');
+        };
+        
+        cssPagedMedia.size('A3 landscape');
+        window.print();
+    };
+
     // if there is a clientID and a projectID
     if (clientID && projectID) {
         // just show the client name
@@ -488,7 +506,7 @@ const Etiquetage = (props) => {
                         </label>
                     </div>
                 </div>
-                <BS.Button variant="light" size="lg"className="cleanButton" onClick={() => window.print()}><icon.IoPrint /> Print</BS.Button>
+                <BS.Button variant="light" size="lg"className="cleanButton" onClick={() => printWindow()}><icon.IoPrint /> Print</BS.Button>
                 <BS.Button variant="light" size="lg"className="cleanButton" onClick={() => saveProject()}><icon.IoSave /> Save</BS.Button>
                 <br />
                 <div className="projectStatus">
