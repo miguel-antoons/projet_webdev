@@ -119,8 +119,6 @@ class Form extends Component {
         }
          
     }
-<<<<<<< HEAD
-=======
 
     print() {
         let cssPagedMedia = (function () {
@@ -139,7 +137,6 @@ class Form extends Component {
 
         window.print();
     }
->>>>>>> c443f989462b988d6b91ba7cb30768a7be1f39c8
     
 
     render() {
