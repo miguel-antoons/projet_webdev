@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import * as BS from "react-bootstrap"
-import Preview from './preview'
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import './Form.css'
@@ -134,21 +133,19 @@ class Form extends Component {
         }
 
         // Initilisation du tableau
-        if (this.state.house[level] === undefined) this.state.house[level] = {}
-        if (this.state.house[level][room] === undefined) this.state.house[level][room] = {}
-        if (this.state.house[level][room][material["id"]] === undefined) this.state.house[level][room][material["id"]] = {}
+        if (this.state.house[level] === undefined) this.state.house[level] = {} // eslint-disable-line
+        if (this.state.house[level][room] === undefined) this.state.house[level][room] = {} // eslint-disable-line
+        if (this.state.house[level][room][material["id"]] === undefined) this.state.house[level][room][material["id"]] = {} // eslint-disable-line
         
         if (this.state.house[level][room][material["id"]]["name"] !== undefined) {
-            this.state.house[level][room][material["id"]]["counter"] += 1
+            this.state.house[level][room][material["id"]]["counter"] += 1  // eslint-disable-line
         }
         else {
-            this.state.house[level][room][material["id"]]["name"] = material["name"]
-            console.log(material[this.props.returnState.price_choice])
-            this.state.house[level][room][material["id"]]["price"] = material[this.props.returnState.price_choice]
-            this.state.house[level][room][material["id"]]["counter"] = 1
+            this.state.house[level][room][material["id"]]["name"] = material["name"] // eslint-disable-line
+            this.state.house[level][room][material["id"]]["price"] = material[this.props.returnState.price_choice] // eslint-disable-line
+            this.state.house[level][room][material["id"]]["counter"] = 1 // eslint-disable-line
         }
-        console.log(this.state.house)
-        this.props.returnState.house = this.state.house
+        this.props.returnState.house = this.state.house // eslint-disable-line
         this.fill_text_materials()
     }
 
@@ -170,7 +167,7 @@ class Form extends Component {
             if(this.state.house[level][room] !== undefined ) {
                 if(this.state.house[level][room][material] !== undefined ) {
                     if (this.state.house[level][room][material]["counter"] > 1) {
-                        this.state.house[level][room][material]["counter"] = this.state.house[level][room][material]["counter"] - 1 
+                        this.state.house[level][room][material]["counter"] = this.state.house[level][room][material]["counter"] - 1  // eslint-disable-line
                     }
                     else {
                         delete this.state.house[level][room][material]
