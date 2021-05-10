@@ -40,4 +40,4 @@ flask/requirements.txt
 flask/__pycache__
 ./flask/.env
 .env
-.Vscode
+.vscode
