@@ -193,7 +193,7 @@ class Facture extends Component {
                     </BS.Col>
 
                     {/* Right */}
-                    <BS.Col className="mt-5  overflow-auto text-pdf" id='print'>
+                    <BS.Col className="mt-5 overflow-auto-facture overflow-auto text-pdf" id='print'>
                         <BS.Row className="mt-2">
                             <BS.Col className="mr-5" xs lg="6">
                                 Leuvensebaan 201 A <br />

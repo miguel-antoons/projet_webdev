@@ -5,8 +5,8 @@
     }
   }
 
-.overflow-auto {
-    max-height: 720px;
+.overflow-auto-facture {
+    max-height: 655px !important;
 }
 
 .border {
