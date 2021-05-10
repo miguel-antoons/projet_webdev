@@ -1,9 +1,4 @@
 @media print {
-    @page {
-        margin: 1cm;
-        size: landscape;
-    }
-
     .constructionSite {
         margin-top: 0 !important;
         margin-bottom: 0 !important;
@@ -12,7 +7,7 @@
 
     .no_print {
         display: none !important;
-        margin-top: 0 !important
+        margin-top: 0 !important;
     }
 
     button, .cleanButton {
