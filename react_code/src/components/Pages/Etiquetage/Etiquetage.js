@@ -8,7 +8,6 @@ import TextField from '@material-ui/core/TextField';
 import * as BS from "react-bootstrap";
 import * as icon from 'react-icons/io5';
 import { useLocation } from 'react-router';
-import { icons } from 'react-icons/lib';
 
 
 const Etiquetage = (props) => {
