@@ -5,7 +5,7 @@ create table suivi_materiel                               -- aucun lien avec le 
     ID_SUIVI_MATERIEL INT NOT NULL AUTO_INCREMENT,
     MATERIEL VARCHAR(100) NOT NULL,
     NOM VARCHAR(50) NOT NULL,
-    TEL INT,
+    TEL VARCHAR(20),
     EMAIL VARCHAR(50),
     DATE_EMPRUNT DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier
     DATE_RETOUR DATE,
@@ -43,10 +43,16 @@ create table clients                                      -- 1 lien avec facture
 create table etiquettes                                                  -- 1 foreign key vers client (id)
 (
     ID_ETIQUETTE INT NOT NULL AUTO_INCREMENT,
+<<<<<<< HEAD
+    ID_CLIENT INT NOT NULL AUTO_INCREMENT,
+    CHANTIER VARCHAR NOT NULL, -- qu'est ce que ca represente ?
+    CODE_JSON LONGTEXT,                 -- qu'est ce que ca represente ?
+=======
     ID_CLIENT INT NOT NULL,
     CHANTIER VARCHAR(255) NOT NULL, -- qu'est ce que ca represente ?
     CODE_XML VARCHAR(255),                  -- qu'est ce que ca represente ?
     CODE_JSON VARCHAR(255),                 -- qu'est ce que ca represente ?
+>>>>>>> test
     DATE_ETIQUETTE DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier,
     CONSTRAINT pk__etiquettes PRIMARY KEY (ID_ETIQUETTE),
     CONSTRAINT fk__etiquettes__clients FOREIGN KEY (ID_CLIENT) REFERENCES clients (ID_CLIENT)

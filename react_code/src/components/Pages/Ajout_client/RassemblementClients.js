@@ -160,7 +160,7 @@ function RassemblementClients () {
                 <div className="d-flex justify-content-center">
                     <BS.Col lg="1" xs></BS.Col>
                     <BS.Col md="5">
-                        <input onChange={ (e) => setSearch(e.target.value) } value={ search } type="text" className="form-control form-control-lg recherche" placeholder="Rechercher . . ." />
+                        <input onChange={ (e) => setSearch(e.target.value.toLowerCase()) } value={ search } type="text" className="form-control form-control-lg recherche" placeholder="Rechercher . . ." />
                         <select onChange={(event) => setSort(event.target.value)} className="form-control form-control-lg shadow-none bg-transparent filtre">
                             {sortOptions.map((option) => (
                                     <option value={option.value} key={option.key}>{option.label}</option>

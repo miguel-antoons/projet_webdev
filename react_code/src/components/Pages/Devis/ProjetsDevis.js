@@ -22,8 +22,8 @@ function ProjetsDevis () {
         { value: '{"key": "date", "sign": 1}', label: "Ancien à Récent", key: 2},
         { value: '{"key": "attribute1", "sign": 0}', label: "A-Z Client", key: 3},
         { value: '{"key": "attribute1", "sign": 1}', label: "Z-A Client", key: 4},
-        { value: '{"key": "attribute2", "sign": 0}', label: "A-Z Chantier", key: 5},
-        { value: '{"key": "attribute2", "sign": 1}', label: "Z-A Chantier", key: 6} 
+        { value: '{"key": "attribute2", "sign": 0}', label: "A-Z Chantier_nom", key: 5},
+        { value: '{"key": "attribute2", "sign": 1}', label: "Z-A Chantier_nom", key: 6} 
     ];
 
     // GET information about all content, fires on page load and on filter change
@@ -190,7 +190,7 @@ function ProjetsDevis () {
                 <div className="d-flex justify-content-center">
                     <BS.Col lg="2" xs></BS.Col>
                     <BS.Col md="auto">
-                        <input onChange={ (e) => setSearch(e.target.value) } value={ search } type="text" className="form-control form-control-lg recherche" placeholder="Rechercher . . ." />
+                        <input onChange={ (e) => setSearch(e.target.value.toLowerCase()) } value={ search } type="text" className="form-control form-control-lg recherche" placeholder="Rechercher . . ." />
                         <select onChange={(event) => setSort(event.target.value)} className="form-control form-control-lg shadow-none bg-transparent filtre">
                             {sortOptions.map((option) => (
                                     <option value={option.value} key={option.key}>{option.label}</option>

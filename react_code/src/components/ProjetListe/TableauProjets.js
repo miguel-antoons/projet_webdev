@@ -23,9 +23,14 @@ const TableauProjets = ({ content, onDelete, pathname }) => {
                                     <BS.Col className='button_container' >
                                         <BoutonRapide id={element.id} onDelete={onDelete} icon={<icon.IoTrash />} text="  Suprimmer" css_variant={true} />
                                     </BS.Col>
-                                    <BS.Col className='button_container'>
-                                        <BoutonRapide icon={<icon.IoPrint />} text="  Imprimer" />
-                                    </BS.Col>
+                                    <LinkContainer to={{
+                                        pathname: pathname + String(element.id),
+                                        query: true
+                                    }}>
+                                        <BS.Col className='button_container'>
+                                            <BoutonRapide icon={<icon.IoPrint />} text="  Imprimer" />
+                                        </BS.Col>
+                                    </LinkContainer>
                                     <LinkContainer to={{ 
                                         pathname: pathname + String(element.id)
                                     }}>
