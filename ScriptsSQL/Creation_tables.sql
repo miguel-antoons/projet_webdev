@@ -156,7 +156,7 @@ create table factures                                                    -- 3 fo
     DATE_FACTURE DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier
     DATE_ECHEANCE DATE,
     DATE_FIN_TRAVAUX DATE,
-    TAUX_TVA DOUBLE(3,2),	 -- 0.21 ou autre
+    TAUX_TVA DOUBLE(4,2),	 -- 0.21 ou autre
     COMMENTAIRE VARCHAR(255),
     MONTANT INT,
     ID_TEXTE_TVA INT,
