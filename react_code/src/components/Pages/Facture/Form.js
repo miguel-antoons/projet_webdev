@@ -190,7 +190,7 @@ class Form extends Component {
                 </BS.Form.Group>
                 <Preview state={this.props.returnState} />
                 <BS.Button id="save" className="no-print mb-2 ml-2" variant="info" onClick={this.save}>Sauvegarder</BS.Button> {' '}
-                <BS.Button className="no-print mb-2 ml-2" variant="info" onClick={this.print()}>Imprimer</BS.Button> {' '}
+                <BS.Button className="no-print mb-2 ml-2" variant="info" onClick={this.print}>Imprimer</BS.Button> {' '}
                 <div id="msg"></div>
 
             </BS.Form>
