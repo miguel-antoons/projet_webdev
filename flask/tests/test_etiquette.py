@@ -6,18 +6,13 @@ from api.etiquettes import get_all_etiquettes, create_new_etiquette, \
     set_arguments, get_etiquette_by_id, delete_etiquette, update_etiquette
 
 
-# class EtiquettesTest(unittest.TestCase):
-#     ETIQUETTES_URL = "http://127.0.0.1:5000/api/etiquettes?filter={}"
-
-#     def test_get_all(self):
-#         test_request = requests.get(EtiquettesTest.ETIQUETTES_URL.format(''))
-#         self.assertEqual(test_request.status_code, 200)
-#         # self.assertEqual()
-
 class TestApiEtiquettes:
-    URL_PREFIX = "http://127.0.0.1/api/{}"
-    test_id = 0
-    test_data = [
+    """
+    class tests api for etiquettes
+    """
+    URL_PREFIX = "http://127.0.0.1/api/{}"   # beginning of the url for the api
+    test_id = 0                              # project id of the tested element
+    test_data = [                            # test sample for the post api
         3,
         'Unit tests',
         [
@@ -38,7 +33,7 @@ class TestApiEtiquettes:
         ]
     ]
 
-    update_test_data = [
+    update_test_data = [                     # test sample fot the update api
         'Unit tests 2',
         [
             [
@@ -59,7 +54,7 @@ class TestApiEtiquettes:
         'test_number'
     ]
 
-    response_test_data = {
+    response_test_data = {                 # expected response from the get api
         'clientID': 3,
         'clientInfo': 'Miguel Antoons, Ephec',
         'constructionSite': 'Unit tests',
@@ -70,25 +65,35 @@ class TestApiEtiquettes:
         'projectID': test_id
     }
 
+    # tests the get api for all the projects
     def test1_get_etiquettes(self):
+        # sends a request for the api
         response = requests.get(
             TestApiEtiquettes.URL_PREFIX.format("etiquettes?filter=")
         )
+
+        # check the results
         assert response.status_code == 200
         assert response.headers['content-type'] == "application/json"
 
+    # tests the post api
     def test2_post_etiquette(self):
+        # sends a request for the api
         response = requests.post(
             TestApiEtiquettes.URL_PREFIX.format("etiquettes"),
             json=TestApiEtiquettes.test_data
         )
 
+        # prepares the test sample depending on the response
         TestApiEtiquettes.test_id = int(json.loads(response.text)['projectID'])
         TestApiEtiquettes.response_test_data['projectID'] = \
             TestApiEtiquettes.test_id
+
+        # check the results
         assert response.status_code == 200
         assert response.headers['content-type'] == "application/json"
 
+    # tests get api by id
     def test3_get_etiquette_by_id(self):
         response = requests.get(
             TestApiEtiquettes.URL_PREFIX.format(
