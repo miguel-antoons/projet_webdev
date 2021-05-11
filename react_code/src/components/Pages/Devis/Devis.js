@@ -144,7 +144,6 @@ class Devis extends Component {
                     percent: result[0][6],
                     house: JSON.parse(result[0][4])
                 })
-
                 // remplir le formulaire
                 document.getElementById("comment").value = result[0][12]
                 document.getElementById("site").value = result[0][11]
