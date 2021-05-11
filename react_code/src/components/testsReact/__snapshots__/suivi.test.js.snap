@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render bien la page 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="suivi jumbotron"
+  >
+    <h1>
+      Suivi du Matériel
+    </h1>
+  </div>
+  <table
+    className="table"
+  >
+    <thead>
+      <tr>
+        <th>
+          ID
+        </th>
+        <th>
+          Matériel
+        </th>
+        <th>
+          Nom
+        </th>
+        <th>
+          Téléphone
+        </th>
+        <th>
+          Email
+        </th>
+        <th>
+          Date Emprunt
+        </th>
+        <th>
+          Rendu
+        </th>
+      </tr>
+    </thead>
+    <tbody
+      id=""
+    />
+  </table>
+</div>
+`;

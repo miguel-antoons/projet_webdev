@@ -41,4 +41,7 @@ flask/__pycache__
 ./flask/.env
 .env
 .vscode
+<<<<<<< HEAD
 build
+=======
+>>>>>>> Branche-Alexis
