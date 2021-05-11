@@ -68,7 +68,7 @@ const Etiquetage = (props) => {
 
                 // s'il faut imprimer, imprimer la page et mettre query à false pour ne pas réimprimer
                 if (print) {
-                    window.print();
+                    printWindow();
                     setPrint(false);
                 }
             };
