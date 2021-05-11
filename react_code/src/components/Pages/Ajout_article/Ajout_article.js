@@ -67,7 +67,7 @@ const Ajout_Articles = () => {
           value={ LibelleFR } onChange={ (e) => setLibelleFR(e.target.value)   } required />
 
           <BS.Form.Label column="lg" lg={2} >LibelleNDL</BS.Form.Label>
-          <BS.Form.Control size="sm" type="text" placeholder="Entrer le libéllé de l'article en NDL"  id="LibelleNDL " name="LibelleNDL " 
+          <BS.Form.Control size="sm" type="text" placeholder="Entrer le libéllé de l'article en NDL"  id="LibelleNDL" name="LibelleNDL" 
           value={ LibelleNDL } onChange={ (e) => setLibelleNDL(e.target.value)   } required />
         </BS.Form.Group>
         <BS.Form.Group>

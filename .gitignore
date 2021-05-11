@@ -42,3 +42,4 @@ flask/requirements copy.txt
 .pytest_cache
 mysql.ini
 .coverage
+settings.json
