@@ -107,13 +107,13 @@ const Ajout_Client = (props) => {
           value={ name } onChange={ (e) => setName(e.target.value)   } required />
 
           <BS.Form.Label column="lg" lg={2} >Prénom</BS.Form.Label>
-          <BS.Form.Control size="sm" type="text" placeholder="Entrer le Prénom du client"  id="firstName " name="firstName " 
+          <BS.Form.Control size="sm" type="text" placeholder="Entrer le Prénom du client"  id="firstName" name="firstName " 
           value={ firstname } onChange={ (e) => setFirstname(e.target.value)   } required />
         </BS.Form.Group>
 
         <BS.Form.Group>
           <BS.Form.Label column="lg" lg={2} >Société</BS.Form.Label>
-          <BS.Form.Control size="sm" type="text" placeholder="Entrer la Société du client"  id="societe " name="societe" 
+          <BS.Form.Control size="sm" type="text" placeholder="Entrer la Société du client"  id="societe" name="societe" 
           value={ societe } onChange={ (e) => setSociete(e.target.value)  } required />
 
           <BS.Form.Label column="lg" lg={2} >Adresse</BS.Form.Label>

@@ -152,7 +152,7 @@ class Devis extends Component {
                 document.getElementById("price").value =  result[0][5]
                 document.getElementById("percent").value =  result[0][6]
                 
-
+                console.log(result)
                 this.set_state_client(result[0][1])
                 //changer bouton sauvegarder par modifier
                 document.getElementById("save").innerText = "Modifier"

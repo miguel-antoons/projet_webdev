@@ -39,3 +39,6 @@ flask/__pycache__
 build
 **/build
 flask/requirements copy.txt
+.pytest_cache
+mysql.ini
+.coverage
