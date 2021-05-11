@@ -186,4 +186,4 @@ def delete_etiquette(id_to_delete, cursor):
     # execute the statement along with its arguments
     cursor.execute(sql_statement, arguments)
 
-    return cursor.fetchall()
+    return ["Successfully deleted"]

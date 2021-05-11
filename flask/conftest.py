@@ -110,3 +110,13 @@ def create_new_etiquette(cursor, insert_client):
     )
 
     cursor.execute(sql_statement, arguments)
+
+    sql_statement = """
+        SELECT LAST_INSERT_ID();
+    """
+
+    cursor.execute(sql_statement)
+
+    project_id = cursor.fetchall()
+
+    return project_id[0][0], insert_client
