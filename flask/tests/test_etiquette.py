@@ -193,7 +193,7 @@ class TestFunctionEtiquettes:
         assert response['projectID'] == cursor.fetchall()[0][0]
 
     def test2_get_filter(self):
-        
+
 
     def test3_get_all_etiquettes(self, cursor, create_new_etiquette):
         response = get_all_etiquettes(
@@ -201,5 +201,4 @@ class TestFunctionEtiquettes:
             cursor
         )
 
-        print(response)
         assert len(response) >= 1
