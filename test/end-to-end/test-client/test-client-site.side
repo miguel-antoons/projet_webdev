@@ -1,0 +1,118 @@
+{
+  "id": "1b98e06f-3c78-420c-bd18-15b00a2726ad",
+  "version": "2.0",
+  "name": "test-client",
+  "url": "https://factevis.l2-2.ephec-ti.be",
+  "tests": [{
+    "id": "97f277ea-7c46-4827-9fc7-cddf944fd19b",
+    "name": "test-visualisation-clients",
+    "commands": [{
+      "id": "95e24515-790c-4692-890f-e96adaac6337",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "87184670-b7ce-4b94-9a30-47af7d9a4467",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1124x918",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d273e27b-306f-4b9d-8a41-56a8d500687e",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Clients",
+      "targets": [
+        ["linkText=Clients", "linkText"],
+        ["css=.d-flex:nth-child(2) .home_btn:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div[2]/div[2]/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/rassemblement_clients')])[2]", "xpath:href"],
+        ["xpath=//div[2]/div[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "e6402f6b-2191-43aa-9b8f-1eb1d9c6ed31",
+    "name": "test-suppression-client",
+    "commands": [{
+      "id": "0577c69b-e838-4b23-a7e9-5fa86a0f9885",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ab5ce6c0-6e02-41d6-bb47-9b2b04559575",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1124x918",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3ac39d69-4fde-4698-bc03-d12ed247f218",
+      "comment": "",
+      "command": "click",
+      "target": "css=.d-flex:nth-child(2) .home_btn:nth-child(1) > p",
+      "targets": [
+        ["css=.d-flex:nth-child(2) .home_btn:nth-child(1) > p", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div[2]/div[2]/a/p", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/a/p", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f1501263-97d1-4578-b3c1-7a7ee0408c76",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(3) .delete",
+      "targets": [
+        ["css=tr:nth-child(3) .delete", "css:finder"],
+        ["xpath=(//button[@type='button'])[8]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/table/tbody/tr[3]/td[5]/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[5]/div/div/div/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3817216a-c16a-4ee4-b02e-f47fff2ee1b0",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Factevis",
+      "targets": [
+        ["linkText=Factevis", "linkText"],
+        ["css=.navbar-brand", "css:finder"],
+        ["xpath=//div[@id='root']/div/nav/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,' Factevis')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5219bffd-3ba5-4c0e-b45f-182c95f88132",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Client",
+      "targets": [
+        ["linkText=Client", "linkText"],
+        ["css=.nav-link:nth-child(5)", "css:finder"],
+        ["xpath=//a[contains(text(),'Client')]", "xpath:link"],
+        ["xpath=//div[@id='responsive-BS.Navbar-BS.Nav']/div/a[5]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/rassemblement_clients')]", "xpath:href"],
+        ["xpath=//a[5]", "xpath:position"],
+        ["xpath=//a[contains(.,'Client')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "f9c325ee-7729-42e6-a441-02fe05616e48",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["97f277ea-7c46-4827-9fc7-cddf944fd19b"]
+  }],
+  "urls": ["https://factevis.l2-2.ephec-ti.be/"],
+  "plugins": []
+}

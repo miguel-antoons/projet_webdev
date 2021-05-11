@@ -12,11 +12,10 @@ from os import environ
 app = Flask(__name__)
 # CORS(app)
 
-app.secret_key = environ.get('SECRET_KEY')
-app.config['MYSQL_USER'] = environ.get('DB_USER')
-app.config['MYSQL_PASSWORD'] = environ.get('DB_PASSWORD')
-app.config['MYSQL_DB'] = environ.get('DB')
-app.config['MYSQL_HOST'] = environ.get('DB_HOST')
+app.config['MYSQL_HOST'] = '127.0.0.1'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'Dev-Web1234'
+app.config['MYSQL_DB'] = 'projet-dev'
 
 
 app.register_blueprint(article.app_article)

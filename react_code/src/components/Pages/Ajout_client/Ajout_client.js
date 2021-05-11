@@ -37,7 +37,7 @@ const Ajout_Client = (props) => {
 
       //if props.match.paramsid = 0:
 
-      if (Number(props.match.params.id) === 0) {
+      if (id === 0) {
         try{
             let result = await fetch('/api/client', {
               method: 'post',
@@ -61,30 +61,31 @@ const Ajout_Client = (props) => {
       
          
         }
-
-      else {
-        try{
-            let result = await fetch('/api/client', {
-              method: 'put',
-              //mode: 'no-cors', // 
-              headers: {
-                //'Accept': 'application/json'
-                'Content-type': 'application/json',
-            
-              },
-              
-              body: JSON.stringify({id,name, firstname, societe, titre, langue,adress,tva,number,email}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
-            });
-      
-            const data = await result.json();
-      
-            console.log(data);
+        else {
+            try{
+                let result = await fetch('/api/client', {
+                  method: 'put',
+                  //mode: 'no-cors', // 
+                  headers: {
+                    //'Accept': 'application/json'
+                    'Content-type': 'application/json',
+                
+                  },
+                  
+                  body: JSON.stringify({id,name, firstname, societe, titre, langue,adress,tva,number,email}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
+                });
+          
+                const data = await result.json();
+          
+                console.log(data);
+              }
+              catch(e){
+                console.log(e);
+              }
+    
           }
-          catch(e){
-            console.log(e);
-          }
 
-      }
+  
       
     
       }
@@ -107,17 +108,17 @@ const Ajout_Client = (props) => {
           value={ name } onChange={ (e) => setName(e.target.value)   } required />
 
           <BS.Form.Label column="lg" lg={2} >Prénom</BS.Form.Label>
-          <BS.Form.Control size="sm" type="text" placeholder="Entrer le Prénom du client"  id="firstName " name="firstName " 
+          <BS.Form.Control size="sm" type="text" placeholder="Entrer le Prénom du client"  id="firstName" name="firstName" 
           value={ firstname } onChange={ (e) => setFirstname(e.target.value)   } required />
         </BS.Form.Group>
 
         <BS.Form.Group>
           <BS.Form.Label column="lg" lg={2} >Société</BS.Form.Label>
-          <BS.Form.Control size="sm" type="text" placeholder="Entrer la Société du client"  id="societe " name="societe" 
+          <BS.Form.Control size="sm" type="text" placeholder="Entrer la Société du client"  id="societe" name="societe" 
           value={ societe } onChange={ (e) => setSociete(e.target.value)  } required />
 
           <BS.Form.Label column="lg" lg={2} >Adresse</BS.Form.Label>
-          <BS.Form.Control size="sm" type="text" placeholder="Entrer l'adresse du client"  id="adress" name="adress " 
+          <BS.Form.Control size="sm" type="text" placeholder="Entrer l'adresse du client"  id="adress" name="adress" 
           value={ adress } onChange={ (e) => setAdress(e.target.value)   }  />
 
         <BS.Form.Label column="lg" lg={2} >N°TVA</BS.Form.Label>
