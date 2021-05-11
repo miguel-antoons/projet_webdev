@@ -46,12 +46,36 @@ def materiel():
         # prepare the sql statement (which contains arguments in order
         # to avoid sql injection)
         sql_statement = """
-            DELETE FROM clients
+            DELETE FROM suivi_materiel
             WHERE ID_CLIENT = %s
         """
 
         # execute the statement along with its arguments
         cur.execute(sql_statement, id_to_delete)
+
+        # commit the changes to the database
+        connector.commit()
+        response = cur.fetchall()
+
+    cur.close()
+    return json.dumps(response)
+
+@app_suivi.route('/api/suivi/<id>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def delete(id):
+    connector = mysql.connection
+    cur = connector.cursor()
+    response = []
+
+    if request.method == 'DELETE':
+        # prepare the sql statement (which contains arguments in order
+        # to avoid sql injection)
+        sql_statement = """
+            DELETE FROM suivi_materiel
+            WHERE ID_SUIVI_MATERIEL = %s
+        """
+
+        # execute the statement along with its arguments
+        cur.execute(sql_statement, id)
 
         # commit the changes to the database
         connector.commit()
