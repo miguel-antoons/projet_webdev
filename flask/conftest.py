@@ -2,6 +2,7 @@ import pytest
 import mysql.connector
 from mysql.connector import Error
 import configparser
+import json
 
 
 @pytest.fixture(scope='module')
@@ -76,3 +77,36 @@ def insert_client(cursor):
     client_id = cursor.fetchall()
 
     yield client_id[0][0]
+
+
+@pytest.fixture
+def create_new_etiquette(cursor, insert_client):
+    sql_statement = """
+        INSERT INTO etiquettes (ID_CLIENT, CHANTIER, CODE_JSON)
+        VALUES (%s, %s, %s);
+    """
+
+    arguments = (
+        insert_client,
+        'test_chantier',
+        json.dumps(
+            [
+                [
+                    {
+                        'tempBackground': '',
+                        'color': 'black',
+                        'bold': False,
+                        'colspan': 1,
+                        'value': '',
+                        'circuitNumber': {
+                            'color': 'black',
+                            'bold': False,
+                            'value': ''
+                        }
+                    }
+                ]
+            ]
+        ),
+    )
+
+    cursor.execute(sql_statement, arguments)

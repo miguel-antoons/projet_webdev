@@ -44,3 +44,5 @@ flask/__pycache__
 mysql.ini
 .pytest_cache
 .coverage
+settings.json
+build
