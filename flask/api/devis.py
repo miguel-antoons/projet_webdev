@@ -147,7 +147,7 @@ def devis():
 def devis_id(id):
     cursor = mysql.connection.cursor()
     print(id)
-    cursor.execute("SELECT * FROM devis where ID_devis = %s", (id))
+    cursor.execute("SELECT * FROM devis where ID_devis = %s", (id, ))
     data = cursor.fetchall()
 
     return jsonify(data)
