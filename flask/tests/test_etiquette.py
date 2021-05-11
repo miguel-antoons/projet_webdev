@@ -95,56 +95,73 @@ class TestApiEtiquettes:
 
     # tests get api by id
     def test3_get_etiquette_by_id(self):
+        # sends a request for the api
         response = requests.get(
             TestApiEtiquettes.URL_PREFIX.format(
                 f"etiquettes/{TestApiEtiquettes.test_id}"
             )
         )
 
+        # check the results
         assert response.status_code == 200
         assert response.headers['content-type'] == "application/json"
         assert json.loads(response.text) == \
             TestApiEtiquettes.response_test_data
 
+    # tests the update api
     def test4_update_etiquette(self):
+        # prepare the test samples
         TestApiEtiquettes.update_test_data[2] = TestApiEtiquettes.test_id
         TestApiEtiquettes.response_test_data['constructionSite'] = \
             'Unit tests 2'
+
+        # send a request for the api
         response = requests.put(
             TestApiEtiquettes.URL_PREFIX.format("etiquettes"),
             json=TestApiEtiquettes.update_test_data
         )
 
+        # check the results
         assert response.status_code == 200
         assert response.text == json.dumps(["successfully updated project"])
         assert response.headers['content-type'] == 'application/json'
 
+    # verify the test ticket after update
     def test5_get_updated_etiquette(self):
+        # send a request for the api
         response = requests.get(
             TestApiEtiquettes.URL_PREFIX.format(
                 f"etiquettes/{TestApiEtiquettes.test_id}"
             )
         )
 
+        # check the results
         assert response.status_code == 200
         assert response.headers['content-type'] == "application/json"
         assert json.loads(response.text) == \
             TestApiEtiquettes.response_test_data
 
+    # tests by deleting the previously created ticket
     def test6_delete_etiquette(self):
+        # send a request for the api
         response = requests.delete(
             TestApiEtiquettes.URL_PREFIX.format(
                 f"etiquettes?id={TestApiEtiquettes.test_id}"
             )
         )
 
+        # check the results
         assert response.status_code == 200
         assert response.headers['content-type'] == "application/json"
 
 
 class TestFunctionEtiquettes:
-    test_id = 0
-    test_data = [
+    """
+    class tests the different functions from etiquettes.py
+    without calling api's
+    """
+    test_id = 0     # test project id
+    test_data = [   # test sample for post function
         0,
         'Unit tests',
         [
@@ -165,7 +182,7 @@ class TestFunctionEtiquettes:
         ]
     ]
 
-    update_test_data = [
+    update_test_data = [    # test sample for update function
         'Unit tests 2',
         [
             [
@@ -186,17 +203,7 @@ class TestFunctionEtiquettes:
         'test_number'
     ]
 
-    response_test_data = {
-        'clientID': 3,
-        'clientInfo': 'Miguel Antoons, Ephec',
-        'constructionSite': 'Unit tests',
-        'projectData': '[[{"bold": false, "circuitNumber": {"bold": false,'
-        ' "color": "black", "value": ""}, "color": "black", "colspan": 1,'
-        ' "tempBackground": "", "value": ""}]]',
-
-        'projectID': test_id
-    }
-
+    # test the function for inserting a brand new ticket
     def test1_insert_etiquette(self, cursor, insert_client):
         TestFunctionEtiquettes.test_data[0] = insert_client
         response = create_new_etiquette(
