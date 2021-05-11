@@ -44,7 +44,7 @@ create table etiquettes                                                  -- 1 fo
 (
     ID_ETIQUETTE INT NOT NULL AUTO_INCREMENT,
     ID_CLIENT INT NOT NULL,
-    CHANTIER VARCHAR NOT NULL, -- qu'est ce que ca represente ?
+    CHANTIER VARCHAR(100) NOT NULL, -- qu'est ce que ca represente ?
     CODE_JSON LONGTEXT,                 -- qu'est ce que ca represente ?
     DATE_ETIQUETTE DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier,
     CONSTRAINT pk__etiquettes PRIMARY KEY (ID_ETIQUETTE),
@@ -67,14 +67,14 @@ create table devis (
     ID_DEVIS_TEXTE INT NOT NULL,
     DATE_DEVIS DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier
     CHANTIER LONGTEXT,
-    COMMENTAIRE varchar(255),
-    CHANTIER_NOM varchar(255),
     CHOIX_PRIX INT,              -- BETWEEN 1 AND 3 ,
     MODIFICATION_PRIX_POURCENTAGE INT,
     MODIFICATION_PRIX_FIXE INT,
     ID_TEXTE_PRIX INT,
     ID_TEXTE_PAIEMENT INT,
     ID_TEXTE_INTRODUCTION INT,
+    CHANTIER_NOM varchar(255),
+    COMMENTAIRE varchar(255),
     CONSTRAINT pk__devis PRIMARY KEY (ID_DEVIS),
     CONSTRAINT fk__devis__clients FOREIGN KEY (ID_CLIENT) REFERENCES clients (ID_CLIENT),
     CONSTRAINT fk__devis__devis_texte FOREIGN KEY (ID_DEVIS_TEXTE) REFERENCES devis_texte (ID_DEVIS_TEXTE)
@@ -152,6 +152,7 @@ create table factures                                                    -- 3 fo
 (
     ID_FACTURE INT NOT NULL AUTO_INCREMENT,
     ID_CLIENT INT NOT NULL,
+    ID_DEVIS INT,
     DATE_FACTURE DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier
     DATE_ECHEANCE DATE,
     DATE_FIN_TRAVAUX DATE,
