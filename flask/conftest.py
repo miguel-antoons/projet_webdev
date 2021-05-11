@@ -1,19 +1,29 @@
 import pytest
 import mysql.connector
 from mysql.connector import Error
-from os import environ
+import configparser
 
 
 @pytest.fixture(scope='module')
 def connexion():
-    connextor = None
+    connector = None
+    mysql_config = None
+    mysql_config_path = './mysql.ini'
+
+    try:
+        mysql_config = configparser.ConfigParser()
+        mysql_config.read('flask/mysql.ini')
+
+    except Exception as e:
+        print(e)
 
     try:
         connector = mysql.connector.connect(
-            host=environ.get('DB_HOST'),
-            database=environ.get('DB'),
-            user=environ.get('DB_USER'),
-            password=environ.get('DB_PASSWORD')
+            host=mysql_config['mysql']['host'],
+            database=mysql_config['mysql']['db'],
+            user=mysql_config['mysql']['user'],
+            password=mysql_config['mysql']['password'],
+            auth_plugin='mysql_native_password'
         )
 
         if connector.is_connected():
@@ -31,3 +41,38 @@ def cursor(connexion):
     cursor = connexion.cursor()
     yield cursor
     connexion.rollback()
+
+
+@pytest.fixture
+def insert_client(cursor):
+    sql_statement = """
+        INSERT INTO clients (
+            NOM_CLIENT, PRENOM_CLIENT, TITRE_CLIENT, SOCIETE_CLIENT,
+            LANGUE_CLIENT, ADRESSE_CLIENT, NUMERO_TVA_CLIENT, TELEPHONE_CLIENT,
+            EMAIL_CLIENT
+        )
+        VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """
+    arguments = (
+        'Dupont',
+        'Jean',
+        'Mr',
+        'test_societe',
+        'Fr',
+        'test_street 000, 0000 test_city',
+        '010101010101',
+        '050505050505',
+        'jeandupont@example.com',
+    )
+
+    cursor.execute(sql_statement, arguments)
+
+    sql_procedure = """
+        SELECT LAST_INSERT_ID();
+    """
+
+    cursor.execute(sql_procedure)
+
+    client_id = cursor.fetchall()
+
+    yield client_id[0][0]

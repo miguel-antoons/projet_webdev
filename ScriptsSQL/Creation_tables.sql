@@ -30,11 +30,11 @@ create table clients                                      -- 1 lien avec facture
     SOCIETE_CLIENT VARCHAR(50),
     ADRESSE_CLIENT VARCHAR(100) NOT NULL,
     ADRESSE_CLIENT_SECONDAIRE VARCHAR(100),
-    NUMERO_TVA_CLIENT INT,
+    NUMERO_TVA_CLIENT VARCHAR(25),
     LANGUE_CLIENT CHAR(2), -- le domaine casse les couilles
     NOM_ARCHITECT VARCHAR(50),
     TITRE_CLIENT VARCHAR(50) NOT NULL,
-    TELEPHONE_CLIENT INT,
+    TELEPHONE_CLIENT VARCHAR(25),
     EMAIL_CLIENT VARCHAR(50),
     CONSTRAINT pk__clients PRIMARY KEY (ID_CLIENT)
 );
@@ -44,7 +44,7 @@ create table etiquettes                                                  -- 1 fo
 (
     ID_ETIQUETTE INT NOT NULL AUTO_INCREMENT,
     ID_CLIENT INT NOT NULL AUTO_INCREMENT,
-    CHANTIER VARCHAR NOT NULL, -- qu'est ce que ca represente ?
+    CHANTIER VARCHAR(100) NOT NULL, -- qu'est ce que ca represente ?
     CODE_JSON LONGTEXT,                 -- qu'est ce que ca represente ?
     DATE_ETIQUETTE DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier,
     CONSTRAINT pk__etiquettes PRIMARY KEY (ID_ETIQUETTE),

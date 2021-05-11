@@ -20,21 +20,21 @@ def etiquettes():
 
     # API will create a new row for the new project in the database
     elif request.method == 'POST':
-        response = create_new_etiquette(request.json, cur, connector)
+        response = create_new_etiquette(request.json, cur)
 
     # method to update a project
     elif request.method == 'PUT':
         # get the data from the post and put inside a tuple
-        response = update_etiquette(request.json, cur, connector)
+        response = update_etiquette(request.json, cur)
 
     elif request.method == 'DELETE':
         # get the id of the projects that has to be deleted
         response = delete_etiquette(
             int(request.args.get('id')),
-            cur,
-            connector
+            cur
         )
 
+    connector.commit()
     cur.close()
 
     return Response(json.dumps(response), mimetype='application/json')
@@ -128,7 +128,7 @@ def set_arguments(filter):
         return ("1999-01-01", "%Y-%m-%d", 1, 999999999, )
 
 
-def create_new_etiquette(data, cursor, connector):
+def create_new_etiquette(data, cursor):
     response = []
     arguments = (data[0], data[1], json.dumps(data[2]), )
 
@@ -139,7 +139,6 @@ def create_new_etiquette(data, cursor, connector):
     """
 
     cursor.execute(sql_procedure, arguments)
-    connector.commit()
 
     # get the id of the newly created row
     sql_procedure = """
@@ -157,7 +156,7 @@ def create_new_etiquette(data, cursor, connector):
     return response
 
 
-def update_etiquette(data, cursor, connector):
+def update_etiquette(data, cursor):
     arguments = (data[0], json.dumps(data[1]), data[2], )
 
     # sql procedure to update the row
@@ -170,12 +169,11 @@ def update_etiquette(data, cursor, connector):
     """
 
     cursor.execute(sql_procedure, arguments)
-    connector.commit()
 
     return ["successfully updated project"]
 
 
-def delete_etiquette(id_to_delete, cursor, connector):
+def delete_etiquette(id_to_delete, cursor):
     arguments = (id_to_delete, )
 
     # prepare the sql statement (which contains arguments in order
@@ -187,8 +185,5 @@ def delete_etiquette(id_to_delete, cursor, connector):
 
     # execute the statement along with its arguments
     cursor.execute(sql_statement, arguments)
-
-    # commit the changes to the database
-    connector.commit()
 
     return cursor.fetchall()

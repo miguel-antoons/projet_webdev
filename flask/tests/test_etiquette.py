@@ -2,7 +2,7 @@ import unittest
 import requests
 import json
 from flask import current_app as app
-from api.etiquettes import get_all_etiquettes
+from api.etiquettes import get_all_etiquettes, create_new_etiquette
 
 
 # class EtiquettesTest(unittest.TestCase):
@@ -113,17 +113,26 @@ class TestApiEtiquettes:
                 f"etiquettes/{TestApiEtiquettes.test_id}"
             )
         )
-        print(json.loads(response.text))
-        print(TestApiEtiquettes.response_test_data)
+
         assert response.status_code == 200
         assert response.headers['content-type'] == "application/json"
         assert json.loads(response.text) == TestApiEtiquettes.response_test_data
 
+    def test6_delete_etiquette(self):
+        response = requests.delete(
+            TestApiEtiquettes.URL_PREFIX.format(
+                f"etiquettes?id={TestApiEtiquettes.test_id}"
+            )
+        )
 
-class TestFunctionEtiquettes(cursor):
+        assert response.status_code == 200
+        assert response.headers['content-type'] == "application/json"
+
+
+class TestFunctionEtiquettes:
     test_id = 0
     test_data = [
-        3,
+        0,
         'Unit tests',
         [
             [
@@ -172,6 +181,22 @@ class TestFunctionEtiquettes(cursor):
         'projectID': test_id
     }
 
-    def test1_get_all_etiquettes(self, cursor):
-        # response =
-        pass
+    def test1_insert_etiquette(self, cursor, insert_client):
+        TestFunctionEtiquettes.test_data[0] = insert_client
+        response = create_new_etiquette(
+            TestFunctionEtiquettes.test_data,
+            cursor
+        )
+
+        cursor.execute('SELECT LAST_INSERT_ID();')
+
+        assert response['projectID'] == cursor.fetchall()[0][0]
+
+    def test3_get_all_etiquettes(self, cursor):
+        response = get_all_etiquettes(
+            '',
+            cursor
+        )
+
+        print(response)
+        assert len(response) >= 1

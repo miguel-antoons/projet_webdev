@@ -41,3 +41,6 @@ flask/__pycache__
 ./flask/.env
 .env
 .vscode/
+mysql.ini
+.pytest_cache
+.coverage
