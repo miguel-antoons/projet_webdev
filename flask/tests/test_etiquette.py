@@ -10,7 +10,7 @@ class TestApiEtiquettes:
     """
     class tests api for etiquettes
     """
-    URL_PREFIX = "http://127.0.0.1/api/{}"   # beginning of the url for the api
+    URL_PREFIX = "http://127.0.0.1:5000/api/{}"   # beginning of the url for the api
     test_id = 0                              # project id of the tested element
     test_data = [                            # test sample for the post api
         3,
