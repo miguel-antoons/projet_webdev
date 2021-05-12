@@ -3,7 +3,8 @@ import mysql.connector
 test_db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="test_psw"
+    password="test_psw",
+    auth_plugin='mysql_native_password'
 )
 
 cursor = test_db.cursor()
@@ -14,7 +15,8 @@ test_db = mysql.connector.connect(
     host="localhost",
     user="root",
     password="test_psw",
-    database="test_db"
+    database="test_db",
+    auth_plugin='mysql_native_password'
 )
 
 cursor = test_db.cursor()
