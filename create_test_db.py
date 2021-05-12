@@ -90,24 +90,23 @@ cursor.execute("""
 """)
 
 cursor.execute("""
-    create table devis 
-    (
-        ID_DEVIS INT NOT NULL AUTO_INCREMENT,
-        ID_CLIENT INT NOT NULL,
-        ID_DEVIS_TEXTE,
-        DATE_DEVIS DATETIME DEFAULT CURRENT_TIMESTAMP,
-        CHANTIER LONGTEXT,
-        CHOIX_PRIX INT,
-        MODIFICATION_PRIX_POURCENTAGE INT,
-        MODIFICATION_PRIX_FIXE INT,
-        ID_TEXTE_PRIX INT,
-        ID_TEXTE_PAIEMENT INT,
-        ID_TEXTE_INTRODUCTION INT,
-        CHANTIER_NOM varchar(255),
-        COMMENTAIRE varchar(255),
-        CONSTRAINT pk__devis PRIMARY KEY (ID_DEVIS),
-        CONSTRAINT fk__devis__clients FOREIGN KEY (ID_CLIENT) REFERENCES clients (ID_CLIENT),
-        CONSTRAINT fk__devis__devis_texte FOREIGN KEY (ID_DEVIS_TEXTE) REFERENCES devis_texte (ID_DEVIS_TEXTE)
+    CREATE TABLE `devis` (
+        `ID_DEVIS` int NOT NULL AUTO_INCREMENT,
+        `ID_CLIENT` int NOT NULL,
+        `ID_DEVIS_TEXTE` int NOT NULL,
+        `DATE_DEVIS` datetime DEFAULT CURRENT_TIMESTAMP,
+        `CHANTIER` longtext,
+        `CHOIX_PRIX` int DEFAULT NULL,
+        `MODIFICATION_PRIX_POURCENTAGE` int DEFAULT NULL,
+        `MODIFICATION_PRIX_FIXE` int DEFAULT NULL,
+        `ID_TEXTE_PRIX` int DEFAULT NULL,
+        `ID_TEXTE_PAIEMENT` int DEFAULT NULL,
+        `ID_TEXTE_INTRODUCTION` int DEFAULT NULL,
+        `CHANTIER_NOM` varchar(255) DEFAULT NULL,
+        `COMMENTAIRE` varchar(255) DEFAULT NULL,
+        PRIMARY KEY (`ID_DEVIS`),
+        KEY `fk__devis__clients` (`ID_CLIENT`),
+        CONSTRAINT `fk__devis__clients` FOREIGN KEY (`ID_CLIENT`) REFERENCES `clients` (`ID_CLIENT`)
     )
 """)
 
