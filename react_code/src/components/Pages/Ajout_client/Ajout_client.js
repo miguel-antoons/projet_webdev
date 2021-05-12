@@ -20,12 +20,6 @@ const Ajout_Client = (props) => {
     const [number,setNumber] = useState('');
     const [email,setEmail] = useState('');
 
-    console.log(Number(props.match.params.id))
-    
-    
-
-    
-    
 
     // envoi les données des inputs onSubmit
     const sendPost = async (event) => {
