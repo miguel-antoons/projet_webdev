@@ -63,6 +63,16 @@ jobs:
           echo DB_HOST=127.0.0.1 >> .env
           echo DB=test_db >> .env
 
+      - name: create mysql.ini file
+        run: |
+          cd flask
+          touch mysql.ini
+          echo "[mysql]" >> mysql.ini
+          echo "host=127.0.0.1" >> mysql.ini
+          echo "user=root" >> mysql.ini
+          echo "password=test_psw" >> mysql.ini
+          echo "db=test_db" >> mysql.ini
+
       - name: Launch flask developpment server
         run: |
           cd flask
