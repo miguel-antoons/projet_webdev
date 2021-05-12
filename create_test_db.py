@@ -13,7 +13,7 @@ cursor.execute("CREATE DATABASE test_db")
 test_db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="",
+    password="test_psw",
     database="test_db"
 )
 

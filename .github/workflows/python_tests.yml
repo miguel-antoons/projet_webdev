@@ -31,6 +31,11 @@ jobs:
         with: 
           python-version: 3.7
 
+      - name: set up mysql
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql root password: 'test_psw' # Required if "mysql user" is empty, default is empty. The root superuser password
+
       # Runs a set of commands using the runners shell
       - name: Install Python Packages
         run: |
@@ -49,7 +54,7 @@ jobs:
           echo "FLASK_ENV=development" >> .env
           echo "SECRET_KEY=test_key" >> .env
           echo "DB_USER=root" >> .env
-          echo DB_PASSWORD= >> .env
+          echo DB_PASSWORD=test_psw >> .env
           echo DB_HOST=127.0.0.1 >> .env
           echo DB=test_db >> .env
 
