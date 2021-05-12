@@ -36,10 +36,10 @@ jobs:
         with:
           mysql root password: 'test_psw'
 
-      - name: change mysql root password encryption
-        run: |
-          mysql -u root -p test_psw
-          
+      # - name: change mysql root password encryption
+      #   run: |
+      #     mysql -u root -p test_psw
+
 
       # Runs a set of commands using the runners shell
       - name: Install Python Packages
