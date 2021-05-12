@@ -2,7 +2,7 @@ import unittest
 import requests
 
 
-class ApiTest(unittest.TestCase):
+class ApiTest:
     API_URL = "http://127.0.0.1:5000/api"
     FACTURE_ID_URL = "{}/facture/get_facture_id/0".format(API_URL)
     FACTURE_URL = "{}/facture?filter=""".format(API_URL)
