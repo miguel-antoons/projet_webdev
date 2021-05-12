@@ -29,7 +29,7 @@ cursor.execute("""
         NOM VARCHAR(50) NOT NULL,
         TEL VARCHAR(20),
         EMAIL VARCHAR(50),
-        DATE_EMPRUNT DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier
+        DATE_EMPRUNT DATETIME DEFAULT CURRENT_TIMESTAMP,
         DATE_RETOUR DATE,
         CONSTRAINT pk__suivi_materiel PRIMARY KEY (ID_SUIVI_MATERIEL)
     )
@@ -45,7 +45,7 @@ cursor.execute("""
         ADRESSE_CLIENT VARCHAR(100) NOT NULL,
         ADRESSE_CLIENT_SECONDAIRE VARCHAR(100),
         NUMERO_TVA_CLIENT VARCHAR(20),
-        LANGUE_CLIENT CHAR(3), -- le domaine casse les couilles
+        LANGUE_CLIENT CHAR(3),
         NOM_ARCHITECT VARCHAR(50),
         TITRE_CLIENT VARCHAR(50) NOT NULL,
         TELEPHONE_CLIENT VARCHAR(15),
@@ -70,9 +70,9 @@ cursor.execute("""
     (
         ID_ETIQUETTE INT NOT NULL AUTO_INCREMENT,
         ID_CLIENT INT NOT NULL,
-        CHANTIER VARCHAR(100) NOT NULL, -- qu'est ce que ca represente ?
-        CODE_JSON LONGTEXT,                 -- qu'est ce que ca represente ?
-        DATE_ETIQUETTE DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier,
+        CHANTIER VARCHAR(100) NOT NULL,
+        CODE_JSON LONGTEXT,
+        DATE_ETIQUETTE DATETIME DEFAULT CURRENT_TIMESTAMP,
         CONSTRAINT pk__etiquettes PRIMARY KEY (ID_ETIQUETTE),
         CONSTRAINT fk__etiquettes__clients FOREIGN KEY (ID_CLIENT) REFERENCES clients (ID_CLIENT)
     )
@@ -95,9 +95,9 @@ cursor.execute("""
         ID_DEVIS INT NOT NULL AUTO_INCREMENT,
         ID_CLIENT INT NOT NULL,
         ID_DEVIS_TEXTE,
-        DATE_DEVIS DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier
+        DATE_DEVIS DATETIME DEFAULT CURRENT_TIMESTAMP,
         CHANTIER LONGTEXT,
-        CHOIX_PRIX INT,              -- BETWEEN 1 AND 3 ,
+        CHOIX_PRIX INT,
         MODIFICATION_PRIX_POURCENTAGE INT,
         MODIFICATION_PRIX_FIXE INT,
         ID_TEXTE_PRIX INT,
@@ -138,15 +138,15 @@ cursor.execute("""
 """)
 
 cursor.execute("""
-    create table factures                                                    -- 3 foreign keys textefacture/devis/client
+    create table factures
     (
         ID_FACTURE INT NOT NULL AUTO_INCREMENT,
         ID_CLIENT INT NOT NULL,
         ID_DEVIS INT,
-        DATE_FACTURE DATETIME DEFAULT CURRENT_TIMESTAMP, -- a vérifier
+        DATE_FACTURE DATETIME DEFAULT CURRENT_TIMESTAMP,
         DATE_ECHEANCE DATE,
         DATE_FIN_TRAVAUX DATE,
-        TAUX_TVA DOUBLE(4,2),	 -- 0.21 ou autre
+        TAUX_TVA DOUBLE(4,2),
         COMMENTAIRE VARCHAR(255),
         MONTANT INT,
         ID_TEXTE_TVA INT,
