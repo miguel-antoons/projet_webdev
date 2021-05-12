@@ -34,7 +34,12 @@ jobs:
       - name: set up mysql
         uses: mirromutth/mysql-action@v1.1
         with:
-          mysql root password: 'test_psw' # Required if "mysql user" is empty, default is empty. The root superuser password
+          mysql root password: 'test_psw'
+
+      - name: change mysql root password encryption
+        run: |
+          mysql -u root -p test_psw
+          
 
       # Runs a set of commands using the runners shell
       - name: Install Python Packages
