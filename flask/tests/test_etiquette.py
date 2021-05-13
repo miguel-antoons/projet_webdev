@@ -57,7 +57,7 @@ class TestApiEtiquettes:
 
     response_test_data = {                 # expected response from the get api
         'clientID': 1,
-        'clientInfo': 'Miguel Antoons, Ephec',
+        'clientInfo': 'Dupont Jean, Matexi NV',
         'constructionSite': 'Unit tests',
         'projectData': '[[{"bold": false, "circuitNumber": {"bold": false,'
         ' "color": "black", "value": ""}, "color": "black", "colspan": 1,'
