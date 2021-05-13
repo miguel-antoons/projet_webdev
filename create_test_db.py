@@ -170,7 +170,7 @@ arguments = (
     'Dupont',
     'Jean',
     'Mr',
-    'test_societe',
+    'Matexi NV',
     'Fr',
     'test_street 000, 0000 test_city',
     '010101010101',
