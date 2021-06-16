@@ -59,4 +59,3 @@ app_suivi = Blueprint('app_suivi', __name__)
 
 #     cur.close()
 #     return json.dumps(response)
->>>>>>> test
