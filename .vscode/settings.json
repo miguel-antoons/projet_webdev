@@ -1,0 +1,7 @@
+{
+    "editor.detectIndentation": false,
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.linting.pycodestyleEnabled": true,
+    "python.pythonPath": "C:\\Users\\Gros\\AppData\\Local\\Programs\\Python\\Python39\\python.exe"
+}

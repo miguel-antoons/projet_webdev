@@ -1,4 +1,4 @@
-from flask import Blueprint, request, json
+from flask import Blueprint, request, json, jsonify
 from .database import mysql
 
 
@@ -55,6 +55,54 @@ def articles():
 
         response = cur.fetchall()
 
+    #API fires when the user wants to POST a project
+    elif request.method == 'POST':
+
+        requete = request.json
+        print(requete)
+        LibelleFR = requete["LibelleFR"]
+        LibelleNDL = requete["LibelleNDL"]
+        Categorie = requete["Categorie"]
+        Prix1 = requete["Prix1"]
+        Prix2 = requete["Prix2"]
+        Prix3 = requete["Prix3"]
+
+
+         # Creating a connection cursor
+        cursor = mysql.connection.cursor()
+
+        # Executing SQL Statements
+
+        cursor.execute(
+            '''INSERT INTO articles (LIBELLE_FR,LIBELLE_NL,CATEGORIE,PRIX_1,PRIX_2,PRIX_3)
+            VALUES(%s,%s,%s,%s,%s,%s) ''',
+
+            (LibelleFR,LibelleNDL,Categorie,Prix1,Prix2,Prix3)
+        )
+
+        # Saving the Actions performed on the DB
+        mysql.connection.commit()
+
+        # Closing the cursor
+        cursor.close()
+
+
+
+        return jsonify(msg='Le client à étét ajouté avec succès')
+
+
     cur.close()
 
     return json.dumps(response)
+
+
+@app_article.route("/api/articles/all", methods=['GET'])
+def articles_all():
+    cursor = mysql.connection.cursor()
+    cursor.execute("""SELECT ID_ARTICLE,
+    LIBELLE_FR, LIBELLE_NL, CATEGORIE,
+    PRIX_1, PRIX_2, PRIX_3
+    FROM articles""")
+    data = cursor.fetchall()
+
+    return jsonify(data)

@@ -5,8 +5,8 @@
     }
   }
 
-.overflow-auto {
-    max-height: 720px;
+.overflow-auto-facture {
+    max-height: 655px !important;
 }
 
 .border {
@@ -61,4 +61,9 @@ ul {
 
 #print h6 {
     font-size: 1.7em;
+}
+
+#msg {
+    font-size: 0.7em;
+    color: red;
 }

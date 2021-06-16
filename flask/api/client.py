@@ -1,5 +1,6 @@
-from flask import Blueprint, request, json
+from flask import Blueprint, request, jsonify,json
 from .database import mysql
+
 
 
 app_client = Blueprint('app_client', __name__)
@@ -7,6 +8,8 @@ app_client = Blueprint('app_client', __name__)
 
 @app_client.route('/api/client', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def client():
+ 
+
     connector = mysql.connection
     cur = connector.cursor()
     response = []
@@ -48,31 +51,7 @@ def client():
             WHERE ID_CLIENT = %s
         """
 
-        sql_statement_2 = """
-            DELETE FROM devis
-            WHERE ID_CLIENT = %s
-        """
-
-        sql_statement_3 = """
-            DELETE FROM factures
-            WHERE ID_CLIENT = %s
-        """
-
-        sql_statement_4 = """
-            DELETE FROM rgie
-            WHERE ID_CLIENT = %s
-        """
-
-        sql_statement_5 = """
-            DELETE FROM etiquettes
-            WHERE ID_CLIENT = %s
-        """
-
         # execute the statement along with its arguments
-        cur.execute(sql_statement_2, id_to_delete)
-        cur.execute(sql_statement_3, id_to_delete)
-        cur.execute(sql_statement_4, id_to_delete)
-        cur.execute(sql_statement_5, id_to_delete)
         cur.execute(sql_statement_1, id_to_delete)
 
         # commit the changes to the database
@@ -81,57 +60,89 @@ def client():
         response = cur.fetchall()
 
     elif request.method == 'POST':
-        nom = "Danlee"
-        prenom = "Maxime"
-        titre = "M."
-        societe = "Google"
-        langue = "Fr"
-        adress = "Av du"
-        tva = "BE40"
-        number = "047884948"
-        email = "jean@gmail.com"
+    
+        requete = request.json
+        post_client(requete)
 
-        # Creating a connection cursor
-        cursor = mysql.connection.cursor()
 
-        """
-        cur.execute('''create CREATE  TABLE test- Projet (
-            client_ID INT NOT NULL AUTO_INCREMENT ,
-            client_NAME VARCHAR(45) NOT NULL,
-            client_SURNAME VARCHAR(45) NOT NULL ,
-            client_TITLE CHAR(3) NOT NULL ,
-            client_COMPANY VARCHAR(45) NOT NULL ,
-            client_ADRESS VARCHAR(150) NULL ,
-            client_TVA VARCHAR(45) NULL ,
-            client_LANGUAGE VARCHAR(3) NOT NULL ,
-            client_NAMEARCHITECTE VARCHAR(45) NULL ,
-            client_NUMBER VARCHAR(45) NULL ,
-            client_COMMENT VARCHAR(45) NULL ,
-            PRIMARY KEY (client_ID) );''')
-        """
 
-        # Executing SQL Statements
+    elif request.method == 'PUT':
+        
+        requete = request.json
+        put_client(requete)
 
-        cursor.execute(
-            '''INSERT INTO client (client_NAME,client_SURNAME,client_TITLE,
-                client_COMPANY,client_LANGUAGE,client_ADRESS,client_TVA,
-                client_NUMBER,client_MAIL)
-            VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s) ''',
-
-            (nom, prenom, titre, societe, langue, adress, tva, number, email)
-        )
-
-        # Saving the Actions performed on the DB
-        mysql.connection.commit()
-
-        # Closing the cursor
-        cursor.close()
-
-        return jsonify(msg='Le client à étét ajouté avec succès')
-
-    cur.close()
 
     return json.dumps(response)
+
+
+def post_client(requete):
+
+    nom = requete["name"]
+    prenom = requete["firstname"]
+    societe = requete["societe"]
+    titre = requete["titre"]
+    langue =  requete["langue"]
+    adress = requete["adress"] 
+    tva = requete["tva"]
+    number = requete["number"]
+    email = requete["email"] 
+
+
+    # Creating a connection cursor
+    cursor = mysql.connection.cursor()
+
+    # Executing SQL Statements
+
+    cursor.execute(
+        '''INSERT INTO clients (NOM_CLIENT,PRENOM_CLIENT,TITRE_CLIENT,SOCIETE_CLIENT,LANGUE_CLIENT,ADRESSE_CLIENT,NUMERO_TVA_CLIENT ,TELEPHONE_CLIENT ,EMAIL_CLIENT  )
+        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s) ''',
+
+        (nom, prenom, titre, societe, langue, adress, tva, number, email)
+    )
+
+    # Saving the Actions performed on the DB
+    mysql.connection.commit()
+
+    # Closing the cursor
+    cursor.close()
+
+    return jsonify(msg='Le client à étét ajouté avec succès')      
+
+        
+
+def put_client(requete):
+    print("methode PUT")
+    print(requete)
+
+        
+    id = str(requete["id"])
+    nom = str(requete["name"])
+    prenom = str(requete["firstname"])
+    societe = str(requete["societe"])
+    titre = str(requete["titre"])
+    langue =  str(requete["langue"])
+    adress = str(requete["adress"] )
+    tva = str(requete["tva"])
+    number = str(requete["number"])
+    email = str(requete["email"])
+
+        # Creating a connection cursor
+    cursor = mysql.connection.cursor()
+ 
+    # Executing SQL Statements
+
+    cursor.execute(
+        "UPDATE clients SET NOM_CLIENT='" + nom + "',PRENOM_CLIENT='" + prenom + "',TITRE_CLIENT = '" + titre + "',SOCIETE_CLIENT= '" + societe + "',LANGUE_CLIENT= '" + langue + "',ADRESSE_CLIENT= '" + adress + "',NUMERO_TVA_CLIENT= '" + tva  + "',TELEPHONE_CLIENT= '" + number + "',EMAIL_CLIENT= '" + email + "'WHERE ID_CLIENT='" + id + "' " 
+    
+    )
+
+    # Saving the Actions performed on the DB
+    mysql.connection.commit()
+
+    # Closing the cursor
+    cursor.close()
+
+    return jsonify(msg='Le client à été modifier avec succès')
 
 
 @app_client.route("/api/client/<id>", methods=['GET'])
@@ -142,3 +153,4 @@ def client_id(id):
     data = cursor.fetchall()
 
     return json.dumps(data)
+

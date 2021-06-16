@@ -101,7 +101,7 @@ def facture():
         # Closing the cursor
         cursor.close()
 
-        return jsonify(msg='Le client a été ajouté avec succès')
+        return jsonify(msg='La facture a été ajouté avec succès')
 
     elif request.method == 'PUT':
         # Creating a connection cursor
@@ -136,7 +136,7 @@ def facture():
 
         # Closing the cursor
         cur.close()
-        return jsonify(msg='Le client a été modifié avec succès')
+        return jsonify(msg='La facture a été modifié avec succès')
 
     return json.dumps(response)
 

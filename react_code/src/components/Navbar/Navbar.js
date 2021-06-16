@@ -21,6 +21,7 @@ function Navbar() {
             <BS.Navbar.Toggle aria-controls="responsive-BS.Navbar-BS.Nav"/>
             <BS.Navbar.Collapse id="responsive-BS.Navbar-BS.Nav">
                 <BS.Nav className="mr-auto">
+                    
                     <LinkContainer to='/projets_factures'>
                         <BS.Nav.Link>Factures</BS.Nav.Link>
                     </LinkContainer>
@@ -33,18 +34,18 @@ function Navbar() {
                     <LinkContainer to='/suivi'>
                         <BS.Nav.Link>Suivi de matériel</BS.Nav.Link>
                     </LinkContainer>
-                    <BS.NavDropdown title="Modifier/Ajouter" id="collasible-BS.Nav-dropdown">
-                        <LinkContainer to='/rassemblement_clients'>
-                            <BS.NavDropdown.Item>Client</BS.NavDropdown.Item>
-                        </LinkContainer>
-                        <LinkContainer to='/projets_rgie'>
-                            <BS.NavDropdown.Item>Rgie</BS.NavDropdown.Item>
-                        </LinkContainer>
-                        <LinkContainer to='/rassemblement_articles'>
-                            <BS.NavDropdown.Item>Articles</BS.NavDropdown.Item>
-                        </LinkContainer>
-                        <BS.NavDropdown.Divider/>
-                    </BS.NavDropdown>
+                    
+                    <LinkContainer to='/rassemblement_clients'>
+                        <BS.Nav.Link>Client</BS.Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to='/projets_rgie'>
+                        <BS.Nav.Link>Rgie</BS.Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to='/rassemblement_articles'>
+                        <BS.Nav.Link>Articles</BS.Nav.Link>
+                    </LinkContainer>
+                    <BS.NavDropdown.Divider/>
+                    
                 </BS.Nav>
                 {/*
                     <BS.Nav>

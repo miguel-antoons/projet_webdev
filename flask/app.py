@@ -4,6 +4,7 @@ from api import blueprints, database
 from os import environ
 import json
 import time
+from os import environ
 
 
 def create_app():
@@ -26,5 +27,5 @@ app = create_app()
 database.mysql.init_app(app)
 
 
-# if __name__ == '__main__':
-#     app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)

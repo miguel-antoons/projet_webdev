@@ -42,3 +42,4 @@ mysql.ini
 .coverage
 settings.json
 build
+./rect_code/build/
