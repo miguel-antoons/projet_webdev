@@ -1,6 +1,5 @@
-from flask import Blueprint, request, jsonify,json
+from flask import Blueprint, request, jsonify, json
 from .database import mysql
-
 
 
 app_client = Blueprint('app_client', __name__)
@@ -8,8 +7,6 @@ app_client = Blueprint('app_client', __name__)
 
 @app_client.route('/api/client', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def client():
- 
-
     connector = mysql.connection
     cur = connector.cursor()
     response = []
@@ -60,17 +57,12 @@ def client():
         response = cur.fetchall()
 
     elif request.method == 'POST':
-    
         requete = request.json
         response = post_client(requete)
 
-
-
     elif request.method == 'PUT':
-        
         requete = request.json
         put_client(requete)
-
 
     return json.dumps(response)
 
@@ -132,28 +124,40 @@ def post_client(data):
     return response
 
 
-def put_client(requete):
-    print("methode PUT")
-    print(requete)
-     
-    id = str(requete["id"])
-    nom = str(requete["name"])
-    prenom = str(requete["firstname"])
-    societe = str(requete["societe"])
-    titre = str(requete["titre"])
-    langue =  str(requete["langue"])
-    adress = str(requete["adress"] )
-    tva = str(requete["tva"])
-    number = str(requete["number"])
-    email = str(requete["email"])
+def put_client(data):
 
-        # Creating a connection cursor
+    arguments = (
+        data["name"],
+        data["firstname"],
+        data["societe"],
+        data["titre"],
+        data["langue"],
+        data["adress"],
+        data["tva"],
+        data["number"],
+        data["email"],
+        str(data["id"]),
+    )
+
+    # Creating a connection cursor
     cursor = mysql.connection.cursor()
- 
-    # Executing SQL Statements
 
+    # Executing SQL Statements
     cursor.execute(
-        "UPDATE clients SET NOM_CLIENT='" + nom + "',PRENOM_CLIENT='" + prenom + "',TITRE_CLIENT = '" + titre + "',SOCIETE_CLIENT= '" + societe + "',LANGUE_CLIENT= '" + langue + "',ADRESSE_CLIENT= '" + adress + "',NUMERO_TVA_CLIENT= '" + tva  + "',TELEPHONE_CLIENT= '" + number + "',EMAIL_CLIENT= '" + email + "'WHERE ID_CLIENT='" + id + "' " 
+        """
+        UPDATE clients SET
+            NOM_CLIENT = %s,
+            PRENOM_CLIENT = %s,
+            TITRE_CLIENT = %s,
+            SOCIETE_CLIENT = %s,
+            LANGUE_CLIENT = %s,
+            ADRESSE_CLIENT = %s,
+            NUMERO_TVA_CLIENT = %s,
+            TELEPHONE_CLIENT = %s,
+            EMAIL_CLIENT = %s
+        WHERE ID_CLIENT = %s
+        """,
+        arguments
     )
 
     # Saving the Actions performed on the DB
