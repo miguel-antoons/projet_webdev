@@ -1,5 +1,5 @@
 import React from 'react';
-import  { useState } from 'react';
+import  { useState, useEffect } from 'react';
 import * as BS from "react-bootstrap";
 import MDBInput from '@material-ui/core/TextField';
 import Select from "react-select";
@@ -9,7 +9,7 @@ import './ajoutClients.css';
 // ici le component s'appelle home puisque je travaillais dessus, ça n'a pas d'importance et chez toi il s'apellera probablemnt autrement
 const Ajout_Client = (props) => {
     // Met le state des inputs
-    const [clientID, setClientID] = useState();
+    const [clientID, setClientID] = useState(Number(props.match.params.id));
     const [name, setName] = useState('');
     const [firstname, setFirstname] = useState('');
     const [titre, setTitre] = useState({value: 0, label: 'Mr'});
@@ -51,6 +51,33 @@ const Ajout_Client = (props) => {
         {value: 0, label: 'Nl'},
         {value: 1, label: 'Fr'}
     ];
+
+    useEffect( () => {
+        if (clientID) {
+            const fetchContent = async () => {
+                try {
+                    const response = await fetch('/api/client/' + clientID);
+                    const data = await response.json();
+
+                    setName(data[0][1]);
+                    setFirstname(data[0][2]);
+                    setSociete(data[0][4]);
+                    setAdress(data[0][6]);
+                    setTva(data[0][7]);
+                    setNumber(data[0][8]);
+                    setEmail(data[0][9]);
+                    setTitre(optionsTitle[Number(data[0][3])]);
+                    setLangue(optionsLanguage[Number(data[0][5])]);
+                }
+                catch (e) {
+                    console.log(e);
+                }
+            }
+    
+            fetchContent();
+        }
+    // eslint-disable-next-line
+    }, [clientID]);
 
     // envoi les données des inputs onSubmit
     const sendPost = async (event) => {

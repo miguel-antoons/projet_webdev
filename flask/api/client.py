@@ -62,7 +62,7 @@ def client():
 
     elif request.method == 'PUT':
         requete = request.json
-        put_client(requete)
+        response = put_client(requete)
 
     return json.dumps(response)
 
@@ -120,7 +120,7 @@ def post_client(data):
 
     # Closing the cursor
     cursor.close()
-    print(response)
+
     return response
 
 
@@ -129,9 +129,9 @@ def put_client(data):
     arguments = (
         data["name"],
         data["firstname"],
+        data["titre"]["value"],
         data["societe"],
-        data["titre"],
-        data["langue"],
+        data["langue"]["value"],
         data["adress"],
         data["tva"],
         data["number"],
@@ -160,20 +160,49 @@ def put_client(data):
         arguments
     )
 
+    # get the id of the newly created row
+    sql_procedure = """
+        SELECT LAST_INSERT_ID();
+    """
+
+    cursor.execute(sql_procedure)
+    mysql_result = cursor.fetchall()
+
+    # set the response to the id of the newly created row
+    response = {
+        'projectID': mysql_result[0][0]
+    }
+
     # Saving the Actions performed on the DB
     mysql.connection.commit()
 
     # Closing the cursor
     cursor.close()
 
-    return jsonify(msg='Le client à été modifier avec succès')
+    return response
 
 
 @app_client.route("/api/client/<id>", methods=['GET'])
 def client_id(id):
     cursor = mysql.connection.cursor()
 
-    cursor.execute("SELECT * FROM clients where ID_CLIENT = %s", (id))
+    cursor.execute(
+        """
+        SELECT
+            ID_CLIENT,
+            NOM_CLIENT,
+            PRENOM_CLIENT,
+            TITRE_CLIENT,
+            SOCIETE_CLIENT,
+            LANGUE_CLIENT,
+            ADRESSE_CLIENT,
+            NUMERO_TVA_CLIENT,
+            TELEPHONE_CLIENT,
+            EMAIL_CLIENT
+        FROM clients where ID_CLIENT = %s
+        """,
+        (id))
+
     data = cursor.fetchall()
 
     return json.dumps(data)
