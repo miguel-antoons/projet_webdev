@@ -62,7 +62,7 @@ def client():
     elif request.method == 'POST':
     
         requete = request.json
-        post_client(requete)
+        response = post_client(requete)
 
 
 
@@ -75,18 +75,19 @@ def client():
     return json.dumps(response)
 
 
-def post_client(requete):
-
-    nom = requete["name"]
-    prenom = requete["firstname"]
-    societe = requete["societe"]
-    titre = requete["titre"]
-    langue =  requete["langue"]
-    adress = requete["adress"] 
-    tva = requete["tva"]
-    number = requete["number"]
-    email = requete["email"] 
-
+def post_client(data):
+    print(data)
+    arguments = (
+        data["name"],
+        data["firstname"],
+        data["titre"]['value'],
+        data["societe"],
+        data["langue"]["value"],
+        data["adress"],
+        data["tva"],
+        data["number"],
+        data["email"],
+    )
 
     # Creating a connection cursor
     cursor = mysql.connection.cursor()
@@ -94,27 +95,47 @@ def post_client(requete):
     # Executing SQL Statements
 
     cursor.execute(
-        '''INSERT INTO clients (NOM_CLIENT,PRENOM_CLIENT,TITRE_CLIENT,SOCIETE_CLIENT,LANGUE_CLIENT,ADRESSE_CLIENT,NUMERO_TVA_CLIENT ,TELEPHONE_CLIENT ,EMAIL_CLIENT  )
+        '''INSERT INTO clients (
+            NOM_CLIENT,
+            PRENOM_CLIENT,
+            TITRE_CLIENT,
+            SOCIETE_CLIENT,
+            LANGUE_CLIENT,
+            ADRESSE_CLIENT,
+            NUMERO_TVA_CLIENT,
+            TELEPHONE_CLIENT,
+            EMAIL_CLIENT
+        )
         VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s) ''',
-
-        (nom, prenom, titre, societe, langue, adress, tva, number, email)
+        arguments
     )
+
+    # get the id of the newly created row
+    sql_procedure = """
+        SELECT LAST_INSERT_ID();
+    """
+
+    cursor.execute(sql_procedure)
+    mysql_result = cursor.fetchall()
+
+    # set the response to the id of the newly created row
+    response = {
+        'projectID': mysql_result[0][0]
+    }
 
     # Saving the Actions performed on the DB
     mysql.connection.commit()
 
     # Closing the cursor
     cursor.close()
+    print(response)
+    return response
 
-    return jsonify(msg='Le client à étét ajouté avec succès')      
-
-        
 
 def put_client(requete):
     print("methode PUT")
     print(requete)
-
-        
+     
     id = str(requete["id"])
     nom = str(requete["name"])
     prenom = str(requete["firstname"])
@@ -133,7 +154,6 @@ def put_client(requete):
 
     cursor.execute(
         "UPDATE clients SET NOM_CLIENT='" + nom + "',PRENOM_CLIENT='" + prenom + "',TITRE_CLIENT = '" + titre + "',SOCIETE_CLIENT= '" + societe + "',LANGUE_CLIENT= '" + langue + "',ADRESSE_CLIENT= '" + adress + "',NUMERO_TVA_CLIENT= '" + tva  + "',TELEPHONE_CLIENT= '" + number + "',EMAIL_CLIENT= '" + email + "'WHERE ID_CLIENT='" + id + "' " 
-    
     )
 
     # Saving the Actions performed on the DB
@@ -153,4 +173,3 @@ def client_id(id):
     data = cursor.fetchall()
 
     return json.dumps(data)
-

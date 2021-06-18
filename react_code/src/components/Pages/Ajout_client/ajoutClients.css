@@ -7,3 +7,16 @@
     width: 90%;
     margin: 20px !important;
 }
+
+.submitClient {
+    font-weight: bold;
+    font-family: calibri, sans-serif;
+    border-radius: 15px;
+    height: 50px;
+    width: 120px;
+}
+
+.popup {
+    margin: 20px;
+    border-radius: 20px;
+}
