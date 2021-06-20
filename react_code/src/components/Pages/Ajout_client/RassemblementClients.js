@@ -148,7 +148,7 @@ function RassemblementClients () {
     };  
 
     return (
-        <BS.Container fluid style={{ margin: 0, padding: 0 }}>
+    <BS.Container className="projectAnimation" fluid style={{ margin: 0, padding: 0 }}>
             <BS.Jumbotron className="client">
                 <h1 className='d-inline-block'>Bienvenue dans Clients</h1>
                 <LinkContainer to='/client/0'>

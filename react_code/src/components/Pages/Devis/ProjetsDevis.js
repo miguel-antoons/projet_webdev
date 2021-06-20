@@ -178,7 +178,7 @@ function ProjetsDevis () {
     };  
 
     return (
-        <BS.Container fluid style={{ margin: 0, padding: 0 }}>
+        <BS.Container className="projectAnimation" fluid style={{ margin: 0, padding: 0 }}>
             <BS.Jumbotron className="devis">
                 <h1 className='d-inline-block'>Bienvenue dans Devis</h1>
                 <LinkContainer to='/devis/0'>

@@ -178,7 +178,7 @@ function ProjetsFactures () {
     };  
 
     return (
-        <BS.Container fluid style={{ margin: 0, padding: 0 }}>
+        <BS.Container className="projectAnimation" fluid style={{ margin: 0, padding: 0 }}>
             <BS.Jumbotron className="facture">
                 <h1 className='d-inline-block'>Bienvenue dans Factures</h1>
                 <LinkContainer to='/facture/0'>

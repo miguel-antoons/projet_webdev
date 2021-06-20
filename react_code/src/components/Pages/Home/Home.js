@@ -8,7 +8,7 @@ import './Home.css';
 const Home = () => {
 
     return (
-        <BS.Container fluid className="div pt-3">
+        <BS.Container fluid className="div pt-3 homeAnimation">
             <div className="d-flex justify-content-center div">
                 <BS.Col lg="2"></BS.Col>
                 <BS.Col md="auto" className="div">

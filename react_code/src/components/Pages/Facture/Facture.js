@@ -184,7 +184,7 @@ class Facture extends Component {
 
     render() {
         return (
-            <BS.Container>
+            <BS.Container className="factureAnimation">
                 <BS.Row>
                     {/* Left */}
                     <BS.Col xs lg="4" className="border mt-5 mr-3 no-print h-50 rounded">

@@ -135,3 +135,17 @@ tr:hover {
     background-color: #db13e2;
     text-align: center;
 }
+
+.projectAnimation {
+    background-color: white;
+    animation: fadeIn 1s ease both;
+}
+
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }

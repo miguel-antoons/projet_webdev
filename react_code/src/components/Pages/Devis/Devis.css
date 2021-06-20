@@ -93,3 +93,18 @@ hr {
 .margin-bot-100 {
     margin-bottom: 100px;
 }
+
+.devisAnimation {
+    background-color: white;
+    animation: fadeIn 1s ease both;
+}
+
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+

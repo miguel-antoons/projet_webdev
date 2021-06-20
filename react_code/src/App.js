@@ -1,7 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-
 // Add components
 import Navbar from './components/Navbar/Navbar'
 import Home from './components/Pages/Home/Home'
@@ -24,26 +23,25 @@ import Ajout_Client from './components/Pages/Ajout_client/Ajout_client';
 function App() {
   return(
     <Router>
-      <div className="App" style={{margin: 0, padding: 0 }}>
-        <Navbar />
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/facture/:id" component={Facture} />
-          <Route path="/devis/:id" component={Devis} />
-          <Route path="/etiquetage/:id" component={Etiquetage} />
-          <Route path="/suivi" component={Suivi} />
-          <Route path="/client/:id" component={Ajout_Client} />
-          <Route path="/article/:id" component={Article} />
-          <Route path="/rgie/:id" component={Rgie} />
-          <Route path="/projets_devis" component={ProjetsDevis} />
-          <Route path="/rassemblement_articles" component={RassemblementArticles} />
-          <Route path="/projets_factures" component={ProjetsFactures} />
-          <Route path="/rassemblement_clients" component={RassemblementClients} />
-          <Route path="/projets_etiquettes" component={ProjetsEtiquettes} />
-          <Route path="/projets_rgie" component={ProjetsRgie} />
-
-        </Switch>
-      </div>
+        <div className="App" style={{margin: 0, padding: 0 }}>
+            <Navbar />
+            <Switch location={window.location}>
+                <Route path="/" exact component={Home} />
+                <Route path="/facture/:id" component={Facture} />
+                <Route path="/devis/:id" component={Devis} />
+                <Route path="/etiquetage/:id" component={Etiquetage} />
+                <Route path="/suivi" component={Suivi} />
+                <Route path="/client/:id" component={Ajout_Client} />
+                <Route path="/article/:id" component={Article} />
+                <Route path="/rgie/:id" component={Rgie} />
+                <Route path="/projets_devis" component={ProjetsDevis} />
+                <Route path="/rassemblement_articles" component={RassemblementArticles} />
+                <Route path="/projets_factures" component={ProjetsFactures} />
+                <Route path="/rassemblement_clients" component={RassemblementClients} />
+                <Route path="/projets_etiquettes" component={ProjetsEtiquettes} />
+                <Route path="/projets_rgie" component={ProjetsRgie} />
+            </Switch>
+        </div>
     </Router>
       
   );

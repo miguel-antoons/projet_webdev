@@ -32,7 +32,7 @@ const Ajout_Client = (props) => {
         </BS.Alert>   
     );
 
-    const savedMessage = (
+    const createdMessage = (
         <BS.Alert variant="success" onClose={() => setMessage('')} className="popup" dismissible>
             <BS.Alert.Heading>Nouveau Client Enregistré</BS.Alert.Heading>
             <p>
@@ -40,7 +40,17 @@ const Ajout_Client = (props) => {
                 Son ID est {clientID}.
             </p>
         </BS.Alert>
-    )
+    );
+
+    const savedMessage = (
+        <BS.Alert variant="success" onClose={() => setMessage('')} className="popup" dismissible>
+            <BS.Alert.Heading>Client Enregistré</BS.Alert.Heading>
+            <p>
+                Le client a été enregistré avec succès.<br />
+                Son ID est {clientID}.
+            </p>
+        </BS.Alert>
+    );
     
     const optionsTitle = [
         {value: 0, label: 'Mr'},
@@ -118,7 +128,7 @@ const Ajout_Client = (props) => {
 
                 try {
                     setClientID(Number(data.projectID));
-                    setMessage(savedMessage);
+                    setMessage(createdMessage);
                 }
                 catch (e) {
                     console.log(e);
@@ -128,7 +138,7 @@ const Ajout_Client = (props) => {
             catch(e) {
                 console.log(e);
                 setMessage(errorMessage);
-            }    
+            }
         }
         else {
             try {
@@ -148,44 +158,52 @@ const Ajout_Client = (props) => {
         
                 const data = await result.json();
         
-                console.log(data);
+                try {
+                    setClientID(Number(data.projectID));
+                    setMessage(savedMessage);
+                }
+                catch (e) {
+                    console.log(e);
+                    setMessage(errorMessage);
+                }
             }
             catch(e) {
                 console.log(e);
+                setMessage(errorMessage);
             }
         }
     }   
   
     return (
-            <BS.Col className="mx-auto no-margin" lg='4' xs='12' align='center'>
-                <BS.Form onSubmit={ (event) => { sendPost(event); }}>
-                    <MDBInput className="defaultInput" label="Nom" value={ name } onChange={ (e) => {setName(e.target.value); setDisabled(false)} } />
-                    <MDBInput className="defaultInput" label="Prenom" value={ firstname } onChange={ (e) => {setFirstname(e.target.value); setDisabled(false)} } required />
-                    <MDBInput className="defaultInput" label="Société" value={ societe } onChange={ (e) => {setSociete(e.target.value); setDisabled(false)} } required />
-                    <MDBInput className="defaultInput" label="Adresse 1" value={ adress } onChange={ (e) => {setAdress(e.target.value); setDisabled(false)} }  />
-                    <MDBInput className="defaultInput" label="Adresse 2" value={ adress } onChange={ (e) => {setAdress(e.target.value); setDisabled(false)} }  />
-                    <MDBInput className="defaultInput" label="N° de TVA" value={ tva } onChange={ (e) => {setTva(e.target.value); setDisabled(false)} }  />
-                    <MDBInput className="defaultInput" label="Téléphone" value={ number } onChange={ (e) => {setNumber(e.target.value); setDisabled(false)} }  />
-                    <MDBInput className="defaultInput" label="E-mail" value={ email } onChange={ (e) => {setEmail(e.target.value); setDisabled(false)} }  />
-                    <Select
-                        className="defaultSelect border-0"
-                        defaultValue={titre}
-                        onChange={(event) => {setTitre(event); setDisabled(false)} }
-                        label="Titre"
-                        options={optionsTitle}
-                    />
-                    <Select
-                        className="defaultSelect"
-                        defaultValue={langue}
-                        onChange={ (event) => {setLangue(event); setDisabled(false)} }
-                        label="Titre"
-                        options={optionsLanguage}
-                    />
-                    <BS.Button className="submitClient" variant="outline-info" type="submit" disabled={disabled}>Enregistrer</BS.Button> 
-                </BS.Form>
-                {message}
-                
-            </BS.Col>
+        <BS.Col className="mx-auto no-margin clientAnimation" lg='4' xs='12' align='center'>
+            <BS.Form onSubmit={ (event) => { sendPost(event); }}>
+                <MDBInput className="defaultInput" label="Nom" value={ name } onChange={ (e) => {setName(e.target.value); setDisabled(false)} } />
+                <MDBInput className="defaultInput" label="Prenom" value={ firstname } onChange={ (e) => {setFirstname(e.target.value); setDisabled(false)} } required />
+                <MDBInput className="defaultInput" label="Société" value={ societe } onChange={ (e) => {setSociete(e.target.value); setDisabled(false)} } required />
+                <MDBInput className="defaultInput" label="Adresse 1" value={ adress } onChange={ (e) => {setAdress(e.target.value); setDisabled(false)} }  />
+                <MDBInput className="defaultInput" label="Adresse 2" value={ adress } onChange={ (e) => {setAdress(e.target.value); setDisabled(false)} }  />
+                <MDBInput className="defaultInput" label="N° de TVA" value={ tva } onChange={ (e) => {setTva(e.target.value); setDisabled(false)} }  />
+                <MDBInput className="defaultInput" label="Téléphone" value={ number } onChange={ (e) => {setNumber(e.target.value); setDisabled(false)} }  />
+                <MDBInput className="defaultInput" label="E-mail" value={ email } onChange={ (e) => {setEmail(e.target.value); setDisabled(false)} }  />
+                <Select
+                    className="defaultSelect border-0"
+                    defaultValue={titre}
+                    onChange={(event) => {setTitre(event); setDisabled(false)} }
+                    label="Titre"
+                    options={optionsTitle}
+                />
+                <Select
+                    className="defaultSelect"
+                    defaultValue={langue}
+                    onChange={ (event) => {setLangue(event); setDisabled(false)} }
+                    label="Titre"
+                    options={optionsLanguage}
+                />
+                <BS.Button className="submitClient" variant="outline-info" type="submit" disabled={disabled}>Enregistrer</BS.Button> 
+            </BS.Form>
+            {message}
+            
+        </BS.Col>
     );
 };
 

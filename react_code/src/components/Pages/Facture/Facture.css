@@ -67,3 +67,18 @@ ul {
     font-size: 0.7em;
     color: red;
 }
+
+.factureAnimation {
+    background-color: white;
+    animation: fadeIn 1s ease both;
+}
+
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+

@@ -179,7 +179,7 @@ function ProjetsEtiquettes () {
     };  
 
     return (
-        <BS.Container fluid style={{ margin: 0, padding: 0 }}>
+        <BS.Container className="projectAnimation" fluid style={{ margin: 0, padding: 0 }}>
             <BS.Jumbotron className="etiquette">
                 <h1 className='d-inline-block'>Bienvenue dans Etiquettes</h1>
                 <LinkContainer to='/etiquetage/0'>

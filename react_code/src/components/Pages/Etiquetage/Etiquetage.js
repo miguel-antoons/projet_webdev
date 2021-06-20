@@ -477,7 +477,7 @@ const Etiquetage = (props) => {
 
 
     return (
-        <BS.Row className="no_margin programContainer" >
+        <BS.Row className="no_margin programContainer etiquettesAnimation" >
             <BS.Col className="no_print" lg="3">
                 {clientInfo}
                 <BS.Button variant="light" size="lg" className="cleanButton" onClick={() => addRow()}><icon.IoAddCircle /> Add</BS.Button>
