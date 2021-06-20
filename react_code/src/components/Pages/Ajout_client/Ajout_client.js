@@ -15,9 +15,11 @@ const Ajout_Client = (props) => {
     const [titre, setTitre] = useState({value: 0, label: 'Mr'});
     const [societe, setSociete] = useState('');
     const [langue, setLangue] = useState({value: 0, label: 'Nl'});
-    const [adress, setAdress] = useState('');
+    const [address1, setAddress1] = useState('');
+    const [address2, setAddress2] = useState('');
+    const [architect, setArchitect] = useState('');
     const [tva, setTva] = useState('');
-    const [number, setNumber] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
     const [disabled, setDisabled] = useState(true);
     const [message, setMessage] = useState('');
@@ -26,7 +28,6 @@ const Ajout_Client = (props) => {
         <BS.Alert variant="danger" onClose={() => setMessage('')} className="popup" dismissible>
             <BS.Alert.Heading>Une erreur est survenue</BS.Alert.Heading>
             <p>
-            Veuillez contacter les développeurs.<br />
             Attention! Les données générés avant cette erreur sont susceptibles de ne pas avoir été enregistrés.
             </p>
         </BS.Alert>   
@@ -72,12 +73,14 @@ const Ajout_Client = (props) => {
                     setName(data[0][1]);
                     setFirstname(data[0][2]);
                     setSociete(data[0][4]);
-                    setAdress(data[0][6]);
+                    setAddress1(data[0][6]);
                     setTva(data[0][7]);
-                    setNumber(data[0][8]);
+                    setPhoneNumber(data[0][8]);
                     setEmail(data[0][9]);
                     setTitre(optionsTitle[Number(data[0][3])]);
                     setLangue(optionsLanguage[Number(data[0][5])]);
+                    setAddress2(data[0][10]);
+                    setArchitect(data[0][11]);
                 }
                 catch (e) {
                     console.log(e);
@@ -91,15 +94,12 @@ const Ajout_Client = (props) => {
 
     // envoi les données des inputs onSubmit
     const sendPost = async (event) => {
-
-        let id = Number(props.match.params.id)
-      
         // évite que la page se recharge onSubmit du formulaire
         event.preventDefault();
 
         //if props.match.paramsid = 0:
 
-        if (Number(props.match.params.id) === 0) {
+        if (!Number(props.match.params.id)) {
             try {
                 let result = await fetch('/api/client', {
                     method: 'post',
@@ -116,10 +116,12 @@ const Ajout_Client = (props) => {
                             societe,
                             titre,
                             langue,
-                            adress,
+                            address1,
                             tva,
-                            number,
-                            email
+                            phoneNumber,
+                            email,
+                            address2,
+                            architect
                         }
                     )
                 });
@@ -152,7 +154,22 @@ const Ajout_Client = (props) => {
                         
                         },
                         // l'objet à l'intérieur de la fonction contient l'état des 5 input
-                        body: JSON.stringify({id,name, firstname, societe, titre, langue,adress,tva,number,email})
+                        body: JSON.stringify(
+                            {
+                                clientID,
+                                name,
+                                firstname,
+                                societe,
+                                titre,
+                                langue,
+                                address1,
+                                tva,
+                                phoneNumber,
+                                email,
+                                address2,
+                                architect
+                            }
+                        )
                     }
                 );
         
@@ -180,11 +197,12 @@ const Ajout_Client = (props) => {
                 <MDBInput className="defaultInput" label="Nom" value={ name } onChange={ (e) => {setName(e.target.value); setDisabled(false)} } />
                 <MDBInput className="defaultInput" label="Prenom" value={ firstname } onChange={ (e) => {setFirstname(e.target.value); setDisabled(false)} } required />
                 <MDBInput className="defaultInput" label="Société" value={ societe } onChange={ (e) => {setSociete(e.target.value); setDisabled(false)} } required />
-                <MDBInput className="defaultInput" label="Adresse 1" value={ adress } onChange={ (e) => {setAdress(e.target.value); setDisabled(false)} }  />
-                <MDBInput className="defaultInput" label="Adresse 2" value={ adress } onChange={ (e) => {setAdress(e.target.value); setDisabled(false)} }  />
+                <MDBInput className="defaultInput" label="Adresse 1" value={ address1 } onChange={ (e) => {setAddress1(e.target.value); setDisabled(false)} }  />
+                <MDBInput className="defaultInput" label="Adresse 2" value={ address2 } onChange={ (e) => {setAddress2(e.target.value); setDisabled(false)} }  />
                 <MDBInput className="defaultInput" label="N° de TVA" value={ tva } onChange={ (e) => {setTva(e.target.value); setDisabled(false)} }  />
-                <MDBInput className="defaultInput" label="Téléphone" value={ number } onChange={ (e) => {setNumber(e.target.value); setDisabled(false)} }  />
+                <MDBInput className="defaultInput" label="Téléphone" value={ phoneNumber } onChange={ (e) => {setPhoneNumber(e.target.value); setDisabled(false)} }  />
                 <MDBInput className="defaultInput" label="E-mail" value={ email } onChange={ (e) => {setEmail(e.target.value); setDisabled(false)} }  />
+                <MDBInput className="defaultInput" label="Architecte" value={ architect } onChange={ (e) => {setArchitect(e.target.value); setDisabled(false)} }  />
                 <Select
                     className="defaultSelect border-0"
                     defaultValue={titre}

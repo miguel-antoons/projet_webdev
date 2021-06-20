@@ -68,7 +68,6 @@ def client():
 
 
 def post_client(data):
-    print(data)
     arguments = (
         data["name"],
         data["firstname"],
@@ -77,8 +76,10 @@ def post_client(data):
         data["langue"]["value"],
         data["adress"],
         data["tva"],
-        data["number"],
+        data["phoneNumber"],
         data["email"],
+        data["address2"],
+        data["architect"]
     )
 
     # Creating a connection cursor
@@ -96,7 +97,9 @@ def post_client(data):
             ADRESSE_CLIENT,
             NUMERO_TVA_CLIENT,
             TELEPHONE_CLIENT,
-            EMAIL_CLIENT
+            EMAIL_CLIENT,
+            ADRESSE_CLIENT_SECONDAIRE,
+            NOM_ARCHITECT
         )
         VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s) ''',
         arguments
@@ -125,18 +128,19 @@ def post_client(data):
 
 
 def put_client(data):
-
     arguments = (
         data["name"],
         data["firstname"],
         data["titre"]["value"],
         data["societe"],
         data["langue"]["value"],
-        data["adress"],
+        data["address1"],
         data["tva"],
-        data["number"],
+        data["phoneNumber"],
         data["email"],
-        str(data["id"]),
+        data["address2"],
+        data["architect"],
+        str(data["clientID"]),
     )
 
     # Creating a connection cursor
@@ -154,7 +158,9 @@ def put_client(data):
             ADRESSE_CLIENT = %s,
             NUMERO_TVA_CLIENT = %s,
             TELEPHONE_CLIENT = %s,
-            EMAIL_CLIENT = %s
+            EMAIL_CLIENT = %s,
+            ADRESSE_CLIENT_SECONDAIRE = %s,
+            NOM_ARCHITECT = %s
         WHERE ID_CLIENT = %s
         """,
         arguments
@@ -162,10 +168,25 @@ def put_client(data):
 
     # get the id of the newly created row
     sql_procedure = """
-        SELECT LAST_INSERT_ID();
+        SELECT ID_CLIENT
+        FROM clients
+        WHERE
+            NOM_CLIENT = %s
+            and PRENOM_CLIENT = %s
+            and TITRE_CLIENT = %s
+            and SOCIETE_CLIENT = %s
+            and LANGUE_CLIENT = %s
+            and ADRESSE_CLIENT = %s
+            and NUMERO_TVA_CLIENT = %s
+            and TELEPHONE_CLIENT = %s
+            and EMAIL_CLIENT = %s
+            and ADRESSE_CLIENT_SECONDAIRE = %s
+            and NOM_ARCHITECT = %s
     """
 
-    cursor.execute(sql_procedure)
+    arguments = arguments[:-1]
+
+    cursor.execute(sql_procedure, arguments)
     mysql_result = cursor.fetchall()
 
     # set the response to the id of the newly created row
@@ -198,7 +219,9 @@ def client_id(id):
             ADRESSE_CLIENT,
             NUMERO_TVA_CLIENT,
             TELEPHONE_CLIENT,
-            EMAIL_CLIENT
+            EMAIL_CLIENT,
+            ADRESSE_CLIENT_SECONDAIRE,
+            NOM_ARCHITECT
         FROM clients where ID_CLIENT = %s
         """,
         (id))

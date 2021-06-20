@@ -1,6 +1,6 @@
 .defaultInput {
     width: 90%;
-    margin: 10px !important;
+    margin: 9px !important;
 }
 
 .defaultSelect {
@@ -11,14 +11,17 @@
 .submitClient {
     font-weight: bold;
     font-family: calibri, sans-serif;
-    border-radius: 15px;
-    height: 50px;
+    border-radius: 25px;
+    height: 40px;
     width: 120px;
 }
 
 .popup {
-    margin: 20px;
+    margin-top: 20px;
+    margin-bottom: 0;
+    width: 75%;
     border-radius: 20px;
+    animation: slideIn 1s;
 }
 
 .clientAnimation {
@@ -34,3 +37,11 @@
       opacity: 1;
     }
   }
+
+@keyframes slideIn{
+    0%      {opacity: 0; margin-top: 60px; margin-bottom: 0;}
+    25%     {opacity: 0.65; margin-top: 20px;}
+    50%     {opacity: 0.85; margin-top:10px;}
+    75%     {opacity: 1; margin-top: 5px;}
+    100%    {opacity: 1; margin-top:20px;}
+}
