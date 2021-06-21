@@ -33,13 +33,37 @@ def client():
 def delete_client(client_id, cursor):
     # prepare the sql statement (which contains arguments in order
     # to avoid sql injection)
-    sql_statement = """
+    sql_statement_1 = """
         DELETE FROM clients
         WHERE ID_CLIENT = %s
     """
 
+    sql_statement_2 = """
+        DELETE FROM devis
+        WHERE ID_CLIENT = %s
+    """
+
+    sql_statement_3 = """
+        DELETE FROM factures
+        WHERE ID_CLIENT = %s
+    """
+
+    sql_statement_4 = """
+        DELETE FROM rgie
+        WHERE ID_CLIENT = %s
+    """
+
+    sql_statement_5 = """
+        DELETE FROM etiquettes
+        WHERE ID_CLIENT = %s
+    """
+
     # execute the statement along with its arguments
-    cursor.execute(sql_statement, client_id)
+    cursor.execute(sql_statement_2, (client_id, ))
+    cursor.execute(sql_statement_3, (client_id, ))
+    cursor.execute(sql_statement_4, (client_id, ))
+    cursor.execute(sql_statement_5, (client_id, ))
+    cursor.execute(sql_statement_1, (client_id, ))
 
     return cursor.fetchall()
 
@@ -120,11 +144,13 @@ def post_client(data, cursor):
     response = {
         'projectID': mysql_result[0][0]
     }
+    print(response)
 
     return response
 
 
 def put_client(data, cursor):
+    print(data)
     arguments = (
         data["name"],
         data["firstname"],

@@ -9,7 +9,7 @@ import './ajoutClients.css';
 // ici le component s'appelle home puisque je travaillais dessus, ça n'a pas d'importance et chez toi il s'apellera probablemnt autrement
 const Ajout_Client = (props) => {
     // Met le state des inputs
-    const [clientID, setClientID] = useState(Number(props.match.params.id));
+    const [clientID, setClientID] = useState();
     const [name, setName] = useState('');
     const [firstname, setFirstname] = useState('');
     const [titre, setTitre] = useState({value: 0, label: 'Mr'});
@@ -33,25 +33,29 @@ const Ajout_Client = (props) => {
         </BS.Alert>   
     );
 
-    const createdMessage = (
-        <BS.Alert variant="success" onClose={() => setMessage('')} className="popup" dismissible>
-            <BS.Alert.Heading>Nouveau Client Enregistré</BS.Alert.Heading>
-            <p>
-                Le nouveau client a été créé et enregistré avec succès.<br />
-                Son ID est {clientID}.
-            </p>
-        </BS.Alert>
-    );
+    const createdMessage = (id) => { 
+        return (
+            <BS.Alert variant="success" onClose={() => setMessage('')} className="popup" dismissible>
+                <BS.Alert.Heading>Nouveau Client Enregistré</BS.Alert.Heading>
+                <p>
+                    Le nouveau client a été créé et enregistré avec succès.<br />
+                    Son ID est {id}.
+                </p>
+            </BS.Alert>
+        );
+    };
 
-    const savedMessage = (
-        <BS.Alert variant="success" onClose={() => setMessage('')} className="popup" dismissible>
-            <BS.Alert.Heading>Client Enregistré</BS.Alert.Heading>
-            <p>
-                Le client a été enregistré avec succès.<br />
-                Son ID est {clientID}.
-            </p>
-        </BS.Alert>
-    );
+    const savedMessage = (id) => { 
+        return (
+            <BS.Alert variant="success" onClose={() => setMessage('')} className="popup" dismissible>
+                <BS.Alert.Heading>Client Enregistré</BS.Alert.Heading>
+                <p>
+                    Le client a été enregistré avec succès.<br />
+                    Son ID est {id}.
+                </p>
+            </BS.Alert>
+        );
+    }
     
     const optionsTitle = [
         {value: 0, label: 'Mr'},
@@ -89,6 +93,10 @@ const Ajout_Client = (props) => {
     
             fetchContent();
         }
+        else {
+            setClientID(Number(props.match.params.id));
+        }
+
     // eslint-disable-next-line
     }, [clientID]);
 
@@ -99,7 +107,7 @@ const Ajout_Client = (props) => {
 
         //if props.match.paramsid = 0:
 
-        if (!Number(props.match.params.id)) {
+        if (!clientID) {
             try {
                 let result = await fetch('/api/client', {
                     method: 'post',
@@ -130,7 +138,18 @@ const Ajout_Client = (props) => {
 
                 try {
                     setClientID(Number(data.projectID));
-                    setMessage(createdMessage);
+
+                    setClientID((state) => {
+                        if (state) {
+                            setMessage(createdMessage(state));
+                            setDisabled(true);
+                        }
+                        else {
+                            setMessage(errorMessage);
+                        }
+
+                        return state;
+                    });
                 }
                 catch (e) {
                     console.log(e);
@@ -177,7 +196,19 @@ const Ajout_Client = (props) => {
         
                 try {
                     setClientID(Number(data.projectID));
-                    setMessage(savedMessage);
+
+                    setClientID((state) => {
+                        if (state) {
+                            setMessage(savedMessage(state));
+                            setDisabled(true);
+                        }
+                        else {
+                            setMessage(errorMessage);
+                        }
+
+                        return state;
+                    });
+                    
                 }
                 catch (e) {
                     console.log(e);
@@ -205,14 +236,14 @@ const Ajout_Client = (props) => {
                 <MDBInput className="defaultInput" label="Architecte" value={ architect } onChange={ (e) => {setArchitect(e.target.value); setDisabled(false)} }  />
                 <Select
                     className="defaultSelect border-0"
-                    defaultValue={titre}
+                    value={titre}
                     onChange={(event) => {setTitre(event); setDisabled(false)} }
                     label="Titre"
                     options={optionsTitle}
                 />
                 <Select
                     className="defaultSelect"
-                    defaultValue={langue}
+                    value={langue}
                     onChange={ (event) => {setLangue(event); setDisabled(false)} }
                     label="Titre"
                     options={optionsLanguage}
