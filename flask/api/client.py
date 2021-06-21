@@ -13,80 +13,83 @@ def client():
 
     # API will return all the elements
     if request.method == 'GET':
-        # prepare the sql statement (which contains arguments in order to
-        # avoid sql injection)
-        sql_procedure = """
-            SELECT ID_CLIENT, NOM_CLIENT, PRENOM_CLIENT, SOCIETE_CLIENT,
-                ADRESSE_CLIENT, CAST(TELEPHONE_CLIENT AS CHAR)
-            FROM clients
-            ORDER BY NOM_CLIENT, PRENOM_CLIENT, SOCIETE_CLIENT, ID_CLIENT asc
-            """
-
-        # execute the statement
-        cur.execute(sql_procedure)
-
-        # fetch the result
-        results = cur.fetchall()
-
-        # turn the result into a list of dictionnaries
-        for row in results:
-            response.append({
-                'id': row[0],
-                'attribute1': f"{row[1]} {row[2]}, {row[3]}",
-                'attribute2': row[4],
-                'date': row[5]
-            })
+        response = get_clients(cur)
 
     elif request.method == 'DELETE':
-        # get the id of the projects that has to be deleted
-        id_to_delete = (int(request.args.get('id')), )
-
-        # prepare the sql statement (which contains arguments in order
-        # to avoid sql injection)
-        sql_statement_1 = """
-            DELETE FROM clients
-            WHERE ID_CLIENT = %s
-        """
-
-        # execute the statement along with its arguments
-        cur.execute(sql_statement_1, id_to_delete)
-
-        # commit the changes to the database
-        connector.commit()
-
-        response = cur.fetchall()
+        response = delete_client(int(request.args.get('id')), cur)
 
     elif request.method == 'POST':
-        requete = request.json
-        response = post_client(requete)
+        response = post_client(request.json, cur)
 
     elif request.method == 'PUT':
-        requete = request.json
-        response = put_client(requete)
+        response = put_client(request.json, cur)
+
+    connector.commit()
+    cur.close()
 
     return json.dumps(response)
 
 
-def post_client(data):
+def delete_client(client_id, cursor):
+    # prepare the sql statement (which contains arguments in order
+    # to avoid sql injection)
+    sql_statement = """
+        DELETE FROM clients
+        WHERE ID_CLIENT = %s
+    """
+
+    # execute the statement along with its arguments
+    cursor.execute(sql_statement, client_id)
+
+    return cursor.fetchall()
+
+
+def get_clients(cursor):
+    # prepare the sql statement (which contains arguments in order to
+    # avoid sql injection)
+    response = []
+
+    sql_procedure = """
+        SELECT ID_CLIENT, NOM_CLIENT, PRENOM_CLIENT, SOCIETE_CLIENT,
+            ADRESSE_CLIENT, CAST(TELEPHONE_CLIENT AS CHAR)
+        FROM clients
+        ORDER BY NOM_CLIENT, PRENOM_CLIENT, SOCIETE_CLIENT, ID_CLIENT asc
+        """
+
+    # execute the statement
+    cursor.execute(sql_procedure)
+
+    # fetch the result
+    results = cursor.fetchall()
+
+    # turn the result into a list of dictionnaries
+    for row in results:
+        response.append({
+            'id': row[0],
+            'attribute1': f"{row[1]} {row[2]}, {row[3]}",
+            'attribute2': row[4],
+            'date': row[5]
+        })
+
+    return response
+
+
+def post_client(data, cursor):
     arguments = (
         data["name"],
         data["firstname"],
-        data["titre"]['value'],
+        data["titre"]["value"],
         data["societe"],
         data["langue"]["value"],
-        data["adress"],
+        data["address1"],
         data["tva"],
         data["phoneNumber"],
         data["email"],
         data["address2"],
-        data["architect"]
+        data["architect"],
     )
 
-    # Creating a connection cursor
-    cursor = mysql.connection.cursor()
-
     # Executing SQL Statements
-
     cursor.execute(
         '''INSERT INTO clients (
             NOM_CLIENT,
@@ -101,7 +104,7 @@ def post_client(data):
             ADRESSE_CLIENT_SECONDAIRE,
             NOM_ARCHITECT
         )
-        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s) ''',
+        VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ''',
         arguments
     )
 
@@ -118,16 +121,10 @@ def post_client(data):
         'projectID': mysql_result[0][0]
     }
 
-    # Saving the Actions performed on the DB
-    mysql.connection.commit()
-
-    # Closing the cursor
-    cursor.close()
-
     return response
 
 
-def put_client(data):
+def put_client(data, cursor):
     arguments = (
         data["name"],
         data["firstname"],
@@ -142,9 +139,6 @@ def put_client(data):
         data["architect"],
         str(data["clientID"]),
     )
-
-    # Creating a connection cursor
-    cursor = mysql.connection.cursor()
 
     # Executing SQL Statements
     cursor.execute(
@@ -194,12 +188,6 @@ def put_client(data):
         'projectID': mysql_result[0][0]
     }
 
-    # Saving the Actions performed on the DB
-    mysql.connection.commit()
-
-    # Closing the cursor
-    cursor.close()
-
     return response
 
 
@@ -224,8 +212,6 @@ def client_id(id):
             NOM_ARCHITECT
         FROM clients where ID_CLIENT = %s
         """,
-        (id))
+        (id, ))
 
-    data = cursor.fetchall()
-
-    return json.dumps(data)
+    return json.dumps(cursor.fetchall())
