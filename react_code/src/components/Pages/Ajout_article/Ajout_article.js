@@ -7,8 +7,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Select from "react-select";
 
 // ici le component s'appelle home puisque je travaillais dessus, ça n'a pas d'importance et chez toi il s'apellera probablemnt autrement
-const Ajout_Articles = () => {
+const Ajout_Articles = (props) => {
     // Met le state des inputs
+    const [articleID, setArticleID] = useState(Number(props.match.params.id));
     const [LibelleFR, setLibelleFR] = useState('');
     const [libelleFrPluriel, setLibelleFrPluriel] = useState('');
     const [LibelleNDL, setLibelleNDL] = useState('');
@@ -18,49 +19,49 @@ const Ajout_Articles = () => {
     const [prix2, setPrix2] = useState(0);
     const [prix3, setPrix3] = useState(0);
     const [disabled, setDisabled] = useState(true);
+    const [code, setCode] = useState('');
 
     let presentationOptions = [
-        {value: 0, label: `2 x ${LibelleFR}`},
-        {value: 1, label: `2 ${LibelleFR}`}
+        {value: 0, label: `2 x ${libelleFrPluriel}`},
+        {value: 1, label: `2 ${libelleFrPluriel}`}
     ];
     
     // envoi les données des inputs onSubmit
     const sendPost = async (event) => {
       
-      // évite que la page se recharge onSubmit du formulaire
-      event.preventDefault();
-      
-
-      try{
-        let result = await fetch('/api/articles', {
-          method: 'post',
-          //mode: 'no-cors', // 
-          headers: {
-            //'Accept': 'application/json'
-            'Content-type': 'application/json',
+        // évite que la page se recharge onSubmit du formulaire
+        event.preventDefault();
         
-          },
-          
-          body: JSON.stringify({LibelleFR,LibelleNDL,presentation,prix1,prix2,prix3}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
-        });
-  
-        const data = await result.json();
-  
-        console.log(data);
-      }
-      catch(e){
-        console.log(e);
-      }
+        
+        try{
+            let result = await fetch('/api/articles', {
+            method: 'post',
+            //mode: 'no-cors', // 
+            headers: {
+                //'Accept': 'application/json'
+                'Content-type': 'application/json',
+            
+            },
+            
+            body: JSON.stringify({LibelleFR,LibelleNDL,presentation,prix1,prix2,prix3}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
+            });
+    
+            const data = await result.json();
+        }
+        catch(e){
+            console.log(e);
+        }
      
     };
   
     return (
         <BS.Col className="mx-auto no-margin clientAnimation" lg='4' xs='12' align='center'>
             <BS.Form onSubmit={ (event) => { sendPost(event); }}  >
+                <MDBInput className="defaultInput" label="Code d'article" value={ code } onChange={ (e) => {setCode(e.target.value); setDisabled(false)} } required/>
                 <MDBInput className="defaultInput" label="Libellé français" value={ LibelleFR } onChange={ (e) => {setLibelleFR(e.target.value); setDisabled(false)} } required/>
-                <MDBInput className="defaultInput" label="Libellé français pluriel" value={ libelleFrPluriel } onChange={ (e) => {setLibelleFrPluriel(e.target.value); setDisabled(false)} }/>
+                <MDBInput className="defaultInput" label="Libellé français pluriel" value={ libelleFrPluriel } onChange={ (e) => {setLibelleFrPluriel(e.target.value); setDisabled(false)} } required/>
                 <MDBInput className="defaultInput" label="Libellé néerlandais" value={ LibelleNDL } onChange={ (e) => {setLibelleNDL(e.target.value); setDisabled(false)} } required/>
-                <MDBInput className="defaultInput" label="Libellé néerlandais pluriel" value={ libelleNlPluriel } onChange={ (e) => {setLibelleNlPluriel(e.target.value); setDisabled(false)} }/>
+                <MDBInput className="defaultInput" label="Libellé néerlandais pluriel" value={ libelleNlPluriel } onChange={ (e) => {setLibelleNlPluriel(e.target.value); setDisabled(false)} } required/>
                 <MDBInput 
                     className="defaultInput"
                     label="Prix 1"
