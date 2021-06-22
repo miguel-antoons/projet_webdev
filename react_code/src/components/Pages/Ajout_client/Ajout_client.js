@@ -235,7 +235,7 @@ const Ajout_Client = (props) => {
                 <MDBInput className="defaultInput" label="E-mail" value={ email } onChange={ (e) => {setEmail(e.target.value); setDisabled(false)} }  />
                 <MDBInput className="defaultInput" label="Architecte" value={ architect } onChange={ (e) => {setArchitect(e.target.value); setDisabled(false)} }  />
                 <Select
-                    className="defaultSelect border-0"
+                    className="defaultSelect"
                     value={titre}
                     onChange={(event) => {setTitre(event); setDisabled(false)} }
                     label="Titre"

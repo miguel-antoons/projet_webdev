@@ -144,13 +144,11 @@ def post_client(data, cursor):
     response = {
         'projectID': mysql_result[0][0]
     }
-    print(response)
 
     return response
 
 
 def put_client(data, cursor):
-    print(data)
     arguments = (
         data["name"],
         data["firstname"],

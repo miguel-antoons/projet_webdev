@@ -1,27 +1,29 @@
 import React from 'react';
 import  { useState } from 'react';
 import * as BS from "react-bootstrap"
-
+import './ajoutArticle.css';
+import MDBInput from '@material-ui/core/TextField';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-
-
+import Select from "react-select";
 
 // ici le component s'appelle home puisque je travaillais dessus, ça n'a pas d'importance et chez toi il s'apellera probablemnt autrement
 const Ajout_Articles = () => {
     // Met le state des inputs
     const [LibelleFR, setLibelleFR] = useState('');
+    const [libelleFrPluriel, setLibelleFrPluriel] = useState('');
     const [LibelleNDL, setLibelleNDL] = useState('');
-    const [Categorie,setCategorie] = useState('');
-    const [Prix1,setPrix1] = useState('');
-    const [Prix2,setPrix2] = useState('');
-    const [Prix3,setPrix3] = useState('');
-    
-    
+    const [libelleNlPluriel, setLibelleNlPluriel] = useState('');
+    const [presentation, setPresentation] = useState(0);
+    const [prix1, setPrix1] = useState(0);
+    const [prix2, setPrix2] = useState(0);
+    const [prix3, setPrix3] = useState(0);
+    const [disabled, setDisabled] = useState(true);
 
+    let presentationOptions = [
+        {value: 0, label: `2 x ${LibelleFR}`},
+        {value: 1, label: `2 ${LibelleFR}`}
+    ];
     
-    
-
     // envoi les données des inputs onSubmit
     const sendPost = async (event) => {
       
@@ -39,7 +41,7 @@ const Ajout_Articles = () => {
         
           },
           
-          body: JSON.stringify({LibelleFR,LibelleNDL,Categorie,Prix1,Prix2,Prix3}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
+          body: JSON.stringify({LibelleFR,LibelleNDL,presentation,prix1,prix2,prix3}) // l'objet à l'intérieur de la fonction contient l'état des 5 input
         });
   
         const data = await result.json();
@@ -53,66 +55,80 @@ const Ajout_Articles = () => {
     };
   
     return (
-
-     
-
-        <BS.Container>
-
-      <BS.Form onSubmit={ (event) => { sendPost(event); }}  >
-
-
-        <BS.Form.Group  >
-          <BS.Form.Label column="lg" lg={2}  class="col-auto col-form-label" >LibelleFR</BS.Form.Label>
-          <BS.Form.Control size="sm" type="text" placeholder="Entrer le libéllé de l'article en FR"  id="LibelleFR" name="LibelleFR" 
-          value={ LibelleFR } onChange={ (e) => setLibelleFR(e.target.value)   } required />
-
-          <BS.Form.Label column="lg" lg={2} >LibelleNDL</BS.Form.Label>
-          <BS.Form.Control size="sm" type="text" placeholder="Entrer le libéllé de l'article en NDL"  id="LibelleNDL " name="LibelleNDL " 
-          value={ LibelleNDL } onChange={ (e) => setLibelleNDL(e.target.value)   } required />
-        </BS.Form.Group>
-        <BS.Form.Group>
-          <BS.Form.Label column="lg" lg={2} >Catégorie</BS.Form.Label>
-          <BS.Form.Control size="sm" as="select" name="Categorie" id="Categorie" value={Categorie}  onChange={ (e) => setCategorie(e.target.value)  }required>
-          <option value=" "> </option>
-          <option value="X">X</option>
-          </BS.Form.Control>
-
-         
-        </BS.Form.Group>
-
-        <BS.Form.Group>
-         
-
-          <BS.Form.Label column="lg" lg={2} >Premier Prix : </BS.Form.Label>
-          <BS.Form.Control size="sm" type="number" placeholder="Entrer le prix de l'article"  id="Prix1" name="Prix1" maxLength='20' 
-          value={ Prix1 } onChange={ (e) => setPrix1(e.target.value)   }  />
-
-        <BS.Form.Label column="lg" lg={2} >Deuxième Prix</BS.Form.Label>
-          <BS.Form.Control size="sm" type="number" placeholder="Entrer le prix de l'article"  id="Prix2" name="Prix2" maxLength='20' 
-          value={ Prix2 } onChange={ (e) => setPrix2(e.target.value)   }  />
-
-        <BS.Form.Label column="lg" lg={2} >Troisième Prix</BS.Form.Label>
-          <BS.Form.Control size="sm" type="number" placeholder="Entrer le prix de l'article" maxLength='20'  id="Prix3" name="Prix3" 
-          value={ Prix3 } onChange={ (e) => setPrix3(e.target.value)   }  />
-
-         
-
-        </BS.Form.Group>
-
-          <BS.Button className="submite" variant="info" type="submit" >Enregistrer L'article</BS.Button> 
-
-      </BS.Form>
-
-      </BS.Container>
-
-      
-
+        <BS.Col className="mx-auto no-margin clientAnimation" lg='4' xs='12' align='center'>
+            <BS.Form onSubmit={ (event) => { sendPost(event); }}  >
+                <MDBInput className="defaultInput" label="Libellé français" value={ LibelleFR } onChange={ (e) => {setLibelleFR(e.target.value); setDisabled(false)} } required/>
+                <MDBInput className="defaultInput" label="Libellé français pluriel" value={ libelleFrPluriel } onChange={ (e) => {setLibelleFrPluriel(e.target.value); setDisabled(false)} }/>
+                <MDBInput className="defaultInput" label="Libellé néerlandais" value={ LibelleNDL } onChange={ (e) => {setLibelleNDL(e.target.value); setDisabled(false)} } required/>
+                <MDBInput className="defaultInput" label="Libellé néerlandais pluriel" value={ libelleNlPluriel } onChange={ (e) => {setLibelleNlPluriel(e.target.value); setDisabled(false)} }/>
+                <MDBInput 
+                    className="defaultInput"
+                    label="Prix 1"
+                    type="number"
+                    value={ prix1 }
+                    onChange={ 
+                        (e) => { 
+                            setPrix1((state) => {
+                                if (e.target.value >= 0) {
+                                    return e.target.value;
+                                }
+                                else {
+                                    return state;
+                                }
+                            });
+                            setDisabled(false);
+                        }
+                    }
+                    required
+                />
+                <MDBInput 
+                    className="defaultInput"
+                    label="Prix 2"
+                    type="number"
+                    value={ prix2 }
+                    onChange={ 
+                        (e) => { 
+                            setPrix2((state) => {
+                                if (e.target.value >= 0) {
+                                    return e.target.value;
+                                }
+                                else {
+                                    return state;
+                                }
+                            });
+                            setDisabled(false);
+                        }
+                    }
+                />
+                <MDBInput 
+                    className="defaultInput"
+                    label="Prix 3"
+                    type="number"
+                    value={ prix3 }
+                    onChange={ 
+                        (e) => { 
+                            setPrix3((state) => {
+                                if (e.target.value >= 0) {
+                                    return e.target.value;
+                                }
+                                else {
+                                    return state;
+                                }
+                            })
+                        }
+                    }
+                />
+                <Select
+                    className="defaultSelect"
+                    value={presentationOptions[presentation]}
+                    onChange={(event) => {setPresentation(event.value); setDisabled(false)} }
+                    label="Présentation"
+                    options={presentationOptions}
+                />
+                <BS.Button className="submitArticle" variant="outline-info" type="submit" disabled={disabled}>Enregistrer</BS.Button> 
+            </BS.Form>
+        </BS.Col>
     );
-  };
+};
 
   export default Ajout_Articles ;
-
-
-
-
-
