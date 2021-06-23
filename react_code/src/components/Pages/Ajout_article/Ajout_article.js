@@ -20,12 +20,46 @@ const Ajout_Articles = (props) => {
     const [prix3, setPrix3] = useState(0);
     const [disabled, setDisabled] = useState(true);
     const [code, setCode] = useState('');
-    const [required, setRequired] = useState(false)
+    const [required, setRequired] = useState(false);
+    const [message, setMessage] = useState('');
 
     let presentationOptions = [
         {value: 0, label: `2 x ${LibelleFR}`},
         {value: 1, label: `2 ${libelleFrPluriel}`}
     ];
+
+    const errorMessage = (
+        <BS.Alert variant="danger" onClose={() => setMessage('')} className="popup" dismissible>
+            <BS.Alert.Heading>Une erreur est survenue</BS.Alert.Heading>
+            <p>
+            Attention! Les données générés avant cette erreur sont susceptibles de ne pas avoir été enregistrés.
+            </p>
+        </BS.Alert>   
+    );
+
+    const createdMessage = (id) => { 
+        return (
+            <BS.Alert variant="success" onClose={() => setMessage('')} className="popup" dismissible>
+                <BS.Alert.Heading>Nouvel Article Enregistré</BS.Alert.Heading>
+                <p>
+                    Le nouvel article a été créé et enregistré avec succès.<br />
+                    Son ID est {id} et son code vaut {code}.
+                </p>
+            </BS.Alert>
+        );
+    };
+
+    const savedMessage = (id) => { 
+        return (
+            <BS.Alert variant="success" onClose={() => setMessage('')} className="popup" dismissible>
+                <BS.Alert.Heading>Article Enregistré</BS.Alert.Heading>
+                <p>
+                    L'article' a été enregistré avec succès.<br />
+                    Son ID est {id} et son code vaut {code}.
+                </p>
+            </BS.Alert>
+        );
+    };
     
     // envoi les données des inputs onSubmit
     const submitArticle = (event) => {
@@ -70,7 +104,9 @@ const Ajout_Articles = (props) => {
     };
 
     const postArticle = async () => {
-        try{
+        let id;
+
+        try {
             let result = await fetch('/api/articles', {
                 method: 'post',
                 headers: {
@@ -93,41 +129,85 @@ const Ajout_Articles = (props) => {
 
             const data = await result.json();
 
-            setArticleID(data["projectID"])
+            id = data["projectID"];
         }
         catch(e) {
             console.log(e);
+            setMessage(errorMessage);
         }
-    }
+
+        try {
+            id = Number(id);
+
+            if (id) {
+                setArticleID(id);
+                setMessage(createdMessage(id, code));
+                setDisabled(true);
+            }
+            else {
+                setMessage(errorMessage);
+                console.log('Back-end returned an empty value');
+            }
+        }
+        catch (e) {
+            console.log(e);
+            setMessage(errorMessage);
+        }
+    };
 
     const updateArticle = async () => {
-        let result = await fetch(
-            '/api/articles',
-            {
-                method: 'put',
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify(
-                    {
-                        code,
-                        LibelleFR,
-                        libelleFrPluriel,
-                        LibelleNDL,
-                        libelleNlPluriel,
-                        prix1,
-                        prix2,
-                        prix3,
-                        presentation,
-                        articleID
-                    }
-                )
-            }
-        );
+        let id;
 
-        const data = await result.json();
-        console.log(data);
-    }
+        try {
+            let result = await fetch(
+                '/api/articles',
+                {
+                    method: 'put',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify(
+                        {
+                            code,
+                            LibelleFR,
+                            libelleFrPluriel,
+                            LibelleNDL,
+                            libelleNlPluriel,
+                            prix1,
+                            prix2,
+                            prix3,
+                            presentation,
+                            articleID
+                        }
+                    )
+                }
+            );
+
+            const data = await result.json();
+            id = data["projectID"];
+        }
+        catch (e) {
+            console.log(e);
+            setMessage(errorMessage);
+        }
+        
+        try {
+            id = Number(id);
+
+            if (id === articleID) {
+                setMessage(savedMessage(articleID, code));
+                setDisabled(true);
+            }
+            else {
+                setMessage(errorMessage);
+                console.log('Back-end returned a value not equal to the id after update');
+            }
+        }
+        catch (e) {
+            console.log(e);
+            setMessage(errorMessage);
+        }
+    };
   
     return (
         <BS.Col className="mx-auto no-margin clientAnimation" lg='4' xs='12' align='center'>
@@ -234,6 +314,7 @@ const Ajout_Articles = (props) => {
                 />
                 <BS.Button className="submitArticle" variant="outline-info" type="submit" disabled={disabled}>Enregistrer</BS.Button> 
             </BS.Form>
+            {message}
         </BS.Col>
     );
 };

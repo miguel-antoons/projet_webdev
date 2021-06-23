@@ -55,7 +55,7 @@ const Ajout_Client = (props) => {
                 </p>
             </BS.Alert>
         );
-    }
+    };
     
     const optionsTitle = [
         {value: 0, label: 'Mr'},
@@ -204,6 +204,7 @@ const Ajout_Client = (props) => {
                         }
                         else {
                             setMessage(errorMessage);
+                            console.log('Back-end returned an empty or string value, not a number');
                         }
 
                         return state;
@@ -251,7 +252,6 @@ const Ajout_Client = (props) => {
                 <BS.Button className="submitClient" variant="outline-info" type="submit" disabled={disabled}>Enregistrer</BS.Button> 
             </BS.Form>
             {message}
-            
         </BS.Col>
     );
 };
