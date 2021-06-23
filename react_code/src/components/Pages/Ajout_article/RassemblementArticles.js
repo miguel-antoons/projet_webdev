@@ -176,7 +176,7 @@ function RassemblementArticles () {
                         <th>#</th>
                         <th>Libellé FR</th>
                         <th>Libellé NL</th>
-                        <th>Catégorie</th>
+                        <th>Code</th>
                         <th>Actions</th>
                     </tr>
                 </thead>

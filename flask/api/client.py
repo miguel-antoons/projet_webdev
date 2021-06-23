@@ -161,7 +161,7 @@ def put_client(data, cursor):
         data["email"],
         data["address2"],
         data["architect"],
-        str(data["clientID"]),
+        data["clientID"],
     )
 
     # Executing SQL Statements
@@ -200,9 +200,8 @@ def put_client(data, cursor):
             and EMAIL_CLIENT = %s
             and ADRESSE_CLIENT_SECONDAIRE = %s
             and NOM_ARCHITECT = %s
+            and ID_CLIENT = %s
     """
-
-    arguments = arguments[:-1]
 
     cursor.execute(sql_procedure, arguments)
     mysql_result = cursor.fetchall()
