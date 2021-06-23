@@ -79,6 +79,7 @@ const Ajout_Articles = (props) => {
         if (articleID) {
             getArticle();
         }
+    // eslint-disable-next-line
     }, [articleID]);
 
     const getArticle = async () => {
