@@ -23,6 +23,7 @@ def articles():
     elif request.method == 'POST':
         response = create_article(cur, request.json)
 
+    # API fires when the user wants to update a project
     elif request.method == 'PUT':
         response = update_article(cur, request.json)
 
@@ -33,6 +34,13 @@ def articles():
 
 
 def create_article(cursor, data):
+    """
+    Function gets the data from the post content
+    and inserts it into the database
+
+    @cursor --> cursor to interact with the database
+    @data --> content of the post request
+    """
     arguments = (
         data["code"],
         data["LibelleFR"],
@@ -74,6 +82,12 @@ def create_article(cursor, data):
 
 
 def get_all_articles(cursor):
+    """
+    Gets all the articles from the database
+    and returns them
+
+    @cursor --> the cursor to interact with the database
+    """
     response = []
 
     # prepare the sql statement (which contains arguments in order to
@@ -102,6 +116,13 @@ def get_all_articles(cursor):
 
 
 def delete_article(cursor, id):
+    """
+    Function receives an id from the url and
+    deletes the article with this id
+
+    @cursor --> the cursor to interact with the database
+    @id --> id of the article to delete
+    """
     arguments = (id, )
 
     # prepare the sql statement (which contains arguments in order
@@ -118,6 +139,13 @@ def delete_article(cursor, id):
 
 
 def update_article(cursor, data):
+    """
+    Function updates the data of an article in the database
+
+    @cursor --> cursor to interact with the database
+    @data --> data from the put request which contains the new data to update
+        alongside the article id
+    """
     arguments = (
         data["code"],
         data["LibelleFR"],
@@ -131,6 +159,7 @@ def update_article(cursor, data):
         data["articleID"],
     )
 
+    # sql procedure to update the article
     sql_statement = """
         UPDATE articles
         SET
@@ -149,6 +178,8 @@ def update_article(cursor, data):
 
     cursor.execute(sql_statement, arguments)
 
+    # sql procedure verifies if the article has been updated by selecting the
+    # article id with the same data as collected form the put request
     sql_statement = """
         SELECT ID_ARTICLE
         FROM articles
@@ -177,14 +208,19 @@ def update_article(cursor, data):
 
         return response
 
+    # return 0 if there was a problem
     return 0
 
 
 @app_article.route("/api/article/<id>", methods=['GET'])
 def articles_all(id):
+    """
+    Function returns the article with the id entred in the API url
+    """
     cursor = mysql.connection.cursor()
     arguments = (id, )
 
+    # create the sql statement to extract the artcile from the database
     sql_statement = """
         SELECT
             CODE_RACCOURCI,
@@ -203,4 +239,5 @@ def articles_all(id):
 
     cursor.execute(sql_statement, arguments)
 
+    # return the result in json form
     return json.dumps(cursor.fetchall())
