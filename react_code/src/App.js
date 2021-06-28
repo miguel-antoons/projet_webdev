@@ -10,7 +10,7 @@ import Etiquetage from './components/Pages/Etiquetage/Etiquetage'
 import Suivi from './components/Pages/Suivi/Suivi'
 
 import Article from './components/Pages/Ajout_article/Ajout_article'
-import Rgie from './components/Pages/Rgie/Rgie'
+import Regie from './components/Pages/Rgie/Rgie'
 import ProjetsDevis from './components/Pages/Devis/ProjetsDevis'
 import RassemblementArticles from './components/Pages/Ajout_article/RassemblementArticles'
 import ProjetsFactures from './components/Pages/Facture/ProjetsFactures'
@@ -33,7 +33,7 @@ function App() {
                 <Route path="/suivi" component={Suivi} />
                 <Route path="/client/:id" component={Ajout_Client} />
                 <Route path="/article/:id" component={Article} />
-                <Route path="/rgie/:id" component={Rgie} />
+                <Route path="/rgie/:id" component={Regie} />
                 <Route path="/projets_devis" component={ProjetsDevis} />
                 <Route path="/rassemblement_articles" component={RassemblementArticles} />
                 <Route path="/projets_factures" component={ProjetsFactures} />

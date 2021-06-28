@@ -1,0 +1,20 @@
+.roundTable {
+    border-radius: 7px;
+    width: 90%;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.whiteTable {
+    width: 90%;
+    margin: auto;
+    margin-top: 50px;
+}
+
+thead {
+    pointer-events: none;
+}
+
+th {
+    border-top: none !important;
+}

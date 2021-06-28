@@ -1,6 +1,6 @@
 import React from 'react';
 import  { useState, useEffect } from 'react';
-import * as BS from "react-bootstrap"
+import * as BS from "react-bootstrap";
 import './ajoutArticle.css';
 import MDBInput from '@material-ui/core/TextField';
 import 'bootstrap/dist/css/bootstrap.min.css';
