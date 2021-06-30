@@ -3,12 +3,14 @@ import  { useState, useEffect } from 'react';
 import * as BS from "react-bootstrap";
 import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 import './regie.css';
+import * as icon from 'react-icons/io5';
 
 
 const Regie = () => {
     return (
         <BS.Row>
             <BS.Col lg="7">
+                <BS.Button size="lg" variant="light" className="add_article"><icon.IoDuplicate size="19pt"/> Ajouter</BS.Button>
                 <MDBTable className="whiteTable" hover>
                     <MDBTableHead>
                         <tr>
@@ -39,23 +41,21 @@ const Regie = () => {
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Username</th>
+                            <th>Libellé</th>
+                            <th>Quantité</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>1</td>
                             <td>Mark</td>
-                            <td>Otto</td>
+                            <td className="middleCell">
+                                <input 
+                                    type="text"
+                                    placeholder="Article"
+                                    className="newRowRgie"
+                                />
+                            </td>
                             <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
                         </tr>
                     </tbody>
                 </BS.Table>
@@ -63,8 +63,6 @@ const Regie = () => {
         </BS.Row>
     );
 };
-
-
 
 
 export default Regie;

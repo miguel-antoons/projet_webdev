@@ -1,4 +1,4 @@
-.cleanButton{
+.cleanButton {
     margin: 5%;
     width: 3.4cm;
     height: 1.8cm;
@@ -13,7 +13,7 @@
     font-family: calibri, sans-serif;
 }
 
-.cleanButton:hover{
+.cleanButton:hover {
     color: #ff4500;
     background-color: #e5e4e2;
 }

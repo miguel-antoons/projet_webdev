@@ -2,13 +2,13 @@
     border-radius: 7px;
     width: 90%;
     margin: auto;
-    margin-top: 50px;
+    margin-top: 70px;
 }
 
 .whiteTable {
     width: 90%;
     margin: auto;
-    margin-top: 50px;
+    margin-top: 5px;
 }
 
 thead {
@@ -17,4 +17,45 @@ thead {
 
 th {
     border-top: none !important;
+}
+
+.add_article {
+    margin: 25px !important;
+    border: none;
+    background-color: #dadbdd;
+    color: #082542;
+    border-radius: 300px;
+    font-size: 16pt;
+    font-family: Verdana, sans-serif;
+    text-align: center;
+}
+
+.add_article:hover {
+    background-color:  #082542;
+    color: white;
+}
+
+.roundTable th:last-child, .roundTable td:last-child {
+    text-align: right !important;
+}
+
+.roundTable th:first, .roundTable td:first {
+    text-align: left !important;
+    width: 10% !important;
+}
+
+.newRowRgie {
+    background-color: rgba(0, 0, 0, 0);
+    border: none !important;
+    box-shadow: none;
+    margin: 0 !important;
+    height: 80% !important;
+    width: 500px !important;
+    padding: 11px;
+    font-size: 15pt;
+    color: white;
+}
+
+.middleCell {
+    padding: 0 !important;
 }
