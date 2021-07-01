@@ -9,26 +9,23 @@ import * as icon from 'react-icons/io5';
 const Regie = () => {
     return (
         <BS.Row>
-            <BS.Col lg="7">
+            <BS.Col lg="6">
                 <BS.Button size="lg" variant="light" className="add_article"><icon.IoDuplicate size="19pt"/> Ajouter</BS.Button>
                 <MDBTable className="whiteTable" hover>
                     <MDBTableHead>
                         <tr>
-                            <th scope='col'>#</th>
-                            <th scope='col'>First</th>
-                            <th scope='col'>Last</th>
-                            <th scope='col'>Handle</th>
+                            <th scope='col'>Libellé</th>
+                            <th scope='col'>Prix</th>
+                            <th scope='col'>Ajouter</th>
                         </tr>
                     </MDBTableHead>
                     <MDBTableBody>
                         <tr>
-                            <th scope='row'>1</th>
                             <td>Mark</td>
                             <td>Otto</td>
                             <td>@mdo</td>
                         </tr>
                         <tr>
-                            <th scope='row'>2</th>
                             <td>Jacob</td>
                             <td>Thornton</td>
                             <td>@fat</td>
@@ -36,13 +33,15 @@ const Regie = () => {
                     </MDBTableBody>
                 </MDBTable>
             </BS.Col>
-            <BS.Col lg="5">
+            <BS.Col lg="6">
+                <BS.Button size="lg" variant="light" className="addCustom"><icon.IoAddCircle size="19pt"/> Ajouter</BS.Button>
                 <BS.Table className="roundTable" striped hover variant="dark">
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>Libellé</th>
                             <th>Quantité</th>
+                            <th>Prix</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,7 +54,20 @@ const Regie = () => {
                                     className="newRowRgie"
                                 />
                             </td>
-                            <td>@mdo</td>
+                            <td className="middleCell">
+                                <input 
+                                    type="number"
+                                    placeholder="Qté"
+                                    className="quantiteRgie"
+                                />
+                            </td>
+                            <td className="middleCell">
+                                <input 
+                                    type="number"
+                                    placeholder="Qté"
+                                    className="quantiteRgie"
+                                />
+                            </td>
                         </tr>
                     </tbody>
                 </BS.Table>

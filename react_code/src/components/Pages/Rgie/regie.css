@@ -2,7 +2,7 @@
     border-radius: 7px;
     width: 90%;
     margin: auto;
-    margin-top: 70px;
+    margin-top: 5px;
 }
 
 .whiteTable {
@@ -58,4 +58,34 @@ th {
 
 .middleCell {
     padding: 0 !important;
+}
+
+.quantiteRgie {
+    background-color: rgba(0, 0, 0, 0);
+    border: none !important;
+    box-shadow: none;
+    margin: 0 !important;
+    height: 80% !important;
+    padding: 11px;
+    font-size: 15pt;
+    color: white;
+    width: 80px;
+}
+
+.addCustom {
+    margin-right: 25px !important;
+    margin-top: 25px !important;
+    margin-bottom: 25px !important;
+    border: none;
+    background-color: #dadbdd;
+    color: #082542;
+    border-radius: 300px;
+    font-size: 16pt;
+    font-family: Verdana, sans-serif;
+    text-align: center;
+}
+
+.addCustom:hover {
+    background-color:  #082542;
+    color: white;
 }
