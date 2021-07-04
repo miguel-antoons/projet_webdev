@@ -75,6 +75,7 @@ th:last-child, td:last-child {
     font-size: 17pt;
     color: white;
     width: 80px;
+    text-align: right;
 }
 
 .addCustom {
@@ -125,4 +126,12 @@ th:last-child, td:last-child {
 
 .whiteTable td:last-child {
     padding: 4px;
+}
+
+.alignRight {
+    text-align: right;
+}
+
+.roundTable td {
+    font-size: 15pt;
 }

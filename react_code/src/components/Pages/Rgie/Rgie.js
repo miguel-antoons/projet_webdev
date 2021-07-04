@@ -8,10 +8,35 @@ import { MDBBtn, MDBIcon } from 'mdb-react-ui-kit';
 
 
 const Regie = () => {
+    const [rgieList, setRgieList] = useState([]);
+    const [tempLibelle, setTempLibelle] = useState('');
+    const [tempQuantite, setTempQuantite] = useState(0);
+    const [tempPrix, setTempPrix] = useState(0);
+
+
+    const addCustomRow = () => {
+        let rgieListCopy = rgieList.slice();
+
+        rgieListCopy.push({
+            position: rgieList.length,
+            libelle: tempLibelle,
+            quantity: tempQuantite,
+            price: tempPrix
+        });
+
+        setRgieList(rgieListCopy);
+
+        setTempLibelle('');
+        setTempPrix(0);
+        setTempQuantite(0);
+    };
+
     return (
         <BS.Row className="no_margin">
             <BS.Col lg="6">
-                <BS.Button size="lg" variant="light" className="add_article"><icon.IoDuplicate size="19pt"/> Nouveau</BS.Button>
+                <BS.Button size="lg" variant="light" className="add_article">
+                    <icon.IoDuplicate size="19pt"/> Nouveau
+                </BS.Button>
                 <MDBTable className="whiteTable" hover>
                     <MDBTableHead>
                         <tr>
@@ -34,7 +59,9 @@ const Regie = () => {
                 </MDBTable>
             </BS.Col>
             <BS.Col lg="6">
-                <BS.Button size="lg" variant="light" className="addCustom"><icon.IoAddCircle size="19pt"/> Ajouter</BS.Button>
+                <BS.Button size="lg" variant="light" className="addCustom" onClick={ () => addCustomRow() }>
+                    <icon.IoAddCircle size="19pt"/> Ajouter
+                </BS.Button>
                 <BS.Table className="roundTable" striped hover variant="dark">
                     <thead>
                         <tr>
@@ -45,9 +72,27 @@ const Regie = () => {
                         </tr>
                     </thead>
                     <tbody>
+                        {rgieList.map( (row) => (
+                            <tr key={row.position} >
+                                <td>
+                                    <BS.Button className="deleteRowRgie" variant="light">
+                                        <icon.IoClose size="25px" />
+                                    </BS.Button>
+                                </td>
+                                <td>
+                                    {row.libelle}
+                                </td>
+                                <td className="alignRight">
+                                    {row.quantity}
+                                </td>
+                                <td className="alignRight">
+                                    {row.price}
+                                </td>
+                            </tr>
+                        ))}
                         <tr>
                             <td>
-                                <BS.Button className="deleteRowRgie" variant="light">
+                                <BS.Button className="deleteRowRgie" variant="light" disabled>
                                     <icon.IoClose size="25px" />
                                 </BS.Button>
                             </td>
@@ -56,6 +101,9 @@ const Regie = () => {
                                     type="text"
                                     placeholder="Article"
                                     className="newRowRgie"
+                                    value={tempLibelle}
+                                    onChange={(e) => setTempLibelle(e.target.value) }
+                                    required
                                 />
                             </td>
                             <td className="middleCell">
@@ -63,13 +111,19 @@ const Regie = () => {
                                     type="number"
                                     placeholder="Qté"
                                     className="quantiteRgie"
+                                    value={tempQuantite}
+                                    onChange={ (e) => setTempQuantite(e.target.value) }
+                                    required
                                 />
                             </td>
                             <td className="middleCell">
                                 <input 
                                     type="number"
-                                    placeholder="Qté"
+                                    placeholder="€"
                                     className="quantiteRgie"
+                                    value={tempPrix}
+                                    onChange={ (e) => setTempPrix(e.target.value) }
+                                    required
                                 />
                             </td>
                         </tr>
