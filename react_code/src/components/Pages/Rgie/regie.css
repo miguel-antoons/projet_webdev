@@ -19,6 +19,10 @@ th {
     border-top: none !important;
 }
 
+tr {
+    height: 50px !important;
+}
+
 .add_article {
     margin: 25px !important;
     border: none;
@@ -35,7 +39,7 @@ th {
     color: white;
 }
 
-.roundTable th:last-child, .roundTable td:last-child {
+th:last-child, td:last-child {
     text-align: right !important;
 }
 
@@ -104,4 +108,21 @@ th {
 .deleteRowRgie:hover {
     background-color: white;
     color: red;
+}
+
+.addRowRgie {
+    border-radius: 12px;
+    color: #082542;
+    background-color: #dadbdd;
+    padding: 7px !important;
+    margin: 0 !important;
+}
+
+.addRowRgie:hover {
+    background-color: #082542;
+    color: white;
+}
+
+.whiteTable td:last-child {
+    padding: 4px;
 }

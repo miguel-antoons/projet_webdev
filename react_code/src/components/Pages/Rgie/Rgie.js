@@ -9,7 +9,7 @@ import { MDBBtn, MDBIcon } from 'mdb-react-ui-kit';
 
 const Regie = () => {
     return (
-        <BS.Row>
+        <BS.Row className="no_margin">
             <BS.Col lg="6">
                 <BS.Button size="lg" variant="light" className="add_article"><icon.IoDuplicate size="19pt"/> Nouveau</BS.Button>
                 <MDBTable className="whiteTable" hover>
@@ -24,12 +24,11 @@ const Regie = () => {
                         <tr>
                             <td>Mark</td>
                             <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
+                            <td>
+                                <BS.Button className="addRowRgie" variant="light">
+                                    <icon.IoArrowForward size="25px" />
+                                </BS.Button>
+                            </td>
                         </tr>
                     </MDBTableBody>
                 </MDBTable>
