@@ -4,13 +4,14 @@ import * as BS from "react-bootstrap";
 import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 import './regie.css';
 import * as icon from 'react-icons/io5';
+import { MDBBtn, MDBIcon } from 'mdb-react-ui-kit';
 
 
 const Regie = () => {
     return (
         <BS.Row>
             <BS.Col lg="6">
-                <BS.Button size="lg" variant="light" className="add_article"><icon.IoDuplicate size="19pt"/> Ajouter</BS.Button>
+                <BS.Button size="lg" variant="light" className="add_article"><icon.IoDuplicate size="19pt"/> Nouveau</BS.Button>
                 <MDBTable className="whiteTable" hover>
                     <MDBTableHead>
                         <tr>
@@ -46,7 +47,11 @@ const Regie = () => {
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Mark</td>
+                            <td>
+                                <BS.Button className="deleteRowRgie" variant="light">
+                                    <icon.IoClose size="25px" />
+                                </BS.Button>
+                            </td>
                             <td className="middleCell">
                                 <input 
                                     type="text"

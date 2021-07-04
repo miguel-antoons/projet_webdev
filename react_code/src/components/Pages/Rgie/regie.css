@@ -42,6 +42,7 @@ th {
 .roundTable th:first, .roundTable td:first {
     text-align: left !important;
     width: 10% !important;
+    padding: 0 !important;
 }
 
 .newRowRgie {
@@ -49,10 +50,10 @@ th {
     border: none !important;
     box-shadow: none;
     margin: 0 !important;
-    height: 80% !important;
+    height: 100% !important;
     width: 500px !important;
     padding: 11px;
-    font-size: 15pt;
+    font-size: 17pt;
     color: white;
 }
 
@@ -67,7 +68,7 @@ th {
     margin: 0 !important;
     height: 80% !important;
     padding: 11px;
-    font-size: 15pt;
+    font-size: 17pt;
     color: white;
     width: 80px;
 }
@@ -83,9 +84,24 @@ th {
     font-size: 16pt;
     font-family: Verdana, sans-serif;
     text-align: center;
+    float: right;
 }
 
 .addCustom:hover {
     background-color:  #082542;
     color: white;
+}
+
+.deleteRowRgie {
+    border-radius: 200px;
+    border: none;
+    background-color: red;
+    color: white;
+    padding: 2px;
+    margin: 0 !important;
+}
+
+.deleteRowRgie:hover {
+    background-color: white;
+    color: red;
 }
