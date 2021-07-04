@@ -18,7 +18,6 @@ const Regie = () => {
         let rgieListCopy = rgieList.slice();
 
         rgieListCopy.push({
-            position: rgieList.length,
             libelle: tempLibelle,
             quantity: tempQuantite,
             price: tempPrix
@@ -72,10 +71,10 @@ const Regie = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {rgieList.map( (row) => (
-                            <tr key={row.position} >
+                        {rgieList.map( (row, index) => (
+                            <tr key={index}>
                                 <td>
-                                    <BS.Button className="deleteRowRgie" variant="light">
+                                    <BS.Button className="deleteRowRgie" variant="light" index={index}>
                                         <icon.IoClose size="25px" />
                                     </BS.Button>
                                 </td>
