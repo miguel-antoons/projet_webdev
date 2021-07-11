@@ -30,6 +30,11 @@ const Regie = () => {
         setTempQuantite(0);
     };
 
+
+    const deleteRowRgie = (indexToDelete) => {
+        console.log(indexToDelete);
+    };
+
     return (
         <BS.Row className="no_margin">
             <BS.Col lg="6">
@@ -74,7 +79,7 @@ const Regie = () => {
                         {rgieList.map( (row, index) => (
                             <tr key={index}>
                                 <td>
-                                    <BS.Button className="deleteRowRgie" variant="light" index={index}>
+                                    <BS.Button onClick={ () => deleteRowRgie(index) } className="deleteRowRgie" variant="light" >
                                         <icon.IoClose size="25px" />
                                     </BS.Button>
                                 </td>

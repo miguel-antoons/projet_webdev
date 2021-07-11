@@ -76,8 +76,6 @@ def get_etiquette_by_id(id, cursor):
         'projectData': result[6]
     }
 
-    cursor.close()
-
     return response
 
 

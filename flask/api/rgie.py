@@ -18,24 +18,15 @@ def rgie():
         response = get_all_rgie(set_arguments(request.args.get('filter')), cur)
 
     elif request.method == 'DELETE':
-        # get the id of the projects that has to be deleted
-        id_to_delete = (int(request.args.get('id')), )
+        response = delete_rgie(cur, int(request.args.get('id')))
 
-        # prepare the sql statement (which contains arguments in order
-        # to avoid sql injection)
-        sql_statement = """
-            DELETE FROM rgie
-            WHERE ID_LISTE_ARTICLE_RGIE = %s
-        """
+    elif request.method == "POST":
+        post_rgie()
 
-        # execute the statement along with its arguments
-        cur.execute(sql_statement, id_to_delete)
+    elif request.method == "PUT":
+        put_rgie()
 
-        # commit the changes to the database
-        connector.commit()
-
-        response = cur.fetchall()
-
+    connector.commit()
     cur.close()
 
     return json.dumps(response)
@@ -82,3 +73,30 @@ def set_arguments(filter):
         return ("1999-01-01", "%Y-%m-%d", filter, filter, )
     else:
         return ("1999-01-01", "%Y-%m-%d", 1, 999999999, )
+
+
+def post_rgie():
+    return None
+
+
+def put_rgie():
+    return None
+
+
+def delete_rgie(cursor, id_to_delete):
+    # TODO write sql statement again according to the new rgie tables and
+    # the articles table
+    arguments = (id_to_delete, )
+
+    # prepare the sql statement (which contains arguments in order
+    # to avoid sql injection)
+    sql_statement = """
+        DELETE FROM rgie
+        WHERE ID_LISTE_ARTICLE_RGIE = %s
+    """
+
+    # execute the statement along with its arguments
+    cur.execute(sql_statement, arguments)
+
+    # return the result of the statement
+    return cursor.fetchall()
