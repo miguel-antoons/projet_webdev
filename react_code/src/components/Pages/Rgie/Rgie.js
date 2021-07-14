@@ -11,6 +11,20 @@ const Regie = () => {
     const [tempLibelle, setTempLibelle] = useState('');
     const [tempQuantite, setTempQuantite] = useState(0);
     const [tempPrix, setTempPrix] = useState(0);
+    const [firstArticleTableRow, setFirstArticleTableRow] = useState('');
+
+
+    const addArticleForm = (
+        <tr>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>
+                <BS.Button className="addRowRgie" variant="light">
+                    <icon.IoArrowDown size="25px" />
+                </BS.Button>
+            </td>
+        </tr>
+    );
 
 
     const addCustomRow = () => {
@@ -40,7 +54,7 @@ const Regie = () => {
     return (
         <BS.Row className="no_margin">
             <BS.Col lg="6">
-                <BS.Button size="lg" variant="light" className="add_article">
+                <BS.Button onClick={ () => setFirstArticleTableRow(addArticleForm) } size="lg" variant="light" className="add_article">
                     <icon.IoDuplicate size="19pt"/> Nouveau
                 </BS.Button>
                 <MDBTable className="whiteTable" hover>
@@ -52,6 +66,7 @@ const Regie = () => {
                         </tr>
                     </MDBTableHead>
                     <MDBTableBody>
+                        {firstArticleTableRow}
                         <tr>
                             <td>Mark</td>
                             <td>Otto</td>
