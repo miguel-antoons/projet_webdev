@@ -23,6 +23,10 @@ tr {
     height: 50px !important;
 }
 
+td {
+    white-space: normal !important;
+}
+
 .add_article {
     margin: 25px !important;
     border: none;
