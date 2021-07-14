@@ -4,7 +4,6 @@ import * as BS from "react-bootstrap";
 import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 import './regie.css';
 import * as icon from 'react-icons/io5';
-import { MDBBtn, MDBIcon } from 'mdb-react-ui-kit';
 
 
 const Regie = () => {
@@ -32,7 +31,10 @@ const Regie = () => {
 
 
     const deleteRowRgie = (indexToDelete) => {
-        console.log(indexToDelete);
+        let rgieListCopy = rgieList.splice();
+
+        rgieListCopy.splice(indexToDelete);
+        setRgieList(rgieListCopy);
     };
 
     return (
