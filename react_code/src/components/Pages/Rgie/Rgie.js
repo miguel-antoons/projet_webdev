@@ -16,9 +16,30 @@ const Regie = () => {
 
     const addArticleForm = (
         <tr>
-            <td>Mark</td>
-            <td>Otto</td>
+            <td className="middleCell">
+                <input 
+                    type="text"
+                    placeholder="Libellé"
+                    className="newArticleRgie"
+                    value={tempLibelle}
+                    onChange={(e) => setTempLibelle(e.target.value) }
+                    required
+                />
+            </td>
+            <td className="middleCell">
+            <input 
+                type="number"
+                placeholder="€"
+                className="newPrixRgie"
+                value={tempPrix}
+                onChange={ (e) => setTempPrix(e.target.value) }
+                required
+            />
+            </td>
             <td>
+                <BS.Button onClick={ () => console.log("temporar") } className="deleteRowArticles" variant="light" >
+                    <icon.IoClose size="25px" />
+                </BS.Button>
                 <BS.Button className="addRowRgie" variant="light">
                     <icon.IoArrowDown size="25px" />
                 </BS.Button>
@@ -71,6 +92,9 @@ const Regie = () => {
                             <td>Mark</td>
                             <td>Otto</td>
                             <td>
+                                <BS.Button className="modifyRowRgie" variant="light">
+                                    <icon.IoBuild size="25px" />
+                                </BS.Button>
                                 <BS.Button className="addRowRgie" variant="light">
                                     <icon.IoArrowForward size="25px" />
                                 </BS.Button>
