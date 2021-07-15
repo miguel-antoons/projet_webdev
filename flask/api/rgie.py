@@ -109,7 +109,7 @@ def articles_rgie():
     response = []
 
     if request.method == 'GET':
-        response.append('GET')
+        response = get_all_articles(cursor)
 
     elif request.method == 'DELETE':
         response = create_new_article(cursor, request.json)
@@ -124,6 +124,30 @@ def articles_rgie():
     cur.close()
 
     return json.dumps(response)
+
+
+def get_all_articles(cursor):
+    response = []
+
+    sql_statement = """
+        SELECT LIBELLE, PRIX
+        FROM articles_rgie
+    """
+
+    cursor.execute(sql_statement)
+
+    mysql_result = cursor.fetchall()
+    print(mysql_result)
+
+    for article in mysql_result:
+        response.append(
+            {
+                'article_name': article[0],
+                'article_price': article[1]
+            }
+        )
+
+    return response
 
 
 def create_new_article(cursor, data):
