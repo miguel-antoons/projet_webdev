@@ -100,3 +100,53 @@ def delete_rgie(cursor, id_to_delete):
 
     # return the result of the statement
     return cursor.fetchall()
+
+
+@app_rgie.route('/api/rgie', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def articles_rgie():
+    connector = mysql.connection
+    cursor = connector.cursor()
+    response = []
+
+    if request.method == 'GET':
+        response.append('GET')
+
+    elif request.method == 'DELETE':
+        response = create_new_article(cursor, request.json)
+
+    elif request.method == 'POST':
+        response.append('post')
+
+    elif request.method == 'PUT':
+        response.append('put')
+
+    connector.commit()
+    cur.close()
+
+    return json.dumps(response)
+
+
+def create_new_article(cursor, data):
+    response = {}
+    arguments = (data['article_name'], data['article_price'], )
+
+    sql_statement = """
+        INSERT INTO articles_rgie (LIBELLE, PRIX)
+        VALUES (%s, %s)
+    """
+
+    cursor.execute(sql_statement, arguments)
+
+    sql_statement = """
+        SELECT LAST_INSERT_ID()
+    """
+
+    cursor.execute(sql_procedure)
+    mysql_result = cursor.fetchall()
+
+    # set the response to the id of the newly created row
+    response = {
+        'projectID': mysql_result[0][0]
+    }
+
+    return response
