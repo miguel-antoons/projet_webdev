@@ -12,40 +12,106 @@ const Regie = () => {
     const [tempQuantite, setTempQuantite] = useState(0);
     const [tempPrix, setTempPrix] = useState(0);
     const [firstArticleTableRow, setFirstArticleTableRow] = useState('');
+    const [tempArticleName, setTempArticleName] = useState('');
+    const [tempArticlePrice, setTempArticlePrice] = useState(0);
+    const [tempArticleID, setTempArticleID] = useState(0);
 
 
-    const addArticleForm = (
-        <tr>
-            <td className="middleCell">
+    const addArticleForm = () => {
+        return (
+            <tr>
+                <td className="middleCell">
+                    <input 
+                        type="text"
+                        placeholder="Libellé"
+                        className="newArticleRgie"
+                        value={tempArticleName}
+                        onChange={(e) => setTempArticleName(e.target.value) }
+                        required
+                    />
+                </td>
+                <td className="middleCell">
                 <input 
-                    type="text"
-                    placeholder="Libellé"
-                    className="newArticleRgie"
-                    value={tempLibelle}
-                    onChange={(e) => setTempLibelle(e.target.value) }
+                    type="number"
+                    placeholder="€"
+                    className="newPrixRgie"
+                    // value={tempArticlePrice}
+                    onChange={ (e) => {setTempArticlePrice(e.target.value); console.log(tempArticlePrice);} }
                     required
                 />
-            </td>
-            <td className="middleCell">
-            <input 
-                type="number"
-                placeholder="€"
-                className="newPrixRgie"
-                value={tempPrix}
-                onChange={ (e) => setTempPrix(e.target.value) }
-                required
-            />
-            </td>
-            <td>
-                <BS.Button onClick={ () => console.log("temporar") } className="deleteRowArticles" variant="light" >
-                    <icon.IoClose size="25px" />
-                </BS.Button>
-                <BS.Button className="addRowRgie" variant="light">
-                    <icon.IoArrowDown size="25px" />
-                </BS.Button>
-            </td>
-        </tr>
-    );
+                </td>
+                <td>
+                    <BS.Button onClick={ () => console.log("temporar") } className="deleteRowArticles" variant="light" >
+                        <icon.IoClose size="25px" />
+                    </BS.Button>
+                    <BS.Button onClick={ () => updateArticleList() } className="addRowRgie" variant="light">
+                        <icon.IoArrowDown size="25px" />
+                    </BS.Button>
+                </td>
+            </tr>
+        );
+    };
+
+
+    const postArticle = async () => {
+        let id = 0;
+        const article_name = tempArticleName;
+        const article_price = tempArticlePrice;
+
+        try {
+            let result = await fetch(
+                '/api/articles_rgie',
+                {
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify(
+                        {
+                            article_name,
+                            article_price
+                        }
+                    )
+                }
+            );
+
+            const data = await result.json();
+
+            id = data['projectID'];
+        }
+        catch (e) {
+            console.log(e);
+            console.log('There was an error when calling the api during a post request, please contact a developper');
+        }
+
+        try {
+            id = Number(id);
+        }
+        catch (e) {
+            console.log(e);
+            console.log('error during id conversion from string to number --> id is not a number');
+        }
+    };
+
+
+    const putArticle = async (articleID) => {
+        console.log('temporar no update article list', articleID);
+    }
+
+
+    const updateArticleList = () => {
+        if (tempArticleID) {
+            putArticle(tempArticleID);
+        }
+        else {
+            postArticle();
+        }
+
+        setFirstArticleTableRow('');
+        setTempArticleID(0);
+        setTempArticleName('');
+        setTempArticlePrice(0);
+    };
 
 
     const addCustomRow = () => {

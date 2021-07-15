@@ -102,7 +102,7 @@ def delete_rgie(cursor, id_to_delete):
     return cursor.fetchall()
 
 
-@app_rgie.route('/api/rgie', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@app_rgie.route('/api/articles_rgie', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def articles_rgie():
     connector = mysql.connection
     cursor = connector.cursor()
