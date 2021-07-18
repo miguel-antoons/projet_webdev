@@ -79,7 +79,7 @@ const Regie = () => {
             postArticle();
         }
 
-        setFirstArticleTableRow('');
+        setFirstArticleTableRow(hideNewArticleForm);
         setTempArticleID(0);
         setTempArticleName('');
         setTempArticlePrice(0);
@@ -142,7 +142,7 @@ const Regie = () => {
                                 placeholder="€"
                                 className="newPrixRgie w-100"
                                 value={tempArticlePrice}
-                                onChange={ (e) => {setTempArticlePrice(e.target.value); console.log(tempArticlePrice);} }
+                                onChange={ (e) => {setTempArticlePrice(e.target.value);} }
                                 required
                             />
                             </td>

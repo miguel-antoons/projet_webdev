@@ -112,16 +112,16 @@ def articles_rgie():
         response = get_all_articles(cursor)
 
     elif request.method == 'DELETE':
-        response = create_new_article(cursor, request.json)
+        response.append('delete')
 
     elif request.method == 'POST':
-        response.append('post')
+        response = create_new_article(cursor, request.json)
 
     elif request.method == 'PUT':
         response.append('put')
 
     connector.commit()
-    cur.close()
+    cursor.close()
 
     return json.dumps(response)
 
@@ -165,7 +165,7 @@ def create_new_article(cursor, data):
         SELECT LAST_INSERT_ID()
     """
 
-    cursor.execute(sql_procedure)
+    cursor.execute(sql_statement)
     mysql_result = cursor.fetchall()
 
     # set the response to the id of the newly created row

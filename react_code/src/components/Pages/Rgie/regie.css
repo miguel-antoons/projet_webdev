@@ -43,7 +43,7 @@ td {
     color: white;
 }
 
-th:last-child, td:last-child, th:nth-child(3) {
+th:last-child, td:last-child, th:nth-child(3), th:nth-child(4) {
     text-align: right !important;
 }
 
