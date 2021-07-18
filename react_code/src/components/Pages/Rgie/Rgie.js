@@ -7,50 +7,22 @@ import * as icon from 'react-icons/io5';
 
 
 const Regie = () => {
+    const hideNewArticleForm = {
+        display: "None"
+    };
+
+    const showNewArticleForm = {
+        display: "table-row"
+    };
+
     const [rgieList, setRgieList] = useState([]);
     const [tempLibelle, setTempLibelle] = useState('');
     const [tempQuantite, setTempQuantite] = useState(0);
     const [tempPrix, setTempPrix] = useState(0);
-    const [firstArticleTableRow, setFirstArticleTableRow] = useState('');
+    const [firstArticleTableRow, setFirstArticleTableRow] = useState(hideNewArticleForm);
     const [tempArticleName, setTempArticleName] = useState('');
     const [tempArticlePrice, setTempArticlePrice] = useState(0);
     const [tempArticleID, setTempArticleID] = useState(0);
-
-
-    const addArticleForm = () => {
-        return (
-            <tr>
-                <td className="middleCell">
-                    <input 
-                        type="text"
-                        placeholder="Libellé"
-                        className="newArticleRgie"
-                        value={tempArticleName}
-                        onChange={(e) => setTempArticleName(e.target.value) }
-                        required
-                    />
-                </td>
-                <td className="middleCell">
-                <input 
-                    type="number"
-                    placeholder="€"
-                    className="newPrixRgie"
-                    // value={tempArticlePrice}
-                    onChange={ (e) => {setTempArticlePrice(e.target.value); console.log(tempArticlePrice);} }
-                    required
-                />
-                </td>
-                <td>
-                    <BS.Button onClick={ () => console.log("temporar") } className="deleteRowArticles" variant="light" >
-                        <icon.IoClose size="25px" />
-                    </BS.Button>
-                    <BS.Button onClick={ () => updateArticleList() } className="addRowRgie" variant="light">
-                        <icon.IoArrowDown size="25px" />
-                    </BS.Button>
-                </td>
-            </tr>
-        );
-    };
 
 
     const postArticle = async () => {
@@ -141,7 +113,7 @@ const Regie = () => {
     return (
         <BS.Row className="no_margin">
             <BS.Col lg="6">
-                <BS.Button onClick={ () => setFirstArticleTableRow(addArticleForm) } size="lg" variant="light" className="add_article">
+                <BS.Button onClick={ () => setFirstArticleTableRow(showNewArticleForm) } size="lg" variant="light" className="add_article">
                     <icon.IoDuplicate size="19pt"/> Nouveau
                 </BS.Button>
                 <MDBTable className="whiteTable" hover>
@@ -153,7 +125,36 @@ const Regie = () => {
                         </tr>
                     </MDBTableHead>
                     <MDBTableBody>
-                        {firstArticleTableRow}
+                        <tr style={firstArticleTableRow}>
+                            <td className="middleCell">
+                                <input 
+                                    type="text"
+                                    placeholder="Libellé"
+                                    className="newArticleRgie"
+                                    value={tempArticleName}
+                                    onChange={(e) => setTempArticleName(e.target.value) }
+                                    required
+                                />
+                            </td>
+                            <td className="middleCell">
+                            <input 
+                                type="number"
+                                placeholder="€"
+                                className="newPrixRgie"
+                                value={tempArticlePrice}
+                                onChange={ (e) => {setTempArticlePrice(e.target.value); console.log(tempArticlePrice);} }
+                                required
+                            />
+                            </td>
+                            <td>
+                                <BS.Button onClick={ () => console.log("temporar") } className="deleteRowArticles" variant="light" >
+                                    <icon.IoClose size="25px" />
+                                </BS.Button>
+                                <BS.Button onClick={ () => updateArticleList() } className="addRowRgie" variant="light">
+                                    <icon.IoArrowDown size="25px" />
+                                </BS.Button>
+                            </td>
+                        </tr>
                         <tr>
                             <td>Mark</td>
                             <td>Otto</td>
@@ -169,6 +170,7 @@ const Regie = () => {
                     </MDBTableBody>
                 </MDBTable>
             </BS.Col>
+
             <BS.Col lg="6">
                 <BS.Button size="lg" variant="light" className="addCustom" onClick={ () => addCustomRow() }>
                     <icon.IoAddCircle size="19pt"/> Ajouter
