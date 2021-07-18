@@ -53,7 +53,7 @@ const Regie = () => {
         }
         catch (e) {
             console.log(e);
-            console.log('There was an error when calling the api during a post request, please contact a developper');
+            console.log('There was an error when calling the api during a post request');
         }
 
         try {
@@ -119,9 +119,9 @@ const Regie = () => {
                 <MDBTable className="whiteTable" hover>
                     <MDBTableHead>
                         <tr>
-                            <th scope='col'>Libellé</th>
-                            <th scope='col'>Prix</th>
-                            <th scope='col'>Ajouter</th>
+                            <th scope='col' className="w-50">Libellé</th>
+                            <th scope='col' className="w-25">Prix</th>
+                            <th scope='col' className="w-25">Ajouter</th>
                         </tr>
                     </MDBTableHead>
                     <MDBTableBody>
@@ -130,7 +130,7 @@ const Regie = () => {
                                 <input 
                                     type="text"
                                     placeholder="Libellé"
-                                    className="newArticleRgie"
+                                    className="newArticleRgie w-100"
                                     value={tempArticleName}
                                     onChange={(e) => setTempArticleName(e.target.value) }
                                     required
@@ -140,7 +140,7 @@ const Regie = () => {
                             <input 
                                 type="number"
                                 placeholder="€"
-                                className="newPrixRgie"
+                                className="newPrixRgie w-100"
                                 value={tempArticlePrice}
                                 onChange={ (e) => {setTempArticlePrice(e.target.value); console.log(tempArticlePrice);} }
                                 required
@@ -179,9 +179,10 @@ const Regie = () => {
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Libellé</th>
-                            <th>Quantité</th>
-                            <th>Prix</th>
+                            <th className="w-50">Libellé</th>
+                            <th className="w-25">Quantité</th>
+                            <th className="w-25">Prix</th>
+                            <th className="w-25">Tot.</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -201,6 +202,9 @@ const Regie = () => {
                                 <td className="alignRight">
                                     {row.price}
                                 </td>
+                                <td>
+                                    {row.quantity * row.price}
+                                </td>
                             </tr>
                         ))}
                         <tr>
@@ -213,7 +217,7 @@ const Regie = () => {
                                 <input 
                                     type="text"
                                     placeholder="Article"
-                                    className="newRowRgie"
+                                    className="newRowRgie w-100"
                                     value={tempLibelle}
                                     onChange={(e) => setTempLibelle(e.target.value) }
                                     required
@@ -223,7 +227,7 @@ const Regie = () => {
                                 <input 
                                     type="number"
                                     placeholder="Qté"
-                                    className="quantiteRgie"
+                                    className="quantiteRgie w-100"
                                     value={tempQuantite}
                                     onChange={ (e) => setTempQuantite(e.target.value) }
                                     required
@@ -233,11 +237,14 @@ const Regie = () => {
                                 <input 
                                     type="number"
                                     placeholder="€"
-                                    className="quantiteRgie"
+                                    className="quantiteRgie w-100"
                                     value={tempPrix}
                                     onChange={ (e) => setTempPrix(e.target.value) }
                                     required
                                 />
+                            </td>
+                            <td>
+                                {tempPrix * tempQuantite}
                             </td>
                         </tr>
                     </tbody>

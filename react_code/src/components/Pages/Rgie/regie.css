@@ -43,14 +43,8 @@ td {
     color: white;
 }
 
-th:last-child, td:last-child {
+th:last-child, td:last-child, th:nth-child(3) {
     text-align: right !important;
-}
-
-.roundTable th:first, .roundTable td:first {
-    text-align: left !important;
-    width: 10% !important;
-    padding: 0 !important;
 }
 
 .newRowRgie {
@@ -59,7 +53,6 @@ th:last-child, td:last-child {
     box-shadow: none;
     margin: 0 !important;
     height: 100% !important;
-    width: 500px !important;
     padding: 11px;
     font-size: 17pt;
     color: white;
@@ -71,7 +64,6 @@ th:last-child, td:last-child {
     box-shadow: none;
     margin: 0 !important;
     height: 100% !important;
-    width: 500px !important;
     padding: 11px;
     font-size: 17pt;
 }
@@ -89,7 +81,6 @@ th:last-child, td:last-child {
     padding: 11px;
     font-size: 17pt;
     color: white;
-    width: 80px;
     text-align: right;
 }
 
@@ -101,7 +92,6 @@ th:last-child, td:last-child {
     height: 80% !important;
     padding: 11px;
     font-size: 17pt;
-    width: 80px;
 }
 
 .addCustom {
