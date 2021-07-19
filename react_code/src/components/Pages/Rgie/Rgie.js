@@ -16,6 +16,7 @@ const Regie = () => {
     };
 
     const [rgieList, setRgieList] = useState([]);
+    const [articleList, setArticleList] = useState([]);
     const [tempLibelle, setTempLibelle] = useState('');
     const [tempQuantite, setTempQuantite] = useState(0);
     const [tempPrix, setTempPrix] = useState(0);
@@ -24,6 +25,32 @@ const Regie = () => {
     const [tempArticlePrice, setTempArticlePrice] = useState(0);
     const [tempArticleID, setTempArticleID] = useState(0);
 
+
+    const getAllArticles = async () => {
+        try {
+            let result = await fetch(
+                '/api/articles_rgie',
+                {
+                    method: 'get'
+                }
+            );
+
+            const data = await result.json();
+
+            setArticleList(data);
+        }
+        catch (e) {
+            console.log(
+                "Somethine went wrong during the fetch of the rgie articles.", 
+                " Please refer to the following error for more information"
+            );
+            console.log(e);
+        }
+    };
+
+    useEffect(() => {
+        getAllArticles();
+    }, []);
 
     const postArticle = async () => {
         let id = 0;
@@ -155,18 +182,24 @@ const Regie = () => {
                                 </BS.Button>
                             </td>
                         </tr>
-                        <tr>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>
-                                <BS.Button className="modifyRowRgie" variant="light">
-                                    <icon.IoBuild size="25px" />
-                                </BS.Button>
-                                <BS.Button className="addRowRgie" variant="light">
-                                    <icon.IoArrowForward size="25px" />
-                                </BS.Button>
-                            </td>
-                        </tr>
+                        {articleList.map((article, index) => (
+                            <tr key={index}>
+                                <td>
+                                    {article.article_name}
+                                </td>
+                                <td>
+                                    {article.article_price}
+                                </td>
+                                <td>
+                                    <BS.Button className="modifyRowRgie" variant="light">
+                                        <icon.IoBuild size="25px" />
+                                    </BS.Button>
+                                    <BS.Button className="addRowRgie" variant="light">
+                                        <icon.IoArrowForward size="25px" />
+                                    </BS.Button>
+                                </td>
+                            </tr>
+                        ))}
                     </MDBTableBody>
                 </MDBTable>
             </BS.Col>
