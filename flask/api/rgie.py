@@ -130,7 +130,7 @@ def get_all_articles(cursor):
     response = []
 
     sql_statement = """
-        SELECT LIBELLE, PRIX
+        SELECT ID_ARTICLE_RGIE, LIBELLE, PRIX
         FROM articles_rgie
     """
 
@@ -142,8 +142,9 @@ def get_all_articles(cursor):
     for article in mysql_result:
         response.append(
             {
-                'article_name': article[0],
-                'article_price': article[1]
+                'articleID': article[0],
+                'article_name': article[1],
+                'article_price': article[2]
             }
         )
 

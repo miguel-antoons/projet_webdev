@@ -24,6 +24,7 @@ const Regie = () => {
     const [tempArticleName, setTempArticleName] = useState('');
     const [tempArticlePrice, setTempArticlePrice] = useState(0);
     const [tempArticleID, setTempArticleID] = useState(0);
+    const [tempArticleIndex, setTempArticleIndex] = useState(0);
 
 
     const getAllArticles = async () => {
@@ -103,6 +104,7 @@ const Regie = () => {
 
             articleListCopy.push(
                 {
+                    articleID: id,
                     article_name: article_name,
                     article_price: article_price
                 }
@@ -156,6 +158,16 @@ const Regie = () => {
         rgieListCopy.splice(indexToDelete);
         setRgieList(rgieListCopy);
     };
+
+
+    const modifyArticle = (index) => {
+        setTempArticleIndex(index);
+        setTempArticleID(articleList[index].articleID);
+        setTempArticleName(articleList[index].article_name);
+        setTempArticlePrice(articleList[index].article_price);
+        setFirstArticleTableRow(showNewArticleForm);
+    };
+
 
     return (
         <BS.Row className="no_margin">
@@ -211,7 +223,7 @@ const Regie = () => {
                                     {article.article_price}
                                 </td>
                                 <td>
-                                    <BS.Button className="modifyRowRgie" variant="light">
+                                    <BS.Button onClick={ () => modifyArticle(index) } className="modifyRowRgie" variant="light">
                                         <icon.IoBuild size="25px" />
                                     </BS.Button>
                                     <BS.Button className="addRowRgie" variant="light">
