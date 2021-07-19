@@ -52,8 +52,10 @@ const Regie = () => {
         getAllArticles();
     }, []);
 
+
     const postArticle = async () => {
         let id = 0;
+        let error = false;
         const article_name = tempArticleName;
         const article_price = tempArticlePrice;
 
@@ -79,6 +81,7 @@ const Regie = () => {
             id = data['projectID'];
         }
         catch (e) {
+            error = true;
             console.log(e);
             console.log('There was an error when calling the api during a post request');
         }
@@ -87,8 +90,25 @@ const Regie = () => {
             id = Number(id);
         }
         catch (e) {
+            error = true;
             console.log(e);
             console.log('error during id conversion from string to number --> id is not a number');
+        }
+
+        if (error) {
+            console.log("due to a previous api error, the article list wasn't updated with the new article");
+        }
+        else {
+            let articleListCopy = articleList.slice();
+
+            articleListCopy.push(
+                {
+                    article_name: article_name,
+                    article_price: article_price
+                }
+            );
+
+            setArticleList(articleListCopy);
         }
     };
 
