@@ -125,6 +125,7 @@ const Regie = () => {
         setTempArticleID(0);
         setTempArticleName('');
         setTempArticlePrice(0);
+        setTempArticleIndex(0);
     };
 
 
@@ -174,6 +175,16 @@ const Regie = () => {
     };
 
 
+    const closeArticleForm = () => {
+        if (tempArticleID) {
+            deletArticle();
+        }
+        else {
+            resetNewArticleForm();
+        }
+    }
+
+
     const deletArticle = async () => {
         let error = false;
         let id = 0;
@@ -200,7 +211,6 @@ const Regie = () => {
         if (id.length) {
             error = true;
             console.log("Back-end did not delete the article, please call a developper");
-            console.log(id);
         }
 
         if (error) {
@@ -256,7 +266,7 @@ const Regie = () => {
                             />
                             </td>
                             <td>
-                                <BS.Button onClick={ () => deletArticle() } className="deleteRowArticles" variant="light" >
+                                <BS.Button onClick={ () => closeArticleForm() } className="deleteRowArticles" variant="light" >
                                     <icon.IoClose size="25px" />
                                 </BS.Button>
                                 <BS.Button onClick={ () => updateArticleList() } className="addRowRgie" variant="light">
