@@ -133,7 +133,7 @@ def get_all_articles(cursor):
     response = []
 
     sql_statement = """
-        SELECT ID_ARTICLE_RGIE, LIBELLE, PRIX
+        SELECT ID_ARTICLE_RGIE, LIBELLE, PRIX, PRIX_2
         FROM articles_rgie
     """
 
@@ -146,7 +146,8 @@ def get_all_articles(cursor):
             {
                 'articleID': article[0],
                 'article_name': article[1],
-                'article_price': article[2]
+                'article_price': article[2],
+                'article_price2': article[3]
             }
         )
 
@@ -176,11 +177,15 @@ def delete_article_rgie(cursor, id_to_delete):
 
 def create_new_article(cursor, data):
     response = {}
-    arguments = (data['article_name'], data['article_price'], )
+    arguments = (
+        data['article_name'],
+        data['article_price'],
+        data['article_price2'],
+    )
 
     sql_statement = """
-        INSERT INTO articles_rgie (LIBELLE, PRIX)
-        VALUES (%s, %s)
+        INSERT INTO articles_rgie (LIBELLE, PRIX, PRIX_2)
+        VALUES (%s, %s, %s)
     """
 
     cursor.execute(sql_statement, arguments)

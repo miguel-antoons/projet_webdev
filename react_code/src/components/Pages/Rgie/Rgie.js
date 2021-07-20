@@ -23,6 +23,7 @@ const Regie = () => {
     const [firstArticleTableRow, setFirstArticleTableRow] = useState(hideNewArticleForm);
     const [tempArticleName, setTempArticleName] = useState('');
     const [tempArticlePrice, setTempArticlePrice] = useState(0);
+    const [tempArticlePrice2, setTempArticlePrice2] = useState(0);
     const [tempArticleID, setTempArticleID] = useState(0);
     const [tempArticleIndex, setTempArticleIndex] = useState(0);
 
@@ -59,6 +60,7 @@ const Regie = () => {
         let error = false;
         const article_name = tempArticleName;
         const article_price = tempArticlePrice;
+        const article_price2 = tempArticlePrice2;
 
         try {
             let result = await fetch(
@@ -71,7 +73,8 @@ const Regie = () => {
                     body: JSON.stringify(
                         {
                             article_name,
-                            article_price
+                            article_price,
+                            article_price2
                         }
                     )
                 }
@@ -106,7 +109,8 @@ const Regie = () => {
                 {
                     articleID: id,
                     article_name: article_name,
-                    article_price: article_price
+                    article_price: article_price,
+                    article_price2: article_price2
                 }
             );
 
@@ -125,6 +129,7 @@ const Regie = () => {
         setTempArticleID(0);
         setTempArticleName('');
         setTempArticlePrice(0);
+        setTempArticlePrice(2);
         setTempArticleIndex(0);
     };
 
@@ -171,6 +176,7 @@ const Regie = () => {
         setTempArticleID(articleList[index].articleID);
         setTempArticleName(articleList[index].article_name);
         setTempArticlePrice(articleList[index].article_price);
+        setTempArticlePrice2(articleList[index].article_price2);
         setFirstArticleTableRow(showNewArticleForm);
     };
 
@@ -182,7 +188,7 @@ const Regie = () => {
         else {
             resetNewArticleForm();
         }
-    }
+    };
 
 
     const deletArticle = async () => {
@@ -239,8 +245,9 @@ const Regie = () => {
                     <MDBTableHead>
                         <tr>
                             <th scope='col' className="w-50">Libellé</th>
-                            <th scope='col' className="w-25">Prix</th>
-                            <th scope='col' className="w-25">Ajouter</th>
+                            <th scope='col' className="w-25">Prix 1</th>
+                            <th scope='col' className="w-25">Prix 2</th>
+                            <th scope='col' className="w-25">Suprimmer/Ajouter</th>
                         </tr>
                     </MDBTableHead>
                     <MDBTableBody>
@@ -265,6 +272,16 @@ const Regie = () => {
                                 required
                             />
                             </td>
+                            <td className="middleCell">
+                                <input 
+                                    type="number"
+                                    placeholder="€"
+                                    className="newPrixRgie w-100"
+                                    value={tempArticlePrice2}
+                                    onChange={ (e) => {setTempArticlePrice2(e.target.value);} }
+                                    required
+                                />
+                            </td>
                             <td>
                                 <BS.Button onClick={ () => closeArticleForm() } className="deleteRowArticles" variant="light" >
                                     <icon.IoClose size="25px" />
@@ -281,6 +298,9 @@ const Regie = () => {
                                 </td>
                                 <td>
                                     {article.article_price}
+                                </td>
+                                <td>
+                                    {article.article_price2}
                                 </td>
                                 <td>
                                     <BS.Button onClick={ () => modifyArticle(index) } className="modifyRowRgie" variant="light">
