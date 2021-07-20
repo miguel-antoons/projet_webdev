@@ -102,8 +102,11 @@ def delete_rgie(cursor, id_to_delete):
     return cursor.fetchall()
 
 
-@app_rgie.route('/api/articles_rgie', methods=['GET', 'POST', 'PUT', 'DELETE'])
-def articles_rgie():
+@app_rgie.route(
+    '/api/articles_rgie/<id>',
+    methods=['GET', 'POST', 'PUT', 'DELETE']
+)
+def articles_rgie(id):
     connector = mysql.connection
     cursor = connector.cursor()
     response = []
@@ -112,7 +115,7 @@ def articles_rgie():
         response = get_all_articles(cursor)
 
     elif request.method == 'DELETE':
-        response.append('delete')
+        response = delete_article_rgie(cursor, id)
 
     elif request.method == 'POST':
         response = create_new_article(cursor, request.json)
@@ -137,7 +140,6 @@ def get_all_articles(cursor):
     cursor.execute(sql_statement)
 
     mysql_result = cursor.fetchall()
-    print(mysql_result)
 
     for article in mysql_result:
         response.append(
@@ -149,6 +151,27 @@ def get_all_articles(cursor):
         )
 
     return response
+
+
+def delete_article_rgie(cursor, id_to_delete):
+    arguments = (id_to_delete, )
+
+    sql_statement = """
+        DELETE FROM articles_rgie
+        WHERE ID_ARTICLE_RGIE = %s
+    """
+
+    cursor.execute(sql_statement, arguments)
+
+    sql_statement = """
+        SELECT ID_ARTICLE_RGIE
+        FROM articles_rgie
+        WHERE ID_ARTICLE_RGIE = %s
+    """
+
+    cursor.execute(sql_statement, arguments)
+
+    return cursor.fetchall()
 
 
 def create_new_article(cursor, data):

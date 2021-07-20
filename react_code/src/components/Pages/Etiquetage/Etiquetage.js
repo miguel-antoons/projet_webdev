@@ -178,6 +178,7 @@ const Etiquetage = (props) => {
         setEvents("Écriture dans la rangée n° " + (rowIndex + 1) + ", colonne n° " + (columnIndex+ 1));
     };
 
+
     /**
      * function fuses or merges cells from the table
      * @param {htmlObject} event 
@@ -230,6 +231,7 @@ const Etiquetage = (props) => {
         fuseMergePreview(rowIndex, columnIndex);
     };
 
+
     /**
      * function stores the value of the written textarea in the program state
      * @param {htmlObject} htmlElement 
@@ -243,7 +245,8 @@ const Etiquetage = (props) => {
         setEtiquettes(stateCopy);
         setSaved(<span className="unsaved">Non-enregisté</span>);
         setEvents("Écriture dans la rangée n° " + (rowIndex + 1) + ", colonne n° " + (columnIndex+ 1));
-    }
+    };
+
 
     /**
      * sets bold text on a long click (500ms) on a big textarea
@@ -259,8 +262,9 @@ const Etiquetage = (props) => {
             setEtiquettes(stateCopy);
             setSaved(<span className="unsaved">Non-enregisté</span>);
             setEvents("Style du texte changée en gras à la rangée n° " + (rowIndex + 1) + " à la colonne n° " + (columnIndex + 1));
-        }, 500)
+        }, 500);
     };
+
 
      /**
      * sets bold text on a long click (500ms) on a little textarea
@@ -278,12 +282,14 @@ const Etiquetage = (props) => {
         }, 500);
     };
 
+
     /**
      * resets the timer for long presses (in case the user didn't hold long enough)
      */
     const resetLongPressTimer = () => {
         clearTimeout(longPressTimer);
     };
+
 
     /**
      * sets the new color to apply on double click and changes the color div background color
@@ -293,6 +299,7 @@ const Etiquetage = (props) => {
         setSelectedTextColor(newColor);
         setColorDivClass("changementCouleur " + newColor + "Command");
     };
+
 
     /**
      * changes the color of a big textarea to the, at the time of double click, selected color
@@ -309,6 +316,7 @@ const Etiquetage = (props) => {
         setEvents("Changement de couleur à la rangée n° " + (rowIndex + 1) + ", colonne n° " + (columnIndex + 1) + " vers la couleur " + traductions.colors[selectedTextColor]);
     };
 
+
     /**
      * changes the color of a little textarea to the, at the time of double click, selected color
      * @param {number} rowIndex 
@@ -322,7 +330,8 @@ const Etiquetage = (props) => {
         setEtiquettes(stateCopy);
         setSaved(<span className="unsaved">Non-enregisté</span>);
         setEvents("Changement de couleur à la rangée n° " + (rowIndex + 1) + ", colonne n° " + (columnIndex + 1) + " vers la couleur " + traductions.colors[selectedTextColor]);
-    }
+    };
+
 
     /**
      * adds a row to the table, the new row will contain the number of columns 
@@ -359,7 +368,8 @@ const Etiquetage = (props) => {
         else {
             setEvents(<span style={{color: "red"}}>Nombre de colonnes non valide</span>);
         }
-    }
+    };
+
 
     /**
      * deletes a row and all of its columns from the project state.
@@ -374,9 +384,10 @@ const Etiquetage = (props) => {
             setEvents("Supression de la ligne n° " + (etiquettes.length));
         }
         else {
-            setEvents(<span style={{color: "red"}}>Impossible de suprimmer la première ligne du tableau</span>)
+            setEvents(<span style={{color: "red"}}>Impossible de suprimmer la première ligne du tableau</span>);
         }
-    }
+    };
+
 
     /**
      * function sends the project state to the backend server with the appropriate api.
@@ -435,6 +446,7 @@ const Etiquetage = (props) => {
             setEvents(<span style={{color: "red"}}>Assurez vou que les champs clients et chantier sont bien remplis adéquatement</span>);
         }
     };
+    
 
     /**
      * Change css rules in order to adapt the css for printing,

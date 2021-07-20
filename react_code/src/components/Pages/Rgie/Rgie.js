@@ -30,7 +30,7 @@ const Regie = () => {
     const getAllArticles = async () => {
         try {
             let result = await fetch(
-                '/api/articles_rgie',
+                '/api/articles_rgie/0',
                 {
                     method: 'get'
                 }
@@ -62,7 +62,7 @@ const Regie = () => {
 
         try {
             let result = await fetch(
-                '/api/articles_rgie',
+                '/api/articles_rgie/0',
                 {
                     method: 'post',
                     headers: {
@@ -117,7 +117,15 @@ const Regie = () => {
 
     const putArticle = async (articleID) => {
         console.log('temporar no update article list', articleID);
-    }
+    };
+
+
+    const resetNewArticleForm = () => {
+        setFirstArticleTableRow(hideNewArticleForm);
+        setTempArticleID(0);
+        setTempArticleName('');
+        setTempArticlePrice(0);
+    };
 
 
     const updateArticleList = () => {
@@ -128,10 +136,7 @@ const Regie = () => {
             postArticle();
         }
 
-        setFirstArticleTableRow(hideNewArticleForm);
-        setTempArticleID(0);
-        setTempArticleName('');
-        setTempArticlePrice(0);
+        resetNewArticleForm();
     };
 
 
@@ -166,6 +171,51 @@ const Regie = () => {
         setTempArticleName(articleList[index].article_name);
         setTempArticlePrice(articleList[index].article_price);
         setFirstArticleTableRow(showNewArticleForm);
+    };
+
+
+    const deletArticle = async () => {
+        let error = false;
+        let id = 0;
+
+        try {
+            let result = await fetch(
+                `/api/articles_rgie/${articleList[tempArticleIndex].articleID}`,
+                {
+                    method: 'delete'
+                }
+            );
+
+            id = await result.json();
+        }
+        catch (e) {
+            error = true;
+            console.log(
+                "There was an error during the api for deleting an rgie article.",
+                " Please refer to the following error for more information."
+            );
+            console.log(e);
+        }
+
+        if (id.length) {
+            error = true;
+            console.log("Back-end did not delete the article, please call a developper");
+            console.log(id);
+        }
+
+        if (error) {
+            console.log(
+                "Since ther was an error, the article table was not updated.",
+                " This is normal and will solve itself after the error is solved"
+            );
+        }
+        else {
+            let articleListCopy = articleList.slice();
+
+            articleListCopy.splice(tempArticleIndex);
+            setArticleList(articleListCopy);
+            resetNewArticleForm();
+        }
     };
 
 
@@ -206,7 +256,7 @@ const Regie = () => {
                             />
                             </td>
                             <td>
-                                <BS.Button onClick={ () => console.log("temporar") } className="deleteRowArticles" variant="light" >
+                                <BS.Button onClick={ () => deletArticle() } className="deleteRowArticles" variant="light" >
                                     <icon.IoClose size="25px" />
                                 </BS.Button>
                                 <BS.Button onClick={ () => updateArticleList() } className="addRowRgie" variant="light">
