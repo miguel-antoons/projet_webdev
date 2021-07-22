@@ -121,7 +121,7 @@ def articles_rgie(id):
         response = create_new_article(cursor, request.json)
 
     elif request.method == 'PUT':
-        response.append('put')
+        response = update_article(cursor, request.json, id)
 
     connector.commit()
     cursor.close()
@@ -195,6 +195,47 @@ def create_new_article(cursor, data):
     """
 
     cursor.execute(sql_statement)
+    mysql_result = cursor.fetchall()
+
+    # set the response to the id of the newly created row
+    response = {
+        'projectID': mysql_result[0][0]
+    }
+
+    return response
+
+
+def update_article(cursor, data, id_to_update):
+    response = {}
+    arguments = (
+        data['article_name'],
+        data['article_price'],
+        data['article_price2'],
+        id_to_update,
+    )
+
+    sql_statement = """
+        UPDATE articles_rgie
+        SET
+            LIBELLE = %s,
+            PRIX = %s,
+            PRIX_2 = %s
+        WHERE ID_ARTICLE_RGIE = %s
+    """
+
+    cursor.execute(sql_statement, arguments)
+
+    sql_statement = """
+        SELECT ID_ARTICLE_RGIE
+        FROM articles_rgie
+        WHERE
+            LIBELLE = %s
+            and PRIX = %s
+            and PRIX_2 = %s
+            and ID_ARTICLE_RGIE = %s
+    """
+
+    cursor.execute(sql_statement, arguments)
     mysql_result = cursor.fetchall()
 
     # set the response to the id of the newly created row

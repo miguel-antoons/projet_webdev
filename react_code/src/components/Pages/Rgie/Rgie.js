@@ -119,8 +119,67 @@ const Regie = () => {
     };
 
 
-    const putArticle = async (articleID) => {
-        console.log('temporar no update article list', articleID);
+    const putArticle = async (articleID, indexToUpdate) => {
+        let id = 0;
+        let error = false;
+        const article_name = tempArticleName;
+        const article_price = tempArticlePrice;
+        const article_price2 = tempArticlePrice2;
+
+        try {
+            let result = await fetch(
+                `/api/articles_rgie/${articleID}`,
+                {
+                    method: 'put',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify(
+                        {
+                            article_name,
+                            article_price,
+                            article_price2
+                        }
+                    )
+                }
+            );
+
+            const data = await result.json();
+
+            id = data['projectID'];
+        }
+        catch (e) {
+            error = true;
+            console.log(e);
+            console.log('There was an error when calling the api during a post request');
+        }
+
+        try {
+            id = Number(id);
+
+            if (!id) {
+                error = true;
+                console.log('The id returned has a null value --> something went wrong at back-end');
+            }
+        }
+        catch (e) {
+            error = true;
+            console.log(e);
+            console.log('error during id conversion from string to number --> id is not a number');
+        }
+
+        if (error) {
+            console.log("due to a previous api error, the article list wasn't updated with the new article");
+        }
+        else {
+            let articleListCopy = articleList.slice();
+
+            articleListCopy[indexToUpdate]['article_name'] = article_name;
+            articleListCopy[indexToUpdate]['article_price'] = article_price;
+            articleListCopy[indexToUpdate]['article_price2'] = article_price2;
+
+            setArticleList(articleListCopy);
+        }
     };
 
 
@@ -136,7 +195,7 @@ const Regie = () => {
 
     const updateArticleList = () => {
         if (tempArticleID) {
-            putArticle(tempArticleID);
+            putArticle(tempArticleID, tempArticleIndex);
         }
         else {
             postArticle();
@@ -164,7 +223,7 @@ const Regie = () => {
 
 
     const deleteRowRgie = (indexToDelete) => {
-        let rgieListCopy = rgieList.splice();
+        let rgieListCopy = rgieList.slice();
 
         rgieListCopy.splice(indexToDelete);
         setRgieList(rgieListCopy);
