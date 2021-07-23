@@ -188,7 +188,7 @@ const Regie = () => {
         setTempArticleID(0);
         setTempArticleName('');
         setTempArticlePrice(0);
-        setTempArticlePrice(2);
+        setTempArticlePrice2(0);
         setTempArticleIndex(0);
     };
 
@@ -280,14 +280,15 @@ const Regie = () => {
 
         if (error) {
             console.log(
-                "Since ther was an error, the article table was not updated.",
+                "Since there was an error, the article table was not updated.",
                 " This is normal and will solve itself after the error is solved"
             );
         }
         else {
             let articleListCopy = articleList.slice();
+            let articleIDToDelete = tempArticleIndex;
 
-            articleListCopy.splice(tempArticleIndex);
+            articleListCopy.splice(articleIDToDelete);
             setArticleList(articleListCopy);
             resetNewArticleForm();
         }
