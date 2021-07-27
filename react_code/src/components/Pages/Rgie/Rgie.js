@@ -28,6 +28,30 @@ const Regie = () => {
     const [tempArticleIndex, setTempArticleIndex] = useState(0);
 
 
+    const verifyError = (numberToVerify) => {
+        try {
+            let newNumber = Number(numberToVerify);
+
+            if (!newNumber) {
+                console.log('The number returned has a null value --> something went wrong at back-end');
+                return true;
+            }
+        }
+        catch (e) {
+            console.log(e);
+            console.log('error during value conversion from string to number --> value is not a number');
+            return true;
+        }
+
+        if (numberToVerify.length) {
+            console.log("Length of value was greater then 0");
+            return false;
+        }
+
+        return false;
+    };
+
+
     const getAllArticles = async () => {
         try {
             let result = await fetch(
@@ -53,30 +77,6 @@ const Regie = () => {
     useEffect(() => {
         getAllArticles();
     }, []);
-
-
-    const verifyError = (numberToVerify) => {
-        try {
-            let newNumber = Number(numberToVerify);
-
-            if (!newNumber) {
-                console.log('The number returned has a null value --> something went wrong at back-end');
-                return true;
-            }
-        }
-        catch (e) {
-            console.log(e);
-            console.log('error during value conversion from string to number --> value is not a number');
-            return true;
-        }
-
-        if (numberToVerify.length) {
-            console.log("Length of value was greater then 0");
-            return false;
-        }
-
-        return false;
-    };
 
 
     const postArticle = async () => {
@@ -184,73 +184,6 @@ const Regie = () => {
     };
 
 
-    const resetNewArticleForm = () => {
-        setFirstArticleTableRow(hideNewArticleForm);
-        setTempArticleID(0);
-        setTempArticleName('');
-        setTempArticlePrice(0);
-        setTempArticlePrice2(0);
-        setTempArticleIndex(0);
-    };
-
-
-    const updateArticleList = () => {
-        if (tempArticleID) {
-            putArticle(tempArticleID, tempArticleIndex);
-        }
-        else {
-            postArticle();
-        }
-
-        resetNewArticleForm();
-    };
-
-
-    const addCustomRow = () => {
-        let rgieListCopy = rgieList.slice();
-
-        rgieListCopy.push({
-            libelle: tempLibelle,
-            quantity: tempQuantite,
-            price: tempPrix
-        });
-
-        setRgieList(rgieListCopy);
-
-        setTempLibelle('');
-        setTempPrix(0);
-        setTempQuantite(0);
-    };
-
-
-    const deleteRowRgie = (indexToDelete) => {
-        let rgieListCopy = rgieList.slice();
-
-        rgieListCopy.splice(indexToDelete);
-        setRgieList(rgieListCopy);
-    };
-
-
-    const modifyArticle = (index) => {
-        setTempArticleIndex(index);
-        setTempArticleID(articleList[index].articleID);
-        setTempArticleName(articleList[index].article_name);
-        setTempArticlePrice(articleList[index].article_price);
-        setTempArticlePrice2(articleList[index].article_price2);
-        setFirstArticleTableRow(showNewArticleForm);
-    };
-
-
-    const closeArticleForm = () => {
-        if (tempArticleID) {
-            deletArticle();
-        }
-        else {
-            resetNewArticleForm();
-        }
-    };
-
-
     const deletArticle = async () => {
         let error = false;
         let id = 0;
@@ -292,6 +225,125 @@ const Regie = () => {
     };
 
 
+    const resetNewArticleForm = () => {
+        setFirstArticleTableRow(hideNewArticleForm);
+        setTempArticleID(0);
+        setTempArticleName('');
+        setTempArticlePrice(0);
+        setTempArticlePrice2(0);
+        setTempArticleIndex(0);
+    };
+
+
+    const updateArticleList = () => {
+        if (tempArticleID) {
+            putArticle(tempArticleID, tempArticleIndex);
+        }
+        else {
+            postArticle();
+        }
+
+        resetNewArticleForm();
+    };
+
+
+    const modifyArticle = (index) => {
+        setTempArticleIndex(index);
+        setTempArticleID(articleList[index].articleID);
+        setTempArticleName(articleList[index].article_name);
+        setTempArticlePrice(articleList[index].article_price);
+        setTempArticlePrice2(articleList[index].article_price2);
+        setFirstArticleTableRow(showNewArticleForm);
+    };
+
+
+    const closeArticleForm = () => {
+        if (tempArticleID) {
+            deletArticle();
+        }
+        else {
+            resetNewArticleForm();
+        }
+    };
+
+
+    const addArticleToRgie = (articleIndex, price1) => {
+        let rgieListCopy = rgieList.slice();
+        let price = 0;
+        let existingArticleInRgieList = 0;
+
+        if (price1) {
+            price = articleList[articleIndex].article_price;
+        }
+        else {
+            price = articleList[articleIndex].article_price2;
+        }
+
+        existingArticleInRgieList = checkIfInRgieList(articleIndex, price);
+
+        if (existingArticleInRgieList) {
+            addQuantity((existingArticleInRgieList - 1));
+            return 0;
+        }
+
+        rgieListCopy.push(
+            {
+                articleID: articleList[articleIndex].articleID,
+                libelle: articleList[articleIndex].article_name,
+                quantity: 1,
+                price: price
+            }
+        );
+
+        setRgieList(rgieListCopy);
+    };
+
+
+    const checkIfInRgieList = (articleIndex, price1) => {
+        for (let i in rgieList) {
+            if (rgieList[i].articleID === articleList[articleIndex].articleID && rgieList[i].price === price1) {
+                return (i + 1);
+            }
+        }
+
+        return false;
+    };
+
+
+    const addQuantity = (rgieListIndex) => {
+        let rgieListCopy = rgieList.slice();
+
+        rgieListCopy[rgieListIndex].quantity++;
+        setRgieList(rgieListCopy);
+    };
+
+
+    const addCustomRow = () => {
+        let rgieListCopy = rgieList.slice();
+
+        rgieListCopy.push({
+            articleID: 0,
+            libelle: tempLibelle,
+            quantity: tempQuantite,
+            price: tempPrix
+        });
+
+        setRgieList(rgieListCopy);
+
+        setTempLibelle('');
+        setTempPrix(0);
+        setTempQuantite(0);
+    };
+
+
+    const deleteRowRgie = (indexToDelete) => {
+        let rgieListCopy = rgieList.slice();
+
+        rgieListCopy.splice(indexToDelete);
+        setRgieList(rgieListCopy);
+    };
+
+
     return (
         <BS.Row className="no_margin">
             <BS.Col lg="6">
@@ -304,7 +356,7 @@ const Regie = () => {
                             <th scope='col' className="w-50">Libellé</th>
                             <th scope='col' className="w-25">Prix 1</th>
                             <th scope='col' className="w-25">Prix 2</th>
-                            <th scope='col' className="w-25">Suprimmer/Ajouter</th>
+                            <th scope='col' className="w-25">Modifier/Ajouter</th>
                         </tr>
                     </MDBTableHead>
                     <MDBTableBody>
@@ -363,7 +415,7 @@ const Regie = () => {
                                     <BS.Button onClick={ () => modifyArticle(index) } className="modifyRowRgie" variant="light">
                                         <icon.IoBuild size="25px" />
                                     </BS.Button>
-                                    <BS.Button className="addRowRgie" variant="light">
+                                    <BS.Button onClick={ () => addArticleToRgie(index, 1) } className="addRowRgie" variant="light">
                                         <icon.IoArrowForward size="25px" />
                                     </BS.Button>
                                 </td>
