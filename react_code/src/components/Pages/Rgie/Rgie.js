@@ -344,6 +344,14 @@ const Regie = () => {
     };
 
 
+    const setNewQuantity = (indexToModify, newValue) => {
+        let rgieListCopy = rgieList.slice();
+
+        rgieListCopy[indexToModify].quantity = newValue;
+        setRgieList(rgieListCopy);
+    };
+
+
     return (
         <BS.Row className="no_margin">
             <BS.Col lg="6">
@@ -440,27 +448,6 @@ const Regie = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {rgieList.map( (row, index) => (
-                            <tr key={index}>
-                                <td>
-                                    <BS.Button onClick={ () => deleteRowRgie(index) } className="deleteRowRgie" variant="light" >
-                                        <icon.IoClose size="25px" />
-                                    </BS.Button>
-                                </td>
-                                <td>
-                                    {row.libelle}
-                                </td>
-                                <td className="alignRight">
-                                    {row.quantity}
-                                </td>
-                                <td className="alignRight">
-                                    {row.price}
-                                </td>
-                                <td>
-                                    {row.quantity * row.price}
-                                </td>
-                            </tr>
-                        ))}
                         <tr>
                             <td>
                                 <BS.Button className="deleteRowRgie" variant="light" disabled>
@@ -501,6 +488,34 @@ const Regie = () => {
                                 {tempPrix * tempQuantite}
                             </td>
                         </tr>
+                        {rgieList.map( (row, index) => (
+                            <tr key={index}>
+                                <td>
+                                    <BS.Button onClick={ () => deleteRowRgie(index) } className="deleteRowRgie" variant="light" >
+                                        <icon.IoClose size="25px" />
+                                    </BS.Button>
+                                </td>
+                                <td>
+                                    {row.libelle}
+                                </td>
+                                <td className="alignRight middleCell">
+                                    <input 
+                                        type="number"
+                                        placeholder="Qté"
+                                        className="quantiteRgie w-100"
+                                        value={row.quantity}
+                                        onChange={ (e) => setNewQuantity(index, e.target.value) }
+                                        required
+                                    />
+                                </td>
+                                <td className="alignRight">
+                                    {row.price}
+                                </td>
+                                <td>
+                                    {row.quantity * row.price}
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </BS.Table>
             </BS.Col>
