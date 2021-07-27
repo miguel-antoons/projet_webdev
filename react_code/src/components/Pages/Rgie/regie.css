@@ -164,7 +164,9 @@ th:last-child, td:last-child, .roundTable th:nth-child(3), th:nth-child(4) {
     color: #082542;
     background-color: #dadbdd;
     padding: 7px !important;
-    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    margin-right: 4px;
 }
 
 .addRowRgie:hover {

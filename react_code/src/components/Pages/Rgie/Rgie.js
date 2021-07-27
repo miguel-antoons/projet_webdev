@@ -299,10 +299,10 @@ const Regie = () => {
     };
 
 
-    const checkIfInRgieList = (articleIndex, price1) => {
+    const checkIfInRgieList = (articleIndex, price) => {
         for (let i in rgieList) {
-            if (rgieList[i].articleID === articleList[articleIndex].articleID && rgieList[i].price === price1) {
-                return (i + 1);
+            if (rgieList[i].articleID === articleList[articleIndex].articleID && rgieList[i].price === price) {
+                return (Number(i) + 1);
             }
         }
 
@@ -312,7 +312,7 @@ const Regie = () => {
 
     const addQuantity = (rgieListIndex) => {
         let rgieListCopy = rgieList.slice();
-
+        
         rgieListCopy[rgieListIndex].quantity++;
         setRgieList(rgieListCopy);
     };
@@ -424,7 +424,10 @@ const Regie = () => {
                                         <icon.IoBuild size="25px" />
                                     </BS.Button>
                                     <BS.Button onClick={ () => addArticleToRgie(index, 1) } className="addRowRgie" variant="light">
-                                        <icon.IoArrowForward size="25px" />
+                                        <icon.IoPlay size="25px" />
+                                    </BS.Button>
+                                    <BS.Button onClick={ () => addArticleToRgie(index, 0) } className="addRowRgie" variant="light">
+                                        <icon.IoPlayForward size="25px" />
                                     </BS.Button>
                                 </td>
                             </tr>
