@@ -104,21 +104,18 @@ def delete_rgie(cursor, id_to_delete):
 
 @app_rgie.route(
     '/api/articles_rgie/<id>',
-    methods=['GET', 'POST', 'PUT', 'DELETE']
+    methods=['GET', 'PUT', 'DELETE']
 )
-def articles_rgie(id):
+def articles_rgie_specific(id):
     connector = mysql.connection
     cursor = connector.cursor()
     response = []
 
     if request.method == 'GET':
-        response = get_all_articles(cursor)
+        print("get 1 article")
 
     elif request.method == 'DELETE':
         response = delete_article_rgie(cursor, id)
-
-    elif request.method == 'POST':
-        response = create_new_article(cursor, request.json)
 
     elif request.method == 'PUT':
         response = update_article(cursor, request.json, id)
@@ -127,31 +124,6 @@ def articles_rgie(id):
     cursor.close()
 
     return json.dumps(response)
-
-
-def get_all_articles(cursor):
-    response = []
-
-    sql_statement = """
-        SELECT ID_ARTICLE_RGIE, LIBELLE, PRIX, PRIX_2
-        FROM articles_rgie
-    """
-
-    cursor.execute(sql_statement)
-
-    mysql_result = cursor.fetchall()
-
-    for article in mysql_result:
-        response.append(
-            {
-                'articleID': article[0],
-                'article_name': article[1],
-                'article_price': article[2],
-                'article_price2': article[3]
-            }
-        )
-
-    return response
 
 
 def delete_article_rgie(cursor, id_to_delete):
@@ -173,36 +145,6 @@ def delete_article_rgie(cursor, id_to_delete):
     cursor.execute(sql_statement, arguments)
 
     return cursor.fetchall()
-
-
-def create_new_article(cursor, data):
-    response = {}
-    arguments = (
-        data['article_name'],
-        data['article_price'],
-        data['article_price2'],
-    )
-
-    sql_statement = """
-        INSERT INTO articles_rgie (LIBELLE, PRIX, PRIX_2)
-        VALUES (%s, %s, %s)
-    """
-
-    cursor.execute(sql_statement, arguments)
-
-    sql_statement = """
-        SELECT LAST_INSERT_ID()
-    """
-
-    cursor.execute(sql_statement)
-    mysql_result = cursor.fetchall()
-
-    # set the response to the id of the newly created row
-    response = {
-        'projectID': mysql_result[0][0]
-    }
-
-    return response
 
 
 def update_article(cursor, data, id_to_update):
@@ -236,6 +178,82 @@ def update_article(cursor, data, id_to_update):
     """
 
     cursor.execute(sql_statement, arguments)
+    mysql_result = cursor.fetchall()
+
+    # set the response to the id of the newly created row
+    response = {
+        'projectID': mysql_result[0][0]
+    }
+
+    return response
+
+
+@app_rgie.route(
+    '/api/articles_rgie/',
+    methods=['GET', 'POST']
+)
+def articles_rgie():
+    connector = mysql.connection
+    cursor = connector.cursor()
+    response = []
+
+    if request.method == 'GET':
+        response = get_all_articles(cursor)
+
+    elif request.method == 'POST':
+        response = create_new_article(cursor, request.json)
+
+    connector.commit()
+    cursor.close()
+
+    return json.dumps(response)
+
+
+def get_all_articles(cursor):
+    response = []
+
+    sql_statement = """
+        SELECT ID_ARTICLE_RGIE, LIBELLE, PRIX, PRIX_2
+        FROM articles_rgie
+    """
+
+    cursor.execute(sql_statement)
+
+    mysql_result = cursor.fetchall()
+
+    for article in mysql_result:
+        response.append(
+            {
+                'articleID': article[0],
+                'article_name': article[1],
+                'article_price': article[2],
+                'article_price2': article[3]
+            }
+        )
+
+    return response
+
+
+def create_new_article(cursor, data):
+    response = {}
+    arguments = (
+        data['article_name'],
+        data['article_price'],
+        data['article_price2'],
+    )
+
+    sql_statement = """
+        INSERT INTO articles_rgie (LIBELLE, PRIX, PRIX_2)
+        VALUES (%s, %s, %s)
+    """
+
+    cursor.execute(sql_statement, arguments)
+
+    sql_statement = """
+        SELECT LAST_INSERT_ID()
+    """
+
+    cursor.execute(sql_statement)
     mysql_result = cursor.fetchall()
 
     # set the response to the id of the newly created row

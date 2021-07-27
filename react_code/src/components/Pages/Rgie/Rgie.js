@@ -31,7 +31,7 @@ const Regie = () => {
     const getAllArticles = async () => {
         try {
             let result = await fetch(
-                '/api/articles_rgie/0',
+                '/api/articles_rgie/',
                 {
                     method: 'get'
                 }
@@ -55,6 +55,30 @@ const Regie = () => {
     }, []);
 
 
+    const verifyError = (numberToVerify) => {
+        try {
+            let newNumber = Number(numberToVerify);
+
+            if (!newNumber) {
+                console.log('The number returned has a null value --> something went wrong at back-end');
+                return true;
+            }
+        }
+        catch (e) {
+            console.log(e);
+            console.log('error during value conversion from string to number --> value is not a number');
+            return true;
+        }
+
+        if (numberToVerify.length) {
+            console.log("Length of value was greater then 0");
+            return false;
+        }
+
+        return false;
+    };
+
+
     const postArticle = async () => {
         let id = 0;
         let error = false;
@@ -64,7 +88,7 @@ const Regie = () => {
 
         try {
             let result = await fetch(
-                '/api/articles_rgie/0',
+                '/api/articles_rgie/',
                 {
                     method: 'post',
                     headers: {
@@ -81,22 +105,13 @@ const Regie = () => {
             );
 
             const data = await result.json();
-
             id = data['projectID'];
+            error = verifyError(id);
         }
         catch (e) {
             error = true;
             console.log(e);
             console.log('There was an error when calling the api during a post request');
-        }
-
-        try {
-            id = Number(id);
-        }
-        catch (e) {
-            error = true;
-            console.log(e);
-            console.log('error during id conversion from string to number --> id is not a number');
         }
 
         if (error) {
@@ -145,27 +160,13 @@ const Regie = () => {
             );
 
             const data = await result.json();
-
             id = data['projectID'];
+            error = verifyError(id);
         }
         catch (e) {
             error = true;
             console.log(e);
             console.log('There was an error when calling the api during a post request');
-        }
-
-        try {
-            id = Number(id);
-
-            if (!id) {
-                error = true;
-                console.log('The id returned has a null value --> something went wrong at back-end');
-            }
-        }
-        catch (e) {
-            error = true;
-            console.log(e);
-            console.log('error during id conversion from string to number --> id is not a number');
         }
 
         if (error) {
@@ -263,9 +264,10 @@ const Regie = () => {
             );
 
             id = await result.json();
+            error = verifyError(id);
         }
         catch (e) {
-            error = true;
+            error = false;
             console.log(
                 "There was an error during the api for deleting an rgie article.",
                 " Please refer to the following error for more information."
@@ -273,12 +275,7 @@ const Regie = () => {
             console.log(e);
         }
 
-        if (id.length) {
-            error = true;
-            console.log("Back-end did not delete the article, please call a developper");
-        }
-
-        if (error) {
+        if (!error) {
             console.log(
                 "Since there was an error, the article table was not updated.",
                 " This is normal and will solve itself after the error is solved"
