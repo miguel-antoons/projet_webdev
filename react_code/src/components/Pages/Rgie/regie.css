@@ -11,19 +11,19 @@
     margin-top: 5px;
 }
 
-thead {
+.rgiePage thead {
     pointer-events: none;
 }
 
-th {
+.rgiePage th {
     border-top: none !important;
 }
 
-tr {
+.rgiePage tr {
     height: 50px !important;
 }
 
-td {
+.rgiePage td {
     white-space: normal !important;
 }
 
@@ -43,7 +43,10 @@ td {
     color: white;
 }
 
-th:last-child, td:last-child, .roundTable th:nth-child(3), th:nth-child(4) {
+.rgiePage th:last-child,
+.rgiePage td:last-child,
+.roundTable th:nth-child(3),
+.rgiePage th:nth-child(4) {
     text-align: right !important;
 }
 
@@ -184,4 +187,45 @@ th:last-child, td:last-child, .roundTable th:nth-child(3), th:nth-child(4) {
 
 .roundTable td {
     font-size: 15pt;
+}
+
+.rechercheArticle {
+    border-radius: 50px;
+    border: 2px solid grey !important;
+    text-align: center;
+}
+
+.saveRgieProject {
+    margin: 25px !important;
+    border: none;
+    background-color: #e7e7e7;
+    color: green;
+    border-radius: 300px;
+    font-size: 16pt;
+    font-family: Verdana, sans-serif;
+    text-align: center;
+}
+
+.saveRgieProject:hover {
+    background-color:  green;
+    color: white;
+}
+
+.clientSelect {
+    width: 300px;
+    float: left;
+    margin: 25px;
+    font-size: 16pt;
+}
+
+.clientSelect div {
+    border-radius: 15px;
+}
+
+.rgieConstructionSite {
+    border: 2px solid grey !important;
+    border-radius: 15px;
+    width: 300px;
+    margin: 25px;
+    text-align: center !important;
 }

@@ -4,6 +4,7 @@ import * as BS from "react-bootstrap";
 import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 import './regie.css';
 import * as icon from 'react-icons/io5';
+import Select from "react-select";
 
 
 const Regie = () => {
@@ -353,8 +354,16 @@ const Regie = () => {
 
 
     return (
-        <BS.Row className="no_margin">
+        <BS.Row className="no_margin rgiePage">
             <BS.Col lg="6">
+                <BS.Button onClick={ () => console.log("saveRgie") } size="lg" variant="light" className="saveRgieProject">
+                    <icon.IoSave size="19pt"/> Enregistrer
+                </BS.Button>
+                <input
+                    type="text"
+                    className="form-control form-control-lg w-50 rechercheArticle"
+                    placeholder="Rechercher"
+                />
                 <BS.Button onClick={ () => setFirstArticleTableRow(showNewArticleForm) } size="lg" variant="light" className="add_article">
                     <icon.IoDuplicate size="19pt"/> Nouveau
                 </BS.Button>
@@ -437,6 +446,16 @@ const Regie = () => {
             </BS.Col>
 
             <BS.Col lg="6">
+                <Select 
+                    className="clientSelect"
+                    label="Clients"
+                    placeholder="Choisissez un client"
+                />
+                <input 
+                    type="text"
+                    className="form-control form-control-lg rgieConstructionSite"
+                    placeholder="Chantier"
+                />
                 <BS.Button size="lg" variant="light" className="addCustom" onClick={ () => addCustomRow() }>
                     <icon.IoAddCircle size="19pt"/> Ajouter
                 </BS.Button>
