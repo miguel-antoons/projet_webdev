@@ -215,11 +215,12 @@
     width: 300px;
     float: left;
     margin: 25px;
-    font-size: 16pt;
+    font-size: 13pt;
 }
 
 .clientSelect div {
     border-radius: 15px;
+    padding: 2px;
 }
 
 .rgieConstructionSite {

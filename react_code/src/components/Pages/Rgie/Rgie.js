@@ -27,6 +27,8 @@ const Regie = () => {
     const [tempArticlePrice2, setTempArticlePrice2] = useState(0);
     const [tempArticleID, setTempArticleID] = useState(0);
     const [tempArticleIndex, setTempArticleIndex] = useState(0);
+    const [constructionSite, setConstructionSite] = useState('');
+    const [clients, setClients] = useState([]);
 
 
     const verifyError = (numberToVerify) => {
@@ -53,6 +55,33 @@ const Regie = () => {
     };
 
 
+    const getClients = async () => {
+        try {
+            let tempClients = [];
+
+            let result = await fetch(
+                '/api/client',
+                {
+                    method: 'get'
+                }
+            );
+
+            const data = await result.json();
+
+            for (let e of data) {
+                tempClients.push(
+                    {value: e.id, label: `${e.id}  ${e.attribute1}`}
+                );
+            }
+
+            setClients(tempClients);
+        }
+        catch (e) {
+            console.log(e);
+        }
+    };
+
+
     const getAllArticles = async () => {
         try {
             let result = await fetch(
@@ -63,7 +92,6 @@ const Regie = () => {
             );
 
             const data = await result.json();
-
             setArticleList(data);
         }
         catch (e) {
@@ -77,6 +105,7 @@ const Regie = () => {
 
     useEffect(() => {
         getAllArticles();
+        getClients();
     }, []);
 
 
@@ -450,9 +479,12 @@ const Regie = () => {
                     className="clientSelect"
                     label="Clients"
                     placeholder="Choisissez un client"
+                    options={clients}
                 />
                 <input 
                     type="text"
+                    value={constructionSite}
+                    onChange={ (e) => setConstructionSite(e.target.value) }
                     className="form-control form-control-lg rgieConstructionSite"
                     placeholder="Chantier"
                 />
