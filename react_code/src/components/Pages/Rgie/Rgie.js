@@ -29,6 +29,7 @@ const Regie = () => {
     const [tempArticleIndex, setTempArticleIndex] = useState(0);
     const [constructionSite, setConstructionSite] = useState('');
     const [clients, setClients] = useState([]);
+    const [selectedClient, setSelectedClient] = useState(0);
 
 
     const verifyError = (numberToVerify) => {
@@ -68,9 +69,9 @@ const Regie = () => {
 
             const data = await result.json();
 
-            for (let e of data) {
+            for (let i in data) {
                 tempClients.push(
-                    {value: e.id, label: `${e.id}  ${e.attribute1}`}
+                    {value: data[i].id, label: `${data[i].id}  ${data[i].attribute1}`}
                 );
             }
 
@@ -329,6 +330,29 @@ const Regie = () => {
     };
 
 
+    const postRgie = async () => {
+        try {
+            let result = await fetch(
+                '/api/rgie',
+                {
+                    merthod: 'post',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify(
+                        {
+                            
+                        }
+                    )
+                }
+            );
+        }
+        catch (e) {
+            console.log(e);
+        }
+    };
+
+
     const checkIfInRgieList = (articleIndex, price) => {
         for (let i in rgieList) {
             if (rgieList[i].articleID === articleList[articleIndex].articleID && rgieList[i].price === price) {
@@ -480,6 +504,7 @@ const Regie = () => {
                     label="Clients"
                     placeholder="Choisissez un client"
                     options={clients}
+                    onChange={ (e) => setSelectedClient(e.value) }
                 />
                 <input 
                     type="text"
