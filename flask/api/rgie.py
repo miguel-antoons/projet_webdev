@@ -5,7 +5,7 @@ from .database import mysql
 app_rgie = Blueprint('app_rgie', __name__)
 
 
-@app_rgie.route('/api/rgie', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@app_rgie.route('/api/rgie', methods=['GET', 'POST'])
 def rgie():
     connector = mysql.connection
     cur = connector.cursor()
@@ -17,11 +17,8 @@ def rgie():
         # then get all etiquettes and store them into the response variable
         response = get_all_rgie(set_arguments(request.args.get('filter')), cur)
 
-    elif request.method == 'DELETE':
-        response = delete_rgie(cur, int(request.args.get('id')))
-
     elif request.method == "POST":
-        post_rgie(cur, request.json)
+        response = post_rgie(cur, request.json)
 
     elif request.method == "PUT":
         put_rgie()
@@ -153,7 +150,32 @@ def save_custom_articles(cursor, custom_articles):
     return custom_articles
 
 
-def put_rgie():
+@app.route('/api/rgie/<id>', methods=['GET', 'PUT', 'DELETE'])
+def rgie_unit(id):
+    connector = mysql.connection
+    cursor = connector.cursor()
+    response = []
+
+    if request.method == 'GET':
+        get_rgie_unit(cursor, id)
+
+    elif request.method == 'DELETE':
+        response = delete_rgie(cursor, id)
+
+    elif request.method == 'PUT':
+        response = put_rgie(cursor, id)
+
+    connector.commit()
+    cursor.close()
+
+    return json.dumps(response)
+
+
+def get_rgie_list(cursor, id):
+    return None
+
+
+def put_rgie(cursor, id):
     return None
 
 
