@@ -322,7 +322,9 @@ const Regie = () => {
                 articleID: articleList[articleIndex].articleID,
                 libelle: articleList[articleIndex].article_name,
                 quantity: 1,
-                price: price
+                price: price,
+                custom: 0,
+                position: rgieList.length
             }
         );
 
@@ -335,21 +337,31 @@ const Regie = () => {
             let result = await fetch(
                 '/api/rgie',
                 {
-                    merthod: 'post',
+                    method: 'post',
                     headers: {
                         'Content-type': 'application/json'
                     },
                     body: JSON.stringify(
                         {
-                            
+                            selectedClient,
+                            constructionSite,
+                            rgieList
                         }
                     )
                 }
             );
+
+            const data = result.json();
+            console.log(data);
         }
         catch (e) {
             console.log(e);
         }
+    };
+
+
+    const saveRgie = () => {
+        postRgie();
     };
 
 
@@ -379,7 +391,9 @@ const Regie = () => {
             articleID: 0,
             libelle: tempLibelle,
             quantity: tempQuantite,
-            price: tempPrix
+            price: tempPrix,
+            custom: 1,
+            position: rgieList.length
         });
 
         setRgieList(rgieListCopy);
@@ -409,7 +423,7 @@ const Regie = () => {
     return (
         <BS.Row className="no_margin rgiePage">
             <BS.Col lg="6">
-                <BS.Button onClick={ () => console.log("saveRgie") } size="lg" variant="light" className="saveRgieProject">
+                <BS.Button onClick={ () => saveRgie() } size="lg" variant="light" className="saveRgieProject">
                     <icon.IoSave size="19pt"/> Enregistrer
                 </BS.Button>
                 <input

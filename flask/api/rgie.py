@@ -21,7 +21,7 @@ def rgie():
         response = delete_rgie(cur, int(request.args.get('id')))
 
     elif request.method == "POST":
-        post_rgie()
+        post_rgie(cur, request.json)
 
     elif request.method == "PUT":
         put_rgie()
@@ -75,8 +75,82 @@ def set_arguments(filter):
         return ("1999-01-01", "%Y-%m-%d", 1, 999999999, )
 
 
-def post_rgie():
-    return None
+def post_rgie(cursor, data):
+    custom_articles = []
+    normal_articles = []
+    all_articles = []
+
+    sql_statement = """
+        INSERT INTO rgie (ID_CLIENT, CHANTIER)
+        VALUES
+            (%(selectedClient)s, %(constructionSite)s)
+    """
+
+    cursor.execute(sql_statement, data)
+
+    sql_statement = """
+        SELECT LAST_INSERT_ID();
+    """
+
+    cursor.execute(sql_statement)
+    new_project_id = cursor.fetchall()[0][0]
+
+    for article in data['rgieList']:
+        if article['custom']:
+            custom_articles.append(article)
+            custom_articles[-1]['id_rgie'] = new_project_id
+        else:
+            normal_articles.append(article)
+            normal_articles[-1]['id_rgie'] = new_project_id
+
+    all_articles = (
+        normal_articles +
+        save_custom_articles(cursor, custom_articles))
+
+    sql_statement = """
+        INSERT INTO liste_articles_rgie (
+            ID_LISTE_RGIE,
+            ID_ARTICLE_RGIE,
+            QUANTITE,
+            POSITION_LISTE,
+            CUSTOM_ARTICLE)
+        VALUES (
+            %(id_rgie)s,
+            %(articleID)s,
+            %(quantity)s,
+            %(position)s,
+            %(custom)s)
+    """
+
+    cursor.executemany(sql_statement, all_articles)
+
+    return new_project_id
+
+
+def save_custom_articles(cursor, custom_articles):
+    sql_statement = """
+        INSERT INTO temp_articles_rgie (ID_LISTE_RGIE, LIBELLE, PRIX)
+        VALUES
+            (%(id_rgie)s, %(libelle)s, %(price)s)
+    """
+
+    cursor.executemany(sql_statement, custom_articles)
+
+    sql_statement = """
+        SELECT ID_TEMP_ARTICLES_RGIE
+        FROM temp_articles_rgie
+        WHERE
+            ID_LISTE_RGIE = %(id_rgie)s
+        ORDER BY ID_TEMP_ARTICLES_RGIE
+    """
+
+    cursor.executemany(sql_statement, custom_articles)
+    results = cursor.fetchall()
+
+    for index, custom_article_id in enumerate(results):
+        custom_articles[index]['articleID'] = custom_article_id[0]
+
+    return custom_articles
 
 
 def put_rgie():
