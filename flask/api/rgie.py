@@ -110,13 +110,15 @@ def post_rgie(cursor, data):
             ID_ARTICLE_RGIE,
             QUANTITE,
             POSITION_LISTE,
-            CUSTOM_ARTICLE)
+            CUSTOM_ARTICLE,
+            PRICE_CHOICE)
         VALUES (
             %(id_rgie)s,
             %(articleID)s,
             %(quantity)s,
             %(position)s,
-            %(custom)s)
+            %(custom)s,
+            %(price1)%)
     """
 
     cursor.executemany(sql_statement, all_articles)
@@ -150,14 +152,14 @@ def save_custom_articles(cursor, custom_articles):
     return custom_articles
 
 
-@app.route('/api/rgie/<id>', methods=['GET', 'PUT', 'DELETE'])
+@app_rgie.route('/api/rgie/<id>', methods=['GET', 'PUT', 'DELETE'])
 def rgie_unit(id):
     connector = mysql.connection
     cursor = connector.cursor()
     response = []
 
     if request.method == 'GET':
-        get_rgie_unit(cursor, id)
+        response = get_rgie_unit(cursor, id)
 
     elif request.method == 'DELETE':
         response = delete_rgie(cursor, id)
@@ -171,8 +173,60 @@ def rgie_unit(id):
     return json.dumps(response)
 
 
-def get_rgie_list(cursor, id):
-    return None
+def get_rgie_unit(cursor, id):
+    rgie_data = {}
+
+    sql_statement = """
+        SELECT ID_LISTE_ARTICLE_RGIE, ID_CLIENT, CHANTIER, DATE
+        FROM rgie
+        WHERE ID_LISTE_ARTICLE_RGIE = %s
+    """
+
+    cursor.execute(sql_statement, (id, ))
+    temp_data = cursor.fetchall()[0]
+
+    rgie_data['rgieID'] = temp_data[0]
+    rgie_data['clientID'] = temp_data[1]
+    rgie_data['constructSite'] = temp_data[2]
+    rgie_data['date'] = temp_data[3]
+
+    return rgie_data
+
+
+def get_articles_rgie_project(cursor, id):
+    sql_statement = """
+        SELECT
+            ID_ARTICLE_RGIE,
+            QUANTITE,
+            POSITION_LISTE,
+            CUSTOM_ARTICLE,
+            PRICE_CHOICE,
+            tar.LIBELLE,
+            tar.PRIX
+        FROM
+            liste_articles_rgie lar,
+            temp_articles_rgie tar
+        WHERE
+            (
+                lar.ID_ARTICLE_RGIE = tar.ID_TEMP_ARTICLES_RGIE
+                and CUSTOM_ARTICLE = 1
+            )
+            and lar.ID_LISTE_RGIE = %s
+    """
+
+    sql_statement = """
+        SELECT
+            ID_ARTICLE_RGIE,
+            QUANTITE,
+            POSITION_LISTE,
+            CUSTOM_ARTICLE,
+            PRICE_CHOICE
+        FROM
+            liste_articles_rgie
+        WHERE
+            CUSTOM_ARTICLE = 0
+            and ID_LISTE_RGIE = %s
+    """
 
 
 def put_rgie(cursor, id):

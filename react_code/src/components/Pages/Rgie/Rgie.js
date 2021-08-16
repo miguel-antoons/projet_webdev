@@ -323,6 +323,7 @@ const Regie = () => {
                 libelle: articleList[articleIndex].article_name,
                 quantity: 1,
                 price: price,
+                price1 : price1,
                 custom: 0,
                 position: rgieList.length
             }
@@ -392,6 +393,7 @@ const Regie = () => {
             libelle: tempLibelle,
             quantity: tempQuantite,
             price: tempPrix,
+            price1: 0,
             custom: 1,
             position: rgieList.length
         });
