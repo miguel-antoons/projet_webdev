@@ -189,11 +189,23 @@ def get_rgie_unit(cursor, id):
     rgie_data['clientID'] = temp_data[1]
     rgie_data['constructSite'] = temp_data[2]
     rgie_data['date'] = temp_data[3]
+    rgie_data['articles'] = get_articles_rgie_project(cursor, id)
 
     return rgie_data
 
 
 def get_articles_rgie_project(cursor, id):
+    article_array = (
+        get_temp_articles(cursor, id)
+        + get_stored_articles(cursor, id)
+    )
+    article_array.sort(key=sortPosition)
+    return article_array
+
+
+def get_temp_articles(cursor, id):
+    article_array = []
+
     sql_statement = """
         SELECT
             ID_ARTICLE_RGIE,
@@ -214,19 +226,74 @@ def get_articles_rgie_project(cursor, id):
             and lar.ID_LISTE_RGIE = %s
     """
 
+    cursor.execute(sql_statement, (id, ))
+    temp_article_array = cursor.fetchall()
+
+    for temp_article in temp_article_array:
+        article_array.append(
+            {
+                'articleID': temp_article[0][0],
+                'libelle': temp_article[5][0],
+                'quantity': temp_article[1][0],
+                'price': temp_article[6][0],
+                'price1': temp_article[4][0],
+                'custom': temp_article[3][0],
+                'position': temp_article[2][0]
+            }
+        )
+
+    return article_array
+
+
+def get_stored_articles(cursor, id):
+    article_array = []
+
     sql_statement = """
         SELECT
-            ID_ARTICLE_RGIE,
+            lar.ID_ARTICLE_RGIE,
             QUANTITE,
             POSITION_LISTE,
             CUSTOM_ARTICLE,
-            PRICE_CHOICE
+            PRICE_CHOICE,
+            ar.LIBELLE,
+            ar.PRIX,
+            ar.PRIX_2
         FROM
-            liste_articles_rgie
+            liste_articles_rgie lar,
+            articles_rgie ar
         WHERE
             CUSTOM_ARTICLE = 0
             and ID_LISTE_RGIE = %s
     """
+
+    cursor.execute(sql_statement, (id, ))
+    temp_article_array = cursor.fetchall()
+
+    for article in temp_article_array:
+        price = 0
+
+        if article[4][0]:
+            price = article[6][0]
+        else:
+            price = article[7][0]
+
+        article_array.append(
+            {
+                'articleID': temp_article[0][0],
+                'libelle': temp_article[5][0],
+                'quantity': temp_article[1][0],
+                'price': price,
+                'price1': temp_article[4][0],
+                'custom': temp_article[3][0],
+                'position': temp_article[2][0]
+            }
+        )
+
+    return article_array
+
+
+def sortPosition(article):
+    return article['position']
 
 
 def put_rgie(cursor, id):
