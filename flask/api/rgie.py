@@ -118,7 +118,7 @@ def post_rgie(cursor, data):
             %(quantity)s,
             %(position)s,
             %(custom)s,
-            %(price1)%)
+            %(price1)s)
     """
 
     cursor.executemany(sql_statement, all_articles)
@@ -177,7 +177,7 @@ def get_rgie_unit(cursor, id):
     rgie_data = {}
 
     sql_statement = """
-        SELECT ID_LISTE_ARTICLE_RGIE, ID_CLIENT, CHANTIER, DATE
+        SELECT ID_LISTE_ARTICLE_RGIE, ID_CLIENT, CHANTIER
         FROM rgie
         WHERE ID_LISTE_ARTICLE_RGIE = %s
     """
@@ -188,8 +188,9 @@ def get_rgie_unit(cursor, id):
     rgie_data['rgieID'] = temp_data[0]
     rgie_data['clientID'] = temp_data[1]
     rgie_data['constructSite'] = temp_data[2]
-    rgie_data['date'] = temp_data[3]
     rgie_data['articles'] = get_articles_rgie_project(cursor, id)
+
+    print(rgie_data)
 
     return rgie_data
 
@@ -228,17 +229,18 @@ def get_temp_articles(cursor, id):
 
     cursor.execute(sql_statement, (id, ))
     temp_article_array = cursor.fetchall()
+    print(temp_article_array)
 
     for temp_article in temp_article_array:
         article_array.append(
             {
-                'articleID': temp_article[0][0],
-                'libelle': temp_article[5][0],
-                'quantity': temp_article[1][0],
-                'price': temp_article[6][0],
-                'price1': temp_article[4][0],
-                'custom': temp_article[3][0],
-                'position': temp_article[2][0]
+                'articleID': temp_article[0],
+                'libelle': temp_article[5],
+                'quantity': temp_article[1],
+                'price': temp_article[6],
+                'price1': temp_article[4],
+                'custom': temp_article[3],
+                'position': temp_article[2]
             }
         )
 
@@ -272,20 +274,20 @@ def get_stored_articles(cursor, id):
     for article in temp_article_array:
         price = 0
 
-        if article[4][0]:
-            price = article[6][0]
+        if article[4]:
+            price = article[6]
         else:
-            price = article[7][0]
+            price = article[7]
 
         article_array.append(
             {
-                'articleID': temp_article[0][0],
-                'libelle': temp_article[5][0],
-                'quantity': temp_article[1][0],
+                'articleID': article[0],
+                'libelle': article[5],
+                'quantity': article[1],
                 'price': price,
-                'price1': temp_article[4][0],
-                'custom': temp_article[3][0],
-                'position': temp_article[2][0]
+                'price1': article[4],
+                'custom': article[3],
+                'position': article[2]
             }
         )
 

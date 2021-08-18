@@ -7,7 +7,7 @@ import * as icon from 'react-icons/io5';
 import Select from "react-select";
 
 
-const Regie = () => {
+const Regie = (props) => {
     const hideNewArticleForm = {
         display: "None"
     };
@@ -17,6 +17,7 @@ const Regie = () => {
     };
 
     const [rgieList, setRgieList] = useState([]);
+    const [rgieID, setRgieID] = useState(Number(props.match.params.id));
     const [articleList, setArticleList] = useState([]);
     const [tempLibelle, setTempLibelle] = useState('');
     const [tempQuantite, setTempQuantite] = useState(0);
@@ -106,8 +107,13 @@ const Regie = () => {
 
     useEffect(() => {
         getAllArticles();
+
+        if (rgieID) {
+            getRgieProject();
+        }
+
         getClients();
-    }, []);
+    }, [rgieID]);
 
 
     const postArticle = async () => {
@@ -333,6 +339,37 @@ const Regie = () => {
     };
 
 
+    const getRgieProject = async () => {
+        let data;
+
+        try {
+            let result = await fetch(
+                `/api/rgie/${rgieID}`,
+                {
+                    method: 'get'
+                }
+            );
+
+            data = await result.json();
+        }
+        catch (e) {
+            console.log(e);
+        }
+
+        if (data['rgieID'] === rgieID) {
+            setSelectedClient(data['clientID']);
+            setConstructionSite(data['constructSite']);
+            setRgieList(data['articles']);
+        }
+        else {
+            console.log(
+                "Data received has not the correct id.", 
+                "\nTherefore it is possible that the data received may not be the same as the data requested."
+            );
+        }
+    };
+
+
     const postRgie = async () => {
         try {
             let result = await fetch(
@@ -519,6 +556,9 @@ const Regie = () => {
                     className="clientSelect"
                     label="Clients"
                     placeholder="Choisissez un client"
+                    value={
+                        clients.filter(client => client.value === selectedClient)
+                    }
                     options={clients}
                     onChange={ (e) => setSelectedClient(e.value) }
                 />
