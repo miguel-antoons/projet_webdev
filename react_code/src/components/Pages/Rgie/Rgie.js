@@ -31,6 +31,7 @@ const Regie = (props) => {
     const [constructionSite, setConstructionSite] = useState('');
     const [clients, setClients] = useState([]);
     const [selectedClient, setSelectedClient] = useState(0);
+    const [deletedArticles, setDeletedArticles] = useState([]);
 
 
     const verifyError = (numberToVerify) => {
@@ -105,6 +106,7 @@ const Regie = (props) => {
         }
     };
 
+
     useEffect(() => {
         getAllArticles();
 
@@ -113,7 +115,8 @@ const Regie = (props) => {
         }
 
         getClients();
-    }, [rgieID]);
+    // eslint-disable-next-line
+    }, []);
 
 
     const postArticle = async () => {
@@ -331,7 +334,9 @@ const Regie = (props) => {
                 price: price,
                 price1 : price1,
                 custom: 0,
-                position: rgieList.length
+                position: rgieList.length,
+                new: 1,
+                modified: 0
             }
         );
 
@@ -389,7 +394,34 @@ const Regie = (props) => {
                 }
             );
 
-            const data = result.json();
+            const data = await result.json();
+            setRgieID(data);
+        }
+        catch (e) {
+            console.log(e);
+        }
+    };
+
+
+    const putRgie = async () => {
+        try {
+            let result = await fetch(
+                `/api/rgie/${rgieID}`,
+                {
+                    method: 'put',
+                    body: JSON.stringify(
+                        {
+                            client: selectedClient,
+                            constructSite: constructionSite,
+                            deletedElements: deletedArticles,
+                            modifiedElements: rgieList.filter(element => element.modified && !element.new),
+                            newElements: rgieList.filter(element => element.new)
+                        }
+                    )
+                }
+            );
+
+            const data = await result.json();
             console.log(data);
         }
         catch (e) {
@@ -399,10 +431,16 @@ const Regie = (props) => {
 
 
     const saveRgie = () => {
-        postRgie();
+        if (rgieID) {
+            putRgie();
+        }
+        else {
+            postRgie();
+        }
     };
 
 
+    // TODO : this function is replacable with a filter method
     const checkIfInRgieList = (articleIndex, price) => {
         for (let i in rgieList) {
             if (rgieList[i].articleID === articleList[articleIndex].articleID && rgieList[i].price === price) {
@@ -418,6 +456,7 @@ const Regie = (props) => {
         let rgieListCopy = rgieList.slice();
         
         rgieListCopy[rgieListIndex].quantity++;
+        rgieListCopy[rgieListIndex].modified = 1;
         setRgieList(rgieListCopy);
     };
 
@@ -432,7 +471,9 @@ const Regie = (props) => {
             price: tempPrix,
             price1: 0,
             custom: 1,
-            position: rgieList.length
+            position: rgieList.length,
+            new: 1,
+            modified: 0
         });
 
         setRgieList(rgieListCopy);
@@ -445,9 +486,18 @@ const Regie = (props) => {
 
     const deleteRowRgie = (indexToDelete) => {
         let rgieListCopy = rgieList.slice();
+        let deletedArticlesCopy = deletedArticles.slice();
 
+        deletedArticlesCopy.push(
+            {
+                rgieID: rgieListCopy[indexToDelete].rgieID,
+                custom: rgieListCopy[indexToDelete].custom,
+                price1: rgieListCopy[indexToDelete].price1
+            }
+        );
         rgieListCopy.splice(indexToDelete);
         setRgieList(rgieListCopy);
+        setDeletedArticles(deletedArticlesCopy);
     };
 
 
@@ -455,6 +505,7 @@ const Regie = (props) => {
         let rgieListCopy = rgieList.slice();
 
         rgieListCopy[indexToModify].quantity = newValue;
+        rgieListCopy[indexToModify].modified = 1;
         setRgieList(rgieListCopy);
     };
 
