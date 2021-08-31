@@ -405,17 +405,42 @@ const Regie = (props) => {
 
     const putRgie = async () => {
         try {
+            let tempModifiedArray = rgieList.filter(element => (element.modified && !element.new));
+            let tempNewArray = rgieList.filter(element => element.new);
+            tempModifiedArray.forEach(
+                (element) => {
+                    delete element.libelle;
+                    delete element.price;
+                    delete element.modified;
+                    delete element.new;
+                    element.rgieID = rgieID;
+                }
+            );
+            tempNewArray.forEach(element => element.rgieID = rgieID);
+
+            let test = {
+                client: selectedClient,
+                constructSite: constructionSite,
+                deletedElements: deletedArticles.map( article => ({ ...article, rgieID: rgieID}) ),
+                modifiedElements: tempModifiedArray,// there is a problem here
+                newElements: tempNewArray
+            };
+
+            console.log(test);
             let result = await fetch(
                 `/api/rgie/${rgieID}`,
                 {
                     method: 'put',
+                    headers: {
+                        'Content-type': 'application/json',
+                    },
                     body: JSON.stringify(
                         {
                             client: selectedClient,
                             constructSite: constructionSite,
-                            deletedElements: deletedArticles,
-                            modifiedElements: rgieList.filter(element => element.modified && !element.new),
-                            newElements: rgieList.filter(element => element.new)
+                            deletedElements: deletedArticles.map( article => ({ ...article, rgieID: rgieID}) ),
+                            modifiedElements: tempModifiedArray,// there is a problem here
+                            newElements: tempNewArray
                         }
                     )
                 }
@@ -490,12 +515,20 @@ const Regie = (props) => {
 
         deletedArticlesCopy.push(
             {
-                rgieID: rgieListCopy[indexToDelete].rgieID,
+                articleID: rgieListCopy[indexToDelete].articleID,
                 custom: rgieListCopy[indexToDelete].custom,
                 price1: rgieListCopy[indexToDelete].price1
             }
         );
         rgieListCopy.splice(indexToDelete);
+        rgieListCopy.forEach(
+            (element, index) => {
+                if (index <= indexToDelete) {
+                    element.position--;
+                    element.modified = 1;
+                }
+            }
+        );
         setRgieList(rgieListCopy);
         setDeletedArticles(deletedArticlesCopy);
     };

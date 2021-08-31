@@ -93,16 +93,30 @@ def post_rgie(cursor, data):
     new_project_id = cursor.fetchall()[0][0]
 
     for article in data['rgieList']:
+        article['rgieID'][-1] = new_project_id
+
+    add_articles_to_rgie(cursor, data['rgieList'])
+
+    return new_project_id
+
+
+def add_articles_to_rgie(cursor, new_articles):
+    custom_articles = []
+    normal_articles = []
+    all_articles = []
+
+    for article in new_articles:
         if article['custom']:
             custom_articles.append(article)
-            custom_articles[-1]['id_rgie'] = new_project_id
         else:
             normal_articles.append(article)
-            normal_articles[-1]['id_rgie'] = new_project_id
 
-    all_articles = (
-        normal_articles +
-        save_custom_articles(cursor, custom_articles))
+    if len(custom_articles):
+        all_articles = (
+            normal_articles +
+            save_custom_articles(cursor, custom_articles))
+    else:
+        all_articles = normal_articles
 
     sql_statement = """
         INSERT INTO liste_articles_rgie (
@@ -113,7 +127,7 @@ def post_rgie(cursor, data):
             CUSTOM_ARTICLE,
             PRICE_CHOICE)
         VALUES (
-            %(id_rgie)s,
+            %(rgieID)s,
             %(articleID)s,
             %(quantity)s,
             %(position)s,
@@ -123,14 +137,12 @@ def post_rgie(cursor, data):
 
     cursor.executemany(sql_statement, all_articles)
 
-    return new_project_id
-
 
 def save_custom_articles(cursor, custom_articles):
     sql_statement = """
         INSERT INTO temp_articles_rgie (ID_LISTE_RGIE, LIBELLE, PRIX)
         VALUES
-            (%(id_rgie)s, %(libelle)s, %(price)s)
+            (%(rgieID)s, %(libelle)s, %(price)s)
     """
 
     cursor.executemany(sql_statement, custom_articles)
@@ -139,11 +151,11 @@ def save_custom_articles(cursor, custom_articles):
         SELECT ID_TEMP_ARTICLES_RGIE
         FROM temp_articles_rgie
         WHERE
-            ID_LISTE_RGIE = %(id_rgie)s
+            ID_LISTE_RGIE = %(rgieID)s
         ORDER BY ID_TEMP_ARTICLES_RGIE
     """
 
-    cursor.executemany(sql_statement, custom_articles)
+    cursor.execute(sql_statement, (custom_articles[0]['rgieID'], ))
     results = cursor.fetchall()
 
     for index, custom_article_id in enumerate(results):
@@ -165,7 +177,8 @@ def rgie_unit(id):
         response = delete_rgie(cursor, id)
 
     elif request.method == 'PUT':
-        response = put_rgie(cursor, id)
+        print(request.json)
+        response = put_rgie(cursor, id, request.json)
 
     connector.commit()
     cursor.close()
@@ -298,8 +311,63 @@ def sortPosition(article):
     return article['position']
 
 
-def put_rgie(cursor, id):
-    return None
+def put_rgie(cursor, id, data):
+    delete_elements(cursor, data['deletedElements'])
+    modify_elements(cursor, data['modifiedElements'])
+    add_articles_to_rgie(cursor, data['newElements'])
+    data['id'] = id
+
+    sql_statement = """
+        UPDATE rgie
+        SET
+            ID_CLIENT = %(client)s,
+            CHANTIER = %(constructSite)s
+        WHERE
+            ID_LISTE_ARTICLE_RGIE = %(id)s
+    """
+
+    cursor.execute(sql_statement, data)
+
+    return id
+
+
+def delete_elements(cursor, deleted_articles):
+    sql_statement = """
+        DELETE FROM liste_articles_rgie
+        WHERE
+            ID_LISTE_RGIE = %(rgieID)s
+            and ID_ARTICLE_RGIE = %(articleID)s
+            and CUSTOM_ARTICLE = %(custom)s
+            and PRICE_CHOICE = %(price1)s
+    """
+
+    cursor.executemany(sql_statement, deleted_articles)
+
+    sql_statement = """
+        DELETE FROM temp_articles_rgie
+        WHERE
+            ID_TEMP_ARTICLES_RGIE = %(articleID)s
+            and ID_LISTE_RGIE = %(rgieID)s
+            and 1 = %(custom)s
+    """
+
+    cursor.executemany(sql_statement, deleted_articles)
+
+
+def modify_elements(cursor, modified_elements):
+    sql_statement = """
+        UPDATE liste_articles_rgie
+        SET
+            QUANTITE = %(quantity)s
+            and POSITION_LISTE = %(position)s
+        WHERE
+            ID_LISTE_RGIE = %(rgieID)s
+            and ID_ARTICLE_RGIE = %(articleID)s
+            and CUSTOM_ARTICLE = %(custom)s
+            and PRICE_CHOICE = %(price1)s
+    """
+
+    cursor.executemany(sql_statement, modified_elements)
 
 
 def delete_rgie(cursor, id_to_delete):
