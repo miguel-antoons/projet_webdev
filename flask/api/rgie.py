@@ -371,19 +371,34 @@ def modify_elements(cursor, modified_elements):
 
 
 def delete_rgie(cursor, id_to_delete):
-    # TODO write sql statement again according to the new rgie tables and
-    # the articles table
     arguments = (id_to_delete, )
 
     # prepare the sql statement (which contains arguments in order
     # to avoid sql injection)
     sql_statement = """
-        DELETE FROM rgie
+        DELETE
+        FROM liste_articles_rgie
+        WHERE ID_LISTE_RGIE = %s
+    """
+
+    cursor.execute(sql_statement, arguments)
+
+    sql_statement = """
+        DELETE
+        FROM temp_articles_rgie
+        WHERE ID_LISTE_RGIE = %s
+    """
+
+    cursor.execute(sql_statement, arguments)
+
+    sql_statement = """
+        DELETE
+        FROM rgie
         WHERE ID_LISTE_ARTICLE_RGIE = %s
     """
 
     # execute the statement along with its arguments
-    cur.execute(sql_statement, arguments)
+    cursor.execute(sql_statement, arguments)
 
     # return the result of the statement
     return cursor.fetchall()

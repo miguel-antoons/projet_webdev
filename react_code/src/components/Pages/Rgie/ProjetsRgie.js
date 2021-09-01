@@ -49,7 +49,7 @@ function ProjetsRgie () {
     }, [filter]);
 
     const deleteElement = async (id) => {
-        await fetch(`/api/rgie?id=${id}`, { 
+        await fetch(`/api/rgie/${id}`, { 
             method: 'DELETE'
         });
 
