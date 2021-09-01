@@ -512,7 +512,8 @@ const Regie = (props) => {
                 price1: rgieListCopy[indexToDelete].price1
             }
         );
-        rgieListCopy.splice(indexToDelete);
+        
+        rgieListCopy.splice(indexToDelete, 1);
         rgieListCopy.forEach(
             (element, index) => {
                 if (index <= indexToDelete) {
@@ -521,6 +522,7 @@ const Regie = (props) => {
                 }
             }
         );
+        
         setRgieList(rgieListCopy);
         setDeletedArticles(deletedArticlesCopy);
     };
