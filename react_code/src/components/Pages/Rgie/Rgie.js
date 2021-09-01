@@ -402,11 +402,12 @@ const Regie = (props) => {
         }
     };
 
-
+    // pas en ordre
     const putRgie = async () => {
         try {
             let tempModifiedArray = rgieList.filter(element => (element.modified && !element.new));
             let tempNewArray = rgieList.filter(element => element.new);
+
             tempModifiedArray.forEach(
                 (element) => {
                     delete element.libelle;
@@ -418,15 +419,6 @@ const Regie = (props) => {
             );
             tempNewArray.forEach(element => element.rgieID = rgieID);
 
-            let test = {
-                client: selectedClient,
-                constructSite: constructionSite,
-                deletedElements: deletedArticles.map( article => ({ ...article, rgieID: rgieID}) ),
-                modifiedElements: tempModifiedArray,// there is a problem here
-                newElements: tempNewArray
-            };
-
-            console.log(test);
             let result = await fetch(
                 `/api/rgie/${rgieID}`,
                 {
@@ -439,7 +431,7 @@ const Regie = (props) => {
                             client: selectedClient,
                             constructSite: constructionSite,
                             deletedElements: deletedArticles.map( article => ({ ...article, rgieID: rgieID}) ),
-                            modifiedElements: tempModifiedArray,// there is a problem here
+                            modifiedElements: tempModifiedArray,
                             newElements: tempNewArray
                         }
                     )

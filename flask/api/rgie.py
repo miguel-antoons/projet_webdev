@@ -358,8 +358,8 @@ def modify_elements(cursor, modified_elements):
     sql_statement = """
         UPDATE liste_articles_rgie
         SET
-            QUANTITE = %(quantity)s
-            and POSITION_LISTE = %(position)s
+            QUANTITE = %(quantity)s,
+            POSITION_LISTE = %(position)s
         WHERE
             ID_LISTE_RGIE = %(rgieID)s
             and ID_ARTICLE_RGIE = %(articleID)s
