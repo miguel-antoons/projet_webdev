@@ -516,7 +516,7 @@ const Regie = (props) => {
         rgieListCopy.splice(indexToDelete, 1);
         rgieListCopy.forEach(
             (element, index) => {
-                if (index <= indexToDelete) {
+                if (index >= indexToDelete) {
                     element.position--;
                     element.modified = 1;
                 }

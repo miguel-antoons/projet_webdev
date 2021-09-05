@@ -155,7 +155,7 @@ def save_custom_articles(cursor, custom_articles):
         ORDER BY ID_TEMP_ARTICLES_RGIE
     """
 
-    cursor.execute(sql_statement, (custom_articles[0]['rgieID'], ))
+    cursor.execute(sql_statement, custom_articles[0])
     results = cursor.fetchall()
 
     for index, custom_article_id in enumerate(results):
