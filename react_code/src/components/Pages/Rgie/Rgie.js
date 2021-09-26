@@ -8,6 +8,8 @@ import Select from "react-select";
 
 
 const Regie = (props) => {
+    // 2 folowing variables contain css info in order to hide
+    // or not the form for a new rgie article
     const hideNewArticleForm = {
         display: "None"
     };
@@ -16,28 +18,39 @@ const Regie = (props) => {
         display: "table-row"
     };
 
-    const [rgieList, setRgieList] = useState([]);
-    const [rgieID, setRgieID] = useState(Number(props.match.params.id));
-    const [articleList, setArticleList] = useState([]);
-    const [tempLibelle, setTempLibelle] = useState('');
-    const [tempQuantite, setTempQuantite] = useState(0);
-    const [tempPrix, setTempPrix] = useState(0);
-    const [firstArticleTableRow, setFirstArticleTableRow] = useState(hideNewArticleForm);
-    const [tempArticleName, setTempArticleName] = useState('');
-    const [tempArticlePrice, setTempArticlePrice] = useState(0);
-    const [tempArticlePrice2, setTempArticlePrice2] = useState(0);
-    const [tempArticleID, setTempArticleID] = useState(0);
-    const [tempArticleIndex, setTempArticleIndex] = useState(0);
-    const [constructionSite, setConstructionSite] = useState('');
-    const [clients, setClients] = useState([]);
-    const [selectedClient, setSelectedClient] = useState(0);
-    const [deletedArticles, setDeletedArticles] = useState([]);
+    const [rgieList, setRgieList] = useState([]);                                           // all the articles the rgie list contains (the right table)
+    const [rgieID, setRgieID] = useState(Number(props.match.params.id));                    // the id of the rgie project (if 0 --> no id is assigned yet)
+    const [articleList, setArticleList] = useState([]);                                     // all the articles available for rgie
+    const [tempLibelle, setTempLibelle] = useState('');                                     // temp label of a custom article, this becomes permanent once the custom article is added to the list
+    const [tempQuantite, setTempQuantite] = useState(0);                                    // temp quantity of a custom article, this becomes permanent once the custom article is added to the list
+    const [tempPrix, setTempPrix] = useState(0);                                            // temp price of a custom article, this becomes permanent once the custom article is added to the list
+    const [firstArticleTableRow, setFirstArticleTableRow] = useState(hideNewArticleForm);   // contains which css rules to apply on the first row of the article table (the left one)
+    const [tempArticleName, setTempArticleName] = useState('');                             // contains temporar new article name, before its creation
+    const [tempArticlePrice, setTempArticlePrice] = useState(0);                            // contains temporar new article price1, before its creation
+    const [tempArticlePrice2, setTempArticlePrice2] = useState(0);                          // contains temporar new article price 2, before its creation
+    const [tempArticleID, setTempArticleID] = useState(0);                                  // ID of the article that is being modified in the article array (left table) if id === 0 --> new article is about to be created
+    const [tempArticleIndex, setTempArticleIndex] = useState(0);                            // index of the article that is being modified in the article table
+    const [constructionSite, setConstructionSite] = useState('');                           // contains the construction site of the project
+    const [clients, setClients] = useState([]);                                             // contains the list of all the clients from the database
+    const [selectedClient, setSelectedClient] = useState(0);                                // contains the clientID from whom this project belongs
+    const [deletedArticles, setDeletedArticles] = useState([]);                             // contains the list of deleted articles
 
-
+    /**
+     * This function will say, from the variable it receives as argument
+     * if a problem happened to an API or not. It will, if a problem happened
+     * log an according message in the console.
+     * If the argument does not pass the test, false is returned. Else, true
+     * is returned
+     * 
+     * @param {*} numberToVerify variable from which we caan say if there is a problem or not
+     * @returns false if error, true if not
+     */
     const verifyError = (numberToVerify) => {
+        // first we verify if it is a number
         try {
             let newNumber = Number(numberToVerify);
 
+            // then we verify if the number is not 0
             if (!newNumber) {
                 console.log('The number returned has a null value --> something went wrong at back-end');
                 return true;
@@ -49,6 +62,7 @@ const Regie = (props) => {
             return true;
         }
 
+        // we check the length of the element to verify
         if (numberToVerify.length) {
             console.log("Length of value was greater then 0");
             return false;
@@ -57,11 +71,16 @@ const Regie = (props) => {
         return false;
     };
 
-
+    /**
+     * API - GET
+     * Function will call back-end and ask to send all the clients
+     * Then it will store the clients in a state variable
+     */
     const getClients = async () => {
         try {
             let tempClients = [];
 
+            // here we send a request to the back-end
             let result = await fetch(
                 '/api/client',
                 {
@@ -69,14 +88,17 @@ const Regie = (props) => {
                 }
             );
 
+            // we wait for the data (the clients) and convert them to a javascript array
             const data = await result.json();
 
+            // we decompose the received data and reorganize them in a javascript object
             for (let i in data) {
                 tempClients.push(
                     {value: data[i].id, label: `${data[i].id}  ${data[i].attribute1}`}
                 );
             }
 
+            // we set the state variable
             setClients(tempClients);
         }
         catch (e) {
@@ -84,9 +106,14 @@ const Regie = (props) => {
         }
     };
 
-
+    /**
+     * API - GET
+     * function fetches all the rgie articles and puts them
+     * in a state variable
+     */
     const getAllArticles = async () => {
         try {
+            // first, fetch from back-end
             let result = await fetch(
                 '/api/articles_rgie/',
                 {
@@ -94,22 +121,29 @@ const Regie = (props) => {
                 }
             );
 
+            // wait for the data and convert to a javascript array
             const data = await result.json();
+
+            // store it in a state variable
             setArticleList(data);
         }
         catch (e) {
             console.log(
-                "Somethine went wrong during the fetch of the rgie articles.", 
+                "Something went wrong during the fetch of the rgie articles.", 
                 " Please refer to the following error for more information"
             );
             console.log(e);
         }
     };
 
-
+    /**
+     * This will execute the appropriate functions
+     * when the rgie program is being launched/opened
+     */
     useEffect(() => {
         getAllArticles();
 
+        // if ther is and ID --> meaning the user is opening an existing project
         if (rgieID) {
             getRgieProject();
         }
@@ -118,15 +152,19 @@ const Regie = (props) => {
     // eslint-disable-next-line
     }, []);
 
-
+    /**
+     * API - POST
+     * Sends a new article to the back-end to store it permanently
+     */
     const postArticle = async () => {
-        let id = 0;
-        let error = false;
-        const article_name = tempArticleName;
-        const article_price = tempArticlePrice;
-        const article_price2 = tempArticlePrice2;
+        let id = 0;                                 // variable where the ID of the newly created article will be stored
+        let error = false;                          // variable tells if ther is an error (true) or not (false)
+        const article_name = tempArticleName;       // variable contains the article name of the new article
+        const article_price = tempArticlePrice;     // variable contains the first price of the new article
+        const article_price2 = tempArticlePrice2;   // variable contains the second price of the new article
 
         try {
+            // send the article to back-end with all of its data
             let result = await fetch(
                 '/api/articles_rgie/',
                 {
@@ -144,6 +182,7 @@ const Regie = (props) => {
                 }
             );
 
+            // wait for the new id and store it in a local variable
             const data = await result.json();
             id = data['projectID'];
             error = verifyError(id);
@@ -158,6 +197,7 @@ const Regie = (props) => {
             console.log("due to a previous api error, the article list wasn't updated with the new article");
         }
         else {
+            // store the article with its id in the article state array
             let articleListCopy = articleList.slice();
 
             articleListCopy.push(
@@ -173,15 +213,22 @@ const Regie = (props) => {
         }
     };
 
-
+    /**
+     * API - PUT
+     * Function updates an article by sending its new values
+     * to the back-end
+     * @param {int} articleID the article ID to update
+     * @param {int} indexToUpdate the article index in the rgieList array
+     */
     const putArticle = async (articleID, indexToUpdate) => {
-        let id = 0;
-        let error = false;
-        const article_name = tempArticleName;
-        const article_price = tempArticlePrice;
-        const article_price2 = tempArticlePrice2;
+        let id = 0;                                 // will receive the result of the back-end
+        let error = false;                          // indicates if ther is an error, if so the value will be true
+        const article_name = tempArticleName;       // contains the article name of the article to update
+        const article_price = tempArticlePrice;     // contains the first price of the article to update
+        const article_price2 = tempArticlePrice2;   // contains the second price of the article to update
 
         try {
+            // send the new data for the article to back-end
             let result = await fetch(
                 `/api/articles_rgie/${articleID}`,
                 {
@@ -199,6 +246,7 @@ const Regie = (props) => {
                 }
             );
 
+            // wait for the return id and store it
             const data = await result.json();
             id = data['projectID'];
             error = verifyError(id);
@@ -213,6 +261,7 @@ const Regie = (props) => {
             console.log("due to a previous api error, the article list wasn't updated with the new article");
         }
         else {
+            // if no error happened, update the values in the article array
             let articleListCopy = articleList.slice();
 
             articleListCopy[indexToUpdate]['article_name'] = article_name;
@@ -223,12 +272,16 @@ const Regie = (props) => {
         }
     };
 
-
+    /**
+     * API - DELETE
+     * Function sends a request to delete an article
+     */
     const deletArticle = async () => {
-        let error = false;
-        let id = 0;
+        let error = false;  // indicates if there is an error, if so value will be true
+        let id = 0;         // receives the result sent by back-end
 
         try {
+            // send the request with the article ID
             let result = await fetch(
                 `/api/articles_rgie/${articleList[tempArticleIndex].articleID}`,
                 {
@@ -236,6 +289,7 @@ const Regie = (props) => {
                 }
             );
 
+            // wait for the back-end result and verify if there was an error
             id = await result.json();
             error = verifyError(id);
         }
@@ -255,6 +309,8 @@ const Regie = (props) => {
             );
         }
         else {
+            // if no error occured
+            // update the article list by deleting the deleted article
             let articleListCopy = articleList.slice();
             let articleIDToDelete = tempArticleIndex;
 
@@ -264,7 +320,10 @@ const Regie = (props) => {
         }
     };
 
-
+    /**
+     * Function resets all the state varaibles linked to the new article form.
+     * This will also hide the new article form
+     */
     const resetNewArticleForm = () => {
         setFirstArticleTableRow(hideNewArticleForm);
         setTempArticleID(0);
@@ -274,9 +333,14 @@ const Regie = (props) => {
         setTempArticleIndex(0);
     };
 
-
+    /**
+     * Function is called on submit button of new article form.
+     * This function decides, according to the fact if the article already exists or not,
+     * to update or to create a new article.
+     */
     const updateArticleList = () => {
         if (tempArticleID) {
+            // if the article ID != 0 --> the article exists
             putArticle(tempArticleID, tempArticleIndex);
         }
         else {
@@ -286,7 +350,12 @@ const Regie = (props) => {
         resetNewArticleForm();
     };
 
-
+    /**
+     * When the user wants to modify an article, this
+     * function is called and will fill in the inputs of the new
+     * article form with the values of the article to modify
+     * @param {int} index the index of the article to modify in the article list
+     */
     const modifyArticle = (index) => {
         setTempArticleIndex(index);
         setTempArticleID(articleList[index].articleID);
@@ -296,7 +365,11 @@ const Regie = (props) => {
         setFirstArticleTableRow(showNewArticleForm);
     };
 
-
+    // TODO verify user experience !!!
+    /**
+     * Function decides what to do when the user clicks on the red cross
+     * Either it closes the new article form or it deletes the article being modified
+     */
     const closeArticleForm = () => {
         if (tempArticleID) {
             deletArticle();
@@ -306,12 +379,19 @@ const Regie = (props) => {
         }
     };
 
-
+    /**
+     * Adds an article to Rgie list, or increases its quantity if 
+     * the article is already present in rgieList
+     * @param {int} articleIndex index of the article in the article array
+     * @param {bool} price1 checks which price to take : true --> price1 , false --> price2
+     * @returns if the article already is in rgieList
+     */
     const addArticleToRgie = (articleIndex, price1) => {
         let rgieListCopy = rgieList.slice();
         let price = 0;
         let existingArticleInRgieList = 0;
 
+        // checks which price to add to rgieList
         if (price1) {
             price = articleList[articleIndex].article_price;
         }
@@ -319,13 +399,15 @@ const Regie = (props) => {
             price = articleList[articleIndex].article_price2;
         }
 
-        existingArticleInRgieList = checkIfInRgieList(articleIndex, price);
+        existingArticleInRgieList = checkIfInRgieList(articleIndex, price); // can be replaced by a find / filter
 
+        // adds 1 to quantity and returns if the article is already present in rgieList
         if (existingArticleInRgieList) {
             addQuantity((existingArticleInRgieList - 1));
             return 0;
         }
 
+        // pushes the article to rgieList if the article si not yet present
         rgieListCopy.push(
             {
                 articleID: articleList[articleIndex].articleID,
