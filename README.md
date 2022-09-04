@@ -35,7 +35,7 @@ Pour lancer l'application il faut: <br><br>
 
 ## Mettre à jour requirements.txt
 
-Pour mettre à jour le fichier "requirements.txt": 
+Pour mettre à jour le fichier "requirements.txt":
 <br><br>
     1. se déplacer dans le dossier flask du projet <br>
     2. activer l'environnement virtuel à l'aide de la commande ". venv/bin/activate" pour linux ou "./venv/Scripts/activate.bat" pour windows <br>
