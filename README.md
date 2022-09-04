@@ -41,7 +41,7 @@ Pour mettre à jour le fichier "requirements.txt":
     2. activer l'environnement virtuel à l'aide de la commande ". venv/bin/activate" pour linux ou "./venv/Scripts/activate.bat" pour windows <br>
     3. lancer la commande "pip freeze > requirements.txt" (dans certains cas il faut rajouter la commande "python3 -m" devant la commande) <br>
 
-## Installer bootstrap 
+## Installer bootstrap
 
-Dans le fichier react_code : 
+Dans le fichier react_code :
     1. npm install react-bootstrap bootstrap
