@@ -62,11 +62,9 @@ def get_articles(cursor):
     for row in results:
         response.append({
             'id': row[0],
-            'label_fr': row[1],
-            'label_nl': row[2],
-            'category': row[3],
-            'last_modified': row[4],
-            'creation_date': row[5]
+            'attribute1': row[1],
+            'attribute2': row[2],
+            'attribute3': row[3],
         })
 
     return response

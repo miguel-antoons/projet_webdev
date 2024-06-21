@@ -1,6 +1,7 @@
-from flask import Blueprint, request, jsonify,json
-from .database import mysql
+import time
 
+from flask import Blueprint, request, json
+from .database import connect
 
 
 app_client = Blueprint('app_client', __name__)
@@ -8,149 +9,156 @@ app_client = Blueprint('app_client', __name__)
 
 @app_client.route('/api/client', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def client():
- 
-
-    connector = mysql.connection
+    connector = connect()
     cur = connector.cursor()
-    response = []
 
-    # API will return all the elements
     if request.method == 'GET':
-        # prepare the sql statement (which contains arguments in order to
-        # avoid sql injection)
-        sql_procedure = """
-            SELECT ID_CLIENT, NOM_CLIENT, PRENOM_CLIENT, SOCIETE_CLIENT,
-                ADRESSE_CLIENT, CAST(TELEPHONE_CLIENT AS CHAR)
-            FROM clients
-            ORDER BY NOM_CLIENT, PRENOM_CLIENT, SOCIETE_CLIENT, ID_CLIENT asc
-            """
-
-        # execute the statement
-        cur.execute(sql_procedure)
-
-        # fetch the result
-        results = cur.fetchall()
-
-        # turn the result into a list of dictionnaries
-        for row in results:
-            response.append({
-                'id': row[0],
-                'attribute1': f"{row[1]} {row[2]}, {row[3]}",
-                'attribute2': row[4],
-                'date': row[5]
-            })
-
-    elif request.method == 'DELETE':
-        # get the id of the projects that has to be deleted
-        id_to_delete = (int(request.args.get('id')), )
-
-        # prepare the sql statement (which contains arguments in order
-        # to avoid sql injection)
-        sql_statement_1 = """
-            DELETE FROM clients
-            WHERE ID_CLIENT = %s
-        """
-
-        # execute the statement along with its arguments
-        cur.execute(sql_statement_1, id_to_delete)
-
-        # commit the changes to the database
-        connector.commit()
-
-        response = cur.fetchall()
-
+        return json.dumps(get_clients(cur))
     elif request.method == 'POST':
-    
-        requete = request.json
-        post_client(requete)
+        return json.dumps(post_client(connector, request.json))
 
 
+@app_client.route("/api/client/<cust_id>", methods=['GET', 'DELETE', 'PUT'])
+def client(cust_id):
+    conn = connect()
+    cursor = conn.cursor()
 
+    if request.method == 'GET':
+        return json.dumps(get_client(cursor, cust_id))
+    elif request.method == 'DELETE':
+        return json.dumps(delete_client(conn, request.json))
     elif request.method == 'PUT':
-        
-        requete = request.json
-        put_client(requete)
+        return json.dumps(put_client(conn, request.json, cust_id))
 
 
-    return json.dumps(response)
+def get_clients(cursor):
+    response = []
+    # prepare the sql statement (which contains arguments in order to
+    # avoid sql injection)
+    sql_procedure = """
+        SELECT id_customer, last_name, first_name, company, primary_address, phone
+        FROM customers
+        ORDER BY last_name, first_name, company, id_customer
+    """
+
+    # execute the statement
+    cursor.execute(sql_procedure)
+    # fetch the result
+    results = cursor.fetchall()
+
+    # turn the result into a list of dictionnaries
+    for row in results:
+        response.append({
+            'id': row[0],
+            'attribute1': f"{row[1]} {row[2]}, {row[3]}",
+            'attribute2': row[4],
+            'attribute3': row[5]
+        })
+
+    return response
 
 
-def post_client(requete):
-
-    nom = requete["name"]
-    prenom = requete["firstname"]
-    societe = requete["societe"]
-    titre = requete["titre"]
-    langue =  requete["langue"]
-    adress = requete["adress"] 
-    tva = requete["tva"]
-    number = requete["number"]
-    email = requete["email"] 
-
+def post_client(connector, data):
+    last_name = data["last_name"]
+    first_name = data["first_name"]
+    company = data["company"]
+    client_title = data["client_title"]
+    language = data["language"]
+    primary_address = data["primary_address"]
+    secondary_address = data["secondary_address"]
+    btw_tva_number = data["btw_tva_number"]
+    phone = data["phone"]
+    phone2 = data["phone2"]
+    email = data["email"]
+    current_time = time.strftime('%Y-%m-%d %H:%M:%S')
 
     # Creating a connection cursor
-    cursor = mysql.connection.cursor()
-
+    cursor = connector.cursor()
     # Executing SQL Statements
-
     cursor.execute(
-        '''INSERT INTO clients (NOM_CLIENT,PRENOM_CLIENT,TITRE_CLIENT,SOCIETE_CLIENT,LANGUE_CLIENT,ADRESSE_CLIENT,NUMERO_TVA_CLIENT ,TELEPHONE_CLIENT ,EMAIL_CLIENT  )
-        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s) ''',
-
-        (nom, prenom, titre, societe, langue, adress, tva, number, email)
+        """
+        INSERT INTO customers (last_name, first_name, company, client_title, language, primary_address,
+            secondary_address, btw_tva_number, phone, phone2, email, creation_date, last_modified)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """,
+        (last_name, first_name, company, client_title, language, primary_address, secondary_address, btw_tva_number,
+         phone, phone2, email, current_time, current_time)
     )
 
     # Saving the Actions performed on the DB
-    mysql.connection.commit()
+    connector.commit()
 
-    # Closing the cursor
-    cursor.close()
+    return 'Customer has been added successfully'
 
-    return jsonify(msg='Le client à étét ajouté avec succès')      
 
-        
+def get_client(cursor, cust_id):
+    cursor.execute("""
+        SELECT * 
+        FROM customers
+        WHERE id_customer = %s
+    """, cust_id)
 
-def put_client(requete):
-    print("methode PUT")
-    print(requete)
+    return cursor.fetchall()
 
-        
-    id = str(requete["id"])
-    nom = str(requete["name"])
-    prenom = str(requete["firstname"])
-    societe = str(requete["societe"])
-    titre = str(requete["titre"])
-    langue =  str(requete["langue"])
-    adress = str(requete["adress"] )
-    tva = str(requete["tva"])
-    number = str(requete["number"])
-    email = str(requete["email"])
 
-        # Creating a connection cursor
-    cursor = mysql.connection.cursor()
- 
+def delete_client(connector, cust_id):
+    cur = connector.cursor()
+    # prepare the sql statement (which contains arguments in order
+    # to avoid sql injection)
+    sql_statement_1 = """
+        DELETE FROM customers
+        WHERE id_customer = %s
+    """
+
+    # execute the statement along with its arguments
+    cur.execute(sql_statement_1, cust_id)
+    # commit the changes to the database
+    connector.commit()
+
+    return cur.fetchall()
+
+
+def put_client(connector, data, cust_id):
+    last_name = data["last_name"]
+    first_name = data["first_name"]
+    company = data["company"]
+    client_title = data["client_title"]
+    language = data["language"]
+    primary_address = data["primary_address"]
+    secondary_address = data["secondary_address"]
+    btw_tva_number = data["btw_tva_number"]
+    phone = data["phone"]
+    phone2 = data["phone2"]
+    email = data["email"]
+    current_time = time.strftime('%Y-%m-%d %H:%M:%S')
+
+    cursor = connector.cursor()
     # Executing SQL Statements
-
     cursor.execute(
-        "UPDATE clients SET NOM_CLIENT='" + nom + "',PRENOM_CLIENT='" + prenom + "',TITRE_CLIENT = '" + titre + "',SOCIETE_CLIENT= '" + societe + "',LANGUE_CLIENT= '" + langue + "',ADRESSE_CLIENT= '" + adress + "',NUMERO_TVA_CLIENT= '" + tva  + "',TELEPHONE_CLIENT= '" + number + "',EMAIL_CLIENT= '" + email + "'WHERE ID_CLIENT='" + id + "' " 
-    
+        """
+        UPDATE customers
+        SET
+            last_name = %s,
+            first_name = %s,
+            company = %s,
+            client_title = %s,
+            language = %s,
+            primary_address = %s,
+            secondary_address = %s,
+            btw_tva_number = %s,
+            phone = %s,
+            phone2 = %s,
+            email = %s,
+            last_modified = %s
+        WHERE id_customer = %s
+        """,
+        (last_name, first_name, company, client_title, language, primary_address, secondary_address, btw_tva_number,
+         phone, phone2, email, current_time, cust_id)
     )
 
     # Saving the Actions performed on the DB
-    mysql.connection.commit()
-
+    connector.commit()
     # Closing the cursor
     cursor.close()
 
-    return jsonify(msg='Le client à été modifier avec succès')
-
-
-@app_client.route("/api/client/<id>", methods=['GET'])
-def client_id(id):
-    cursor = mysql.connection.cursor()
-
-    cursor.execute("SELECT * FROM clients where ID_CLIENT = %s", (id))
-    data = cursor.fetchall()
-
-    return json.dumps(data)
-
+    return "Customer has been updated successfully"
