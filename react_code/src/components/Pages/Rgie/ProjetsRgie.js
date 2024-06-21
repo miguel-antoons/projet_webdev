@@ -39,8 +39,7 @@ function ProjetsRgie () {
                 const data = await response.json();
                 setContent(data);
                 setShownContent(data);
-            }
-            catch (e) {
+            } catch (e) {
                 console.log(e);
             }
         }
@@ -89,8 +88,7 @@ function ProjetsRgie () {
                     // if it is a date, convert the string date to an actual date
                     prime_a = stringToDate(a[values["key"]]);
                     prime_b = stringToDate(b[values["key"]]);
-                }
-                else {
+                } else {
                     prime_a = String(a[values["key"]]).toLowerCase();
                     prime_b = String(b[values["key"]]).toLowerCase();
                 }
@@ -98,16 +96,13 @@ function ProjetsRgie () {
                 // compares the 2 values and returns the result
                 if (prime_a > prime_b) {
                     return -1;
-                }
-                else if (prime_b > prime_a) {
+                } else if (prime_b > prime_a) {
                     return 1;
-                }
-                else{
+                } else{
                     return 0;
                 }
             });
-        }
-        else{
+        } else{
             sortedContent.sort((a, b) => {
                 let prime_a;
                 let prime_b;
@@ -117,8 +112,7 @@ function ProjetsRgie () {
                     // if it is a date, convert the string date to an actual date
                     prime_a = stringToDate(a[values["key"]]);
                     prime_b = stringToDate(b[values["key"]]);
-                }
-                else {
+                } else {
                     prime_a = String(a[values["key"]]).toLowerCase();
                     prime_b = String(b[values["key"]]).toLowerCase();
                 }
@@ -126,11 +120,9 @@ function ProjetsRgie () {
                 // compares the 2 values and returns the result
                 if (prime_a > prime_b) {
                     return 1;
-                }
-                else if (prime_b > prime_a) {
+                } else if (prime_b > prime_a) {
                     return -1;
-                }
-                else{
+                } else{
                     return 0;
                 }
             });
@@ -149,8 +141,7 @@ function ProjetsRgie () {
     useEffect( () => {
         try {
             sortContent(content);
-        }
-        catch (e) {
+        } catch (e) {
             console.log(e);
         }
 
@@ -179,7 +170,7 @@ function ProjetsRgie () {
 
     return (
         <BS.Container fluid style={{ margin: 0, padding: 0 }}>
-            <BS.Jumbotron className="rgie">
+            <div className="rgie jumbotron">
                 <h1 className='d-inline-block'>Bienvenue dans Rgie</h1>
                 <LinkContainer to='/rgie/0'>
                     <BS.Button className='float-right d-inline-block add_project newRgie' size='lg' variant='light'>
@@ -200,7 +191,7 @@ function ProjetsRgie () {
                     </BS.Col>
                     <BS.Col lg="2" xs></BS.Col>
                 </div>
-            </BS.Jumbotron> 
+            </div>
             <BS.Table>
                 <thead>
                     <tr>
@@ -217,9 +208,7 @@ function ProjetsRgie () {
             </BS.Table> 
         </BS.Container>
     )
-};
-
-
+}
 
 
 export default ProjetsRgie;

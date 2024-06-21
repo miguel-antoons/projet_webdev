@@ -37,8 +37,7 @@ function RassemblementClients () {
                 const data = await response.json();
                 setContent(data);
                 setShownContent(data);
-            }
-            catch (e) {
+            } catch (e) {
                 console.log(e);
             }
         }
@@ -79,11 +78,9 @@ function RassemblementClients () {
                 // compares the 2 values and returns the result
                 if (prime_a > prime_b) {
                     return -1;
-                }
-                else if (prime_b > prime_a) {
+                } else if (prime_b > prime_a) {
                     return 1;
-                }
-                else{
+                } else{
                     return 0;
                 }
             });
@@ -96,11 +93,9 @@ function RassemblementClients () {
                 // compares the 2 values and returns the result
                 if (prime_a > prime_b) {
                     return 1;
-                }
-                else if (prime_b > prime_a) {
+                } else if (prime_b > prime_a) {
                     return -1;
-                }
-                else{
+                } else{
                     return 0;
                 }
             });
@@ -119,8 +114,7 @@ function RassemblementClients () {
     useEffect( () => {
         try {
             sortContent(content);
-        }
-        catch (e) {
+        } catch (e) {
             console.log(e);
         }
 
@@ -149,7 +143,7 @@ function RassemblementClients () {
 
     return (
         <BS.Container fluid style={{ margin: 0, padding: 0 }}>
-            <BS.Jumbotron className="client">
+            <div className="client jumbotron">
                 <h1 className='d-inline-block'>Bienvenue dans Clients</h1>
                 <LinkContainer to='/client/0'>
                     <BS.Button className='float-right d-inline-block add_project newClient' size='lg' variant='light'>
@@ -169,7 +163,7 @@ function RassemblementClients () {
                     </BS.Col>
                     <BS.Col lg="1" xs></BS.Col>
                 </div>
-            </BS.Jumbotron> 
+            </div>
             <BS.Table>
                 <thead>
                     <tr>
@@ -186,9 +180,7 @@ function RassemblementClients () {
             </BS.Table> 
         </BS.Container>
     )
-};
-
-
+}
 
 
 export default RassemblementClients;

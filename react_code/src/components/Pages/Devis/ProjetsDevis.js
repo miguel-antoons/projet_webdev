@@ -179,7 +179,7 @@ function ProjetsDevis () {
 
     return (
         <BS.Container fluid style={{ margin: 0, padding: 0 }}>
-            <BS.Jumbotron className="devis">
+            <div className="devis jumbotron">
                 <h1 className='d-inline-block'>Bienvenue dans Devis</h1>
                 <LinkContainer to='/devis/0'>
                     <BS.Button className='float-right d-inline-block add_project newDevis' size='lg' variant='light'>
@@ -200,7 +200,7 @@ function ProjetsDevis () {
                     </BS.Col>
                     <BS.Col lg="2" xs></BS.Col>
                 </div>
-            </BS.Jumbotron> 
+            </div>
             <BS.Table>
                 <thead>
                     <tr>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, redirect, url_for,\
+from flask import Flask, render_template, jsonify, request, redirect, url_for, \
     session, request, Response
 from api import blueprints, database
 from os import environ

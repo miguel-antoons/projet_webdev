@@ -3,8 +3,8 @@ import Row from './Row'
 import './etiquetage.css';
 import './impression.css';
 import './commandesEtiquettes.css';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 import * as BS from "react-bootstrap";
 import * as icon from 'react-icons/io5';
 import { useLocation } from 'react-router';
@@ -53,8 +53,7 @@ const Etiquetage = (props) => {
                 // set the recent events part on the page
                 if (clientName === "" && clientID) {
                     setEvents("Projet enregistré pour la première fois avec ID " + projectID);
-                }
-                else {
+                } else {
                     setEvents("Projet N° " + projectID + " ouvert");
                 }
 
@@ -107,8 +106,7 @@ const Etiquetage = (props) => {
                     const response = await fetch('/api/client');
                     const responseData = await response.json();
                     setClients(responseData);
-                }
-                catch (e) {
+                } catch (e) {
                     console.log(e);
                 }
             };
@@ -130,15 +128,12 @@ const Etiquetage = (props) => {
         // set different colors depending on the column index and the number of columns
         if (columnIndex === stateCopy[rowIndex].length -1 && stateCopy[rowIndex][columnIndex].colspan <= 1) {
             stateCopy[rowIndex][columnIndex].tempBackground = "green";
-        }
-        else if (columnIndex === stateCopy[rowIndex].length -1) {
+        } else if (columnIndex === stateCopy[rowIndex].length -1) {
             stateCopy[rowIndex][columnIndex].tempBackground = "red";
-        }
-        else if (stateCopy[rowIndex][columnIndex].colspan === 1) {
+        } else if (stateCopy[rowIndex][columnIndex].colspan === 1) {
             stateCopy[rowIndex][columnIndex].tempBackground = "green";
             stateCopy[rowIndex][columnIndex + 1].tempBackground = "green";
-        }
-        else {
+        } else {
             stateCopy[rowIndex][columnIndex].tempBackground = "red";
             stateCopy[rowIndex][columnIndex + 1].tempBackground = "green";
         }
@@ -355,8 +350,7 @@ const Etiquetage = (props) => {
             setEtiquettes(stateCopy);
             setSaved(<span className="unsaved">Non-enregisté</span>);
             setEvents("Ajout d'une " + (etiquettes.length + 1) + "e ligne");
-        }
-        else {
+        } else {
             setEvents(<span style={{color: "red"}}>Nombre de colonnes non valide</span>);
         }
     }
@@ -372,8 +366,7 @@ const Etiquetage = (props) => {
             setEtiquettes(stateCopy);
             setSaved(<span className="unsaved">Non-enregisté</span>);
             setEvents("Supression de la ligne n° " + (etiquettes.length));
-        }
-        else {
+        } else {
             setEvents(<span style={{color: "red"}}>Impossible de suprimmer la première ligne du tableau</span>)
         }
     }
@@ -400,8 +393,7 @@ const Etiquetage = (props) => {
                             body: JSON.stringify([constructionSite, etiquettes, projectID])
                         }
                     );
-                }
-                catch (e) {
+                } catch (e) {
                     console.log(e);
                 }
             }
@@ -424,14 +416,12 @@ const Etiquetage = (props) => {
                     const responseData = await response.json();
                     setProjectID(responseData.projectID);
                     setEvents(<span style={{color: "green"}}>Document enregistré</span>);
-                }
-                catch (e) {
+                } catch (e) {
                     console.log(e);
                 }
             }
             setSaved(<span className="saved">Enregistré</span>);
-        }
-        else {
+        } else {
             setEvents(<span style={{color: "red"}}>Assurez vou que les champs clients et chantier sont bien remplis adéquatement</span>);
         }
     };
@@ -462,8 +452,7 @@ const Etiquetage = (props) => {
     if (clientID && projectID) {
         // just show the client name
         clientInfo = <h3 className="clientInfo">{clientName}</h3>;
-    }
-    else {
+    } else {
         // ask the user which client to choose
         clientInfo = 
         <Autocomplete

@@ -179,7 +179,7 @@ function ProjetsFactures () {
 
     return (
         <BS.Container fluid style={{ margin: 0, padding: 0 }}>
-            <BS.Jumbotron className="facture">
+            <div className="facture jumbotron">
                 <h1 className='d-inline-block'>Bienvenue dans Factures</h1>
                 <LinkContainer to='/facture/0'>
                     <BS.Button className='float-right d-inline-block add_project newFacture' size='lg' variant='light'>
@@ -200,7 +200,7 @@ function ProjetsFactures () {
                     </BS.Col>
                     <BS.Col lg="2" xs></BS.Col>
                 </div>
-            </BS.Jumbotron> 
+            </div>
             <BS.Table>
                 <thead>
                     <tr>

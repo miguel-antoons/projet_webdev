@@ -79,11 +79,9 @@ function RassemblementArticles () {
                 // compares the 2 values and returns the result
                 if (prime_a > prime_b) {
                     return -1;
-                }
-                else if (prime_b > prime_a) {
+                } else if (prime_b > prime_a) {
                     return 1;
-                }
-                else{
+                } else{
                     return 0;
                 }
             });
@@ -96,11 +94,9 @@ function RassemblementArticles () {
                 // compares the 2 values and returns the result
                 if (prime_a > prime_b) {
                     return 1;
-                }
-                else if (prime_b > prime_a) {
+                } else if (prime_b > prime_a) {
                     return -1;
-                }
-                else{
+                } else{
                     return 0;
                 }
             });
@@ -119,8 +115,7 @@ function RassemblementArticles () {
     useEffect( () => {
         try {
             sortContent(content);
-        }
-        catch (e) {
+        } catch (e) {
             console.log(e);
         }
 
@@ -149,7 +144,7 @@ function RassemblementArticles () {
 
     return (
         <BS.Container fluid style={{ margin: 0, padding: 0 }}>
-            <BS.Jumbotron className="articles">
+            <div className="articles jumbotron">
                 <h1 className='d-inline-block'>Bienvenue dans Articles</h1>
                 <LinkContainer to='/article/0'>
                     <BS.Button className='float-right d-inline-block add_project newArticle' size='lg' variant='light'>
@@ -169,7 +164,7 @@ function RassemblementArticles () {
                     </BS.Col>
                     <BS.Col lg="1" xs></BS.Col>
                 </div>
-            </BS.Jumbotron> 
+            </div>
             <BS.Table>
                 <thead>
                     <tr>
@@ -186,9 +181,7 @@ function RassemblementArticles () {
             </BS.Table> 
         </BS.Container>
     )
-};
-
-
+}
 
 
 export default RassemblementArticles;

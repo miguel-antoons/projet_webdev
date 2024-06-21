@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import * as BS from "react-bootstrap"
 import Preview from './preview'
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 import './Form.css'
 
 // ATTENTION CHANGER TABLE FACTURE BDD
-
 class Form extends Component {
     constructor(props) {
         super(props)

@@ -65,29 +65,28 @@ class Suivi extends Component {
     render() {
         return (
             <BS.Container>
-                <BS.Jumbotron className="suivi">
-                <h1>Suivi du Matériel</h1>
-                </BS.Jumbotron> 
+                <div className="suivi jumbotron">
+                    <h1>Suivi du Matériel</h1>
+                </div>
                 <BS.Table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Matériel</th>
-                        <th>Nom</th>
-                        <th>Téléphone</th>
-                        <th>Email</th>
-                        <th>Date Emprunt</th>
-                        <th>Date Retour</th>
-                        <th>Stock</th>
-                    </tr>
-                </thead>
-                <tbody id='tbody'>
-                </tbody>
-            </BS.Table> 
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Matériel</th>
+                            <th>Nom</th>
+                            <th>Téléphone</th>
+                            <th>Email</th>
+                            <th>Date Emprunt</th>
+                            <th>Date Retour</th>
+                            <th>Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody id='tbody'>
+                    </tbody>
+                </BS.Table>
             </BS.Container>
         )
     }
-
 }
 
 

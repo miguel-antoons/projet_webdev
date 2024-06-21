@@ -7,6 +7,4 @@ function Rgie () {
 }
 
 
-
-
 export default Rgie;
