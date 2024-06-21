@@ -44,3 +44,4 @@ flask/requirements copy.txt
 mysql.ini
 .coverage
 settings.json
+database.ini

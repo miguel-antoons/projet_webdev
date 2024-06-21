@@ -1,108 +1,115 @@
 from flask import Blueprint, request, json, jsonify
-from .database import mysql
+from .database import connect
 
 
 app_article = Blueprint('app_article', __name__)
 
 
-@app_article.route('/api/articles', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@app_article.route('/api/articles', methods=['GET', 'POST'])
 def articles():
-    connector = mysql.connection
+    connector = connect()
     cur = connector.cursor()
-    response = []
 
     # API will return all the elements
     if request.method == 'GET':
-        # prepare the sql statement (which contains arguments in order to
-        # avoid sql injection)
-        sql_procedure = """
-            SELECT ID_ARTICLE, LIBELLE_FR, LIBELLE_NL, CATEGORIE
-            FROM articles
-            ORDER BY LIBELLE_FR, ID_ARTICLE asc"""
+        return json.dumps(get_articles(cur))
+    # API fires when the user wants to POST a project
+    elif request.method == 'POST':
+        return json.dumps(create_article(cur, request.json))
 
-        # execute the statement
-        cur.execute(sql_procedure)
 
-        # fetch the result
-        results = cur.fetchall()
-
-        # turn the result into a list of dictionnaries
-        for row in results:
-            response.append({
-                'id': row[0],
-                'attribute1': row[1],
-                'attribute2': row[2],
-                'date': row[3]
-            })
+@app_article.route('/api/articles/<id>', methods=['PUT', 'DELETE'])
+def articles(art_id):
+    connector = connect()
+    cur = connector.cursor()
 
     # API fires when the user wants to delete a project
-    elif request.method == 'DELETE':
-        # get the id of the projects that has to be deleted
-        id_to_delete = (int(request.args.get('id')), )
-
-        # prepare the sql statement (which contains arguments in order
-        # to avoid sql injection)
-        sql_statement = """
-            DELETE FROM articles
-            WHERE ID_ARTICLE = %s
-        """
-
-        # execute the statement along with its arguments
-        cur.execute(sql_statement, id_to_delete)
-
-        # commit the changes to the database
-        connector.commit()
-
-        response = cur.fetchall()
-
-    #API fires when the user wants to POST a project
-    elif request.method == 'POST':
-
-        requete = request.json
-        print(requete)
-        LibelleFR = requete["LibelleFR"]
-        LibelleNDL = requete["LibelleNDL"]
-        Categorie = requete["Categorie"]
-        Prix1 = requete["Prix1"]
-        Prix2 = requete["Prix2"]
-        Prix3 = requete["Prix3"]
-
-
-         # Creating a connection cursor
-        cursor = mysql.connection.cursor()
-
-        # Executing SQL Statements
-
-        cursor.execute(
-            '''INSERT INTO articles (LIBELLE_FR,LIBELLE_NL,CATEGORIE,PRIX_1,PRIX_2,PRIX_3)
-            VALUES(%s,%s,%s,%s,%s,%s) ''',
-
-            (LibelleFR,LibelleNDL,Categorie,Prix1,Prix2,Prix3)
-        )
-
-        # Saving the Actions performed on the DB
-        mysql.connection.commit()
-
-        # Closing the cursor
-        cursor.close()
-
-
-
-        return jsonify(msg='Le client à étét ajouté avec succès')
-
-
-    cur.close()
-
-    return json.dumps(response)
+    if request.method == 'DELETE':
+        return json.dumps(delete_article(cur, art_id))
+    elif request.method == 'PUT':
+        pass
 
 
 @app_article.route("/api/articles/all", methods=['GET'])
 def articles_all():
-    cursor = mysql.connection.cursor()
-    cursor.execute("""SELECT ID_ARTICLE,
-    LIBELLE_FR, LIBELLE_NL, CATEGORIE,
-    PRIX_1, PRIX_2, PRIX_3
-    FROM articles""")
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT ID_ARTICLE, LIBELLE_FR, LIBELLE_NL, CATEGORIE, PRIX_1, PRIX_2, PRIX_3
+        FROM articles
+    """)
     data = cursor.fetchall()
 
     return jsonify(data)
+
+
+def get_articles(cursor):
+    response = []
+    # prepare the sql statement (which contains arguments in order to
+    # avoid sql injection)
+    sql_procedure = """
+        SELECT ID_ARTICLE, LABEL_FR, LABEL_NL, CATEGORY, LAST_MODIFIED, CREATION_DATE
+        FROM articles
+        ORDER BY LABEL_FR, ID_ARTICLE asc
+    """
+
+    # execute the statement
+    cursor.execute(sql_procedure)
+    # fetch the result
+    results = cursor.fetchall()
+
+    # turn the result into a list of dictionnaries
+    for row in results:
+        response.append({
+            'id': row[0],
+            'label_fr': row[1],
+            'label_nl': row[2],
+            'category': row[3],
+            'last_modified': row[4],
+            'creation_date': row[5]
+        })
+
+    return response
+
+
+def delete_article(connector, art_id):
+    cur = connector.cursor()
+    # prepare the sql statement (which contains arguments in order
+    # to avoid sql injection)
+    sql_statement = """
+        DELETE FROM articles
+        WHERE ID_ARTICLE = %s
+    """
+
+    # execute the statement along with its arguments
+    cur.execute(sql_statement, art_id)
+    # commit the changes to the database
+    connector.commit()
+
+    return cur.fetchall()
+
+
+def create_article(connector, data):
+    label_fr = data["label_fr"]
+    label_nl = data["label_nl"]
+    label_en = data["label_en"]
+    category = data["category"]
+    price_1 = data["price_1"]
+    price_2 = data["price_2"]
+    price_3 = data["price_3"]
+
+    # Creating a connection cursor
+    cursor = connector.cursor()
+    # Executing SQL Statements
+    cursor.execute(
+        """
+        INSERT INTO articles (LABEL_FR, LABEL_NL, LABEL_EN, CATEGORY, PRICE_1, PRICE_2, PRICE_3)
+        VALUES (%s, %s, %s, %s, %s, %s)
+        """,
+        (label_fr, label_nl, label_en, category, price_1, price_2, price_3)
+    )
+
+    # Saving the Actions performed on the DB
+    connector.commit()
+
+    return cursor.fetchall()

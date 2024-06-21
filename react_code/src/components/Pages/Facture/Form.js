@@ -14,8 +14,9 @@ class Form extends Component {
             clients_options: []
         }
         this.api_client()
+            .then(() => console.log("Clients fetched successfully"))
+            .catch((err) => console.log("Fetching clients failed with error : \n", err))
         this.save = this.save.bind(this)
-        
     }
 
     // Récupérer tous les clients de la base de données
