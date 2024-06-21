@@ -1,153 +1,157 @@
+import time
+
 from flask import Blueprint, request, json, jsonify
-from .database import mysql
+from .database import connect
 
 
-app_devis = Blueprint('app_devis', __name__)
+app_estimate = Blueprint('app_devis', __name__)
 
 
 # API serves for all devis
-@app_devis.route('/api/devis', methods=['GET', 'POST', 'PUT', 'DELETE'])
-def devis():
-    connector = mysql.connection
-    cur = connector.cursor()
-    response = []
+@app_estimate.route('/api/estimates', methods=['GET', 'POST'])
+def estimates():
+    connector = connect()
 
     # API will return all the projects
     if request.method == 'GET':
-        # get the filter to apply to the projects
-        filter = request.args.get('filter')
-        arguments = ()
-
-        # prepare the sql statement (which contains arguments in order to
-        # avoid sql injection)
-        sql_procedure = """
-            SELECT D.ID_DEVIS, C.NOM_CLIENT, C.PRENOM_CLIENT, C.SOCIETE_CLIENT,
-                D.CHANTIER_NOM, date_format(D.DATE_DEVIS, '%%D %%M %%Y')
-            FROM devis as D
-                join clients as C on D.ID_CLIENT = C.ID_CLIENT
-            WHERE D.DATE_DEVIS >= str_to_date(%s, %s)
-                and extract(year from D.DATE_DEVIS) >= %s
-                and extract(year from D.DATE_DEVIS) <= %s
-            ORDER BY D.DATE_DEVIS desc"""
-
-        # complete arguments according to the filter
-        if len(filter) > 4:
-            arguments = (filter, "%a %b %e %Y %H:%i:%s", 1, 999999999, )
-        elif len(filter) == 4:
-            arguments = ("1999-01-01", "%Y-%m-%d", filter, filter, )
-        else:
-            arguments = ("1999-01-01", "%Y-%m-%d", 1, 999999999, )
-
-        # execute the statement
-        cur.execute(sql_procedure, arguments)
-
-        # fetch the result
-        results = cur.fetchall()
-
-        # turn the result into a list of dictionnaries
-        for row in results:
-            response.append({
-                'id': row[0],
-                'attribute1': f"{row[1]} {row[2]}, {row[3]}",
-                'attribute2': row[4],
-                'date': row[5]
-            })
-
-    # API fires when the user wants to delete a project
-    elif request.method == 'DELETE':
-        # get the id of the projects that has to be deleted
-        id_to_delete = (int(request.args.get('id')), )
-
-        # prepare the sql statement (which contains arguments in order
-        # to avoid sql injection)
-        sql_statement = """
-            DELETE FROM devis
-            WHERE ID_DEVIS = %s
-        """
-
-        # execute the statement along with its arguments
-        cur.execute(sql_statement, id_to_delete)
-
-        # commit the changes to the database
-        connector.commit()
-
-        response = cur.fetchall()
-
+        cur = connector.cursor()
+        return json.dumps(get_estimates(cur, request.args.get('filter')))
     elif request.method == 'POST':
-        # Creating a connection cursor
-        cursor = mysql.connection.cursor()
-        requete = request.json
+        return json.dumps(create_estimate(connector, request.json))
 
-        print(requete)
 
-        # Executing SQL Statements
+@app_estimate.route("/api/estimates/<est_id>", methods=['GET', 'DELETE', 'PUT'])
+def estimates(est_id):
+    connector = connect()
 
-        cursor.execute(
-            '''INSERT INTO devis (id_client, date_devis,
-            chantier, choix_prix, modification_prix_pourcentage,
-            modification_prix_fixe, id_devis_texte, chantier_nom, commentaire)
-            VALUES(%s,%s,%s,%s,%s,%s,%s, %s, %s) ''',
-
-            (requete["id_client"], requete["date_devis"],
-             requete["chantier"], requete["choix_prix"],
-             requete["modification_prix_pourcentage"],
-             requete["modification_prix_fixe"],
-             requete["id_texte_devis"], requete["chantier_nom"],
-             requete["commentaire"])
-        )
-
-        # Saving the Actions performed on the DB
-        mysql.connection.commit()
-
-        # Closing the cursor
-        cursor.close()
-
-        return jsonify(msg='Le devis a été ajouté avec succès')
-
+    if request.method == 'GET':
+        return json.dumps(get_estimate(connector, est_id))
+    elif request.method == 'DELETE':
+        return json.dumps(delete_estimate(connector, est_id))
     elif request.method == 'PUT':
-        # Creating a connection cursor
-        cursor = mysql.connection.cursor()
-        requete = request.json
-
-        print(requete)
-        # Executing SQL Statements
-        cursor.execute(
-            '''UPDATE devis
-                SET id_client = %s,
-                    date_devis = %s,
-                    chantier = %s,
-                    choix_prix = %s,
-                    modification_prix_pourcentage = %s,
-                    modification_prix_fixe = %s,
-                    id_devis_texte = %s,
-                    chantier_nom = %s,
-                    commentaire = %s
-                where ID_DEVIS = %s
-             ''',
-
-            (requete["id_client"], requete["date_devis"],
-             requete["chantier"], requete["choix_prix"],
-             requete["modification_prix_pourcentage"],
-             requete["modification_prix_fixe"],
-             requete["id_texte_devis"], requete["chantier_nom"],
-             requete["commentaire"], requete["devisId"])
-        )
-
-        # Saving the Actions performed on the DB
-        mysql.connection.commit()
-
-        # Closing the cursor
-        cur.close()
-        return jsonify(msg='Le devis a été modifié avec succès')
-
-    return json.dumps(response)
+        return json.dumps(update_estimate(connector, est_id, request.json))
 
 
-@app_devis.route("/api/devis/get_devis_id/<id>", methods=['GET'])
-def devis_id(id):
-    cursor = mysql.connection.cursor()
-    print(id)
-    cursor.execute("SELECT * FROM devis where ID_devis = %s", (id, ))
-    data = cursor.fetchall()
+def get_estimates(cursor, filters):
+    # prepare the sql statement (which contains arguments in order to
+    # avoid sql injection)
+    sql_procedure = """
+        SELECT e.id_estimate, c.last_name, c.first_name, c.company, e.construction_site_name, e.creation_date
+        FROM 
+            estimates e
+            join customers c on e.id_customer = c.id_customer
+        WHERE e.creation_date >= to_date(%s, %s)
+            and extract(year from e.creation_date) >= %s
+            and extract(year from e.creation_date) <= %s
+        ORDER BY e.creation_date desc
+    """
 
-    return jsonify(data)
+    # complete arguments according to the filter
+    if len(filters) > 4:
+        arguments = (filters, "%a %b %e %Y %H:%i:%s", 1, 999999999, )
+    elif len(filters) == 4:
+        arguments = ("1999-01-01", "%Y-%m-%d", filters, filters, )
+    else:
+        arguments = ("1999-01-01", "%Y-%m-%d", 1, 999999999, )
+
+    # execute the statement
+    cursor.execute(sql_procedure, arguments)
+    # fetch the result
+    results = cursor.fetchall()
+
+    response = []
+    # turn the result into a list of dictionnaries
+    for row in results:
+        response.append({
+            'id': row[0],
+            'attribute1': f"{row[1]} {row[2]}, {row[3]}",
+            'attribute2': row[4],
+            'attribute3': row[5]
+        })
+
+    return response
+
+
+def create_estimate(connector, data):
+    # Creating a connection cursor
+    cursor = connector.cursor()
+    current_time = time.strftime("%Y-%m-%d %H:%M:%S")
+
+    # Executing SQL Statements
+    cursor.execute(
+        """
+        INSERT INTO estimates (id_customer, creation_date, last_modified, construction_site, price_choice,
+            price_bias_percentage, price_bias_const, id_estimate_text, construction_site_name, comment)
+        VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """,
+        (data['id_customer'], current_time, current_time, data['last_modified'], data['construction_site'],
+         data['price_choice'], data['price_bias_percentage'], data['price_bias_const'], data['id_estimate_text'],
+         data['construction_site_name'], data['comment'])
+    )
+
+    # Saving the Actions performed on the DB
+    connector.commit()
+    # Closing the cursor
+    return cursor.fetchall()
+
+
+def get_estimate(cursor, est_id):
+    # prepare the sql statement (which contains arguments in order
+    # to avoid sql injection)
+    sql_statement = """
+        SELECT * FROM estimates
+        WHERE id_estimate = %s
+    """
+
+    # execute the statement along with its arguments
+    cursor.execute(sql_statement, est_id)
+    # fetch the result
+    return cursor.fetchall()
+
+
+def delete_estimate(connector, est_id):
+    # prepare the sql statement (which contains arguments in order
+    # to avoid sql injection)
+    sql_statement = """
+        DELETE FROM estimates
+        WHERE id_estimate = %s
+    """
+
+    cur = connector.cursor()
+    # execute the statement along with its arguments
+    cur.execute(sql_statement, est_id)
+    # commit the changes to the database
+    connector.commit()
+
+    return cur.fetchall()
+
+
+def update_estimate(connector, est_id, data):
+    # Creating a connection cursor
+    cursor = connector.cursor()
+    current_time = time.strftime("%Y-%m-%d %H:%M:%S")
+
+    # Executing SQL Statements
+    cursor.execute(
+        """
+        UPDATE estimates
+        SET id_customer = %s,
+            last_modified = %s,
+            construction_site = %s,
+            price_choice = %s,
+            price_bias_percentage = %s,
+            price_bias_const = %s,
+            id_estimate_text = %s,
+            construction_site_name = %s,
+            comment = %s
+        WHERE id_estimate = %s
+        """,
+        (data['id_customer'], current_time, data['construction_site'], data['price_choice'],
+         data['price_bias_percentage'], data['price_bias_const'], data['id_estimate_text'],
+         data['construction_site_name'], data['comment'], est_id)
+    )
+
+    # Saving the Actions performed on the DB
+    connector.commit()
+    # Closing the cursor
+    return cursor.fetchall()

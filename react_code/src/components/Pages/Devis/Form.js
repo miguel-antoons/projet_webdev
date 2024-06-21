@@ -340,11 +340,11 @@ class Form extends Component {
                     <BS.Form.Label>Pièce</BS.Form.Label>
                     <BS.Form.Control  type="text" placeholder="Entrez le nom de la pièce" value={this.props.room} onChange={this.props.onChangeValue} id="room" name="room" required />    
                 </BS.Form.Group>
-                <div onChange={this.props.onChangeValue} value={this.props.price_choice}  name="price_choice"> 
-                    <input type="radio" value="price1" name="price_choice" id="price_choice1" defaultChecked /> Prix 1   &nbsp;&nbsp;
-                    <input type="radio" value="price2" name="price_choice" id="price_choice2" /> Prix 2   &nbsp;&nbsp;
-                    <input type="radio" value="price3" name="price_choice" id="price_choice3" /> Prix 3   &nbsp;&nbsp;
-                </div>
+                {/*<div onChange={this.props.onChangeValue} value={this.props.price_choice}  name="price_choice"> */}
+                {/*    <input type="radio" value="price1" name="price_choice" id="price_choice1" defaultChecked /> Prix 1   &nbsp;&nbsp;*/}
+                {/*    <input type="radio" value="price2" name="price_choice" id="price_choice2" /> Prix 2   &nbsp;&nbsp;*/}
+                {/*    <input type="radio" value="price3" name="price_choice" id="price_choice3" /> Prix 3   &nbsp;&nbsp;*/}
+                {/*</div>*/}
                 <BS.Form.Group>
                     <BS.Form.Label>Matériel</BS.Form.Label>
                     <BS.Form.Row>
